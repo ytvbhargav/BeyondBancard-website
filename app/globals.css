@@ -1,0 +1,430 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/*
+ * Beyond Bancard design tokens (PRD §5).
+ * Every colour, radius, shadow and font is referenced by token. Hex values
+ * appear only here.
+ */
+@theme {
+  /* Ink: deep navy "trust" colour for heroes, dark bands and the footer */
+  --color-ink-950: #07102a;
+  --color-ink-900: #0e1b3d;
+  --color-ink-800: #1b2a55;
+  --color-ink-700: #2b3b6b;
+
+  /* Brand blue scale built from the provisional primary #2F5BFF (CONFIRM) */
+  --color-brand-50: #f2f5ff;
+  --color-brand-100: #e6ecff;
+  --color-brand-200: #c9d6ff;
+  --color-brand-300: #a3b8ff;
+  --color-brand-400: #7390ff;
+  --color-brand-500: #4d72ff;
+  --color-brand-600: #2f5bff;
+  --color-brand-700: #1d3fd1;
+  --color-brand-800: #1a34a6;
+  --color-brand-900: #1a2e80;
+  --color-brand-950: #131e4d;
+
+  --color-sky-400: #5ec4ff;
+
+  /* Status: green = approved, amber = in review, red = errors only.
+     The -700 steps exist for small text on tints (AA contrast). */
+  --color-success-100: #e3f5ec;
+  --color-success-600: #138a5e;
+  --color-success-700: #0f7a52;
+  --color-warning-100: #fff3dc;
+  --color-warning-600: #b86e00;
+  --color-warning-700: #8f5600;
+  --color-danger-600: #c8322b;
+
+  /* Blue-tinted neutrals */
+  --color-paper: #f6f8fb;
+  --color-surface: #ffffff;
+  --color-line: #dce2ee;
+  --color-line-strong: #c3cbdc;
+  --color-muted: #56627f;
+  --color-on-dark: #f6f8fb;
+  --color-on-dark-muted: #a9b4d0;
+
+  --font-sans: var(--font-plex), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+  --font-display: var(--font-archivo), system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+
+  --radius-sm: 8px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  --shadow-float: 0 20px 50px -20px rgb(7 16 42 / 0.35);
+  --shadow-press: 0 1px 0 0 rgb(7 16 42 / 0.06);
+
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+
+  --breakpoint-sm: 40rem;
+  --breakpoint-md: 48rem;
+  --breakpoint-lg: 64rem;
+  --breakpoint-xl: 80rem;
+}
+
+/* Motion durations (mirrors lib/motion.ts) */
+:root {
+  --duration-instant: 120ms;
+  --duration-fast: 200ms;
+  --duration-base: 350ms;
+  --duration-slow: 600ms;
+  --color-focus: var(--color-brand-600);
+  --header-h: 80px;
+}
+
+/* Type scale (PRD §5.2), fluid between the mobile and desktop sizes */
+@utility type-display {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: clamp(3rem, 2.02rem + 4.35vw, 5.5rem);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+}
+/* Homepage hero headline: oversized, centred, sized by viewport width and height */
+@utility hero-title {
+  font-family: var(--font-display);
+  font-stretch: 108%;
+  font-weight: 800;
+  font-size: clamp(2.75rem, 11vw, 4rem);
+  line-height: 0.95;
+  letter-spacing: -0.035em;
+  text-align: center;
+  text-wrap: balance;
+  @media (width >= 64rem) {
+    font-stretch: 112%;
+    font-size: clamp(4.25rem, min(7.2vw, 12.5svh), 7rem);
+    line-height: 0.92;
+  }
+}
+@utility type-h1 {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 800;
+  font-size: clamp(2.5rem, 2.01rem + 2.17vw, 3.75rem);
+  line-height: 1.05;
+  letter-spacing: -0.025em;
+  text-wrap: balance;
+}
+@utility type-h2 {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: clamp(2rem, 1.71rem + 1.3vw, 2.75rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+}
+@utility type-h3 {
+  font-family: var(--font-display);
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: clamp(1.3125rem, 1.24rem + 0.33vw, 1.5rem);
+  line-height: 1.2;
+  letter-spacing: -0.01em;
+}
+@utility type-h4 {
+  font-family: var(--font-display);
+  font-stretch: 108%;
+  font-weight: 600;
+  font-size: clamp(1.0625rem, 1.04rem + 0.11vw, 1.125rem);
+  line-height: 1.3;
+}
+@utility type-body-lg {
+  font-size: clamp(1.125rem, 1.08rem + 0.22vw, 1.25rem);
+  line-height: 1.55;
+}
+@utility type-body {
+  font-size: clamp(1rem, 0.98rem + 0.11vw, 1.0625rem);
+  line-height: 1.6;
+}
+@utility type-small {
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+/* Section rhythm: 56px mobile, 80px tablet, 100px desktop */
+@utility section-y {
+  padding-block: 3.5rem;
+  @media (width >= 48rem) {
+    padding-block: 5rem;
+  }
+  @media (width >= 64rem) {
+    padding-block: 6.25rem;
+  }
+}
+@utility section-b {
+  padding-bottom: 3.5rem;
+  @media (width >= 48rem) {
+    padding-bottom: 5rem;
+  }
+  @media (width >= 64rem) {
+    padding-bottom: 6.25rem;
+  }
+}
+@utility tabular {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Dark surfaces switch the focus colour so rings stay visible */
+@utility tone-dark {
+  --color-focus: var(--color-brand-300);
+  color: var(--color-on-dark);
+}
+
+@layer base {
+  html {
+    color-scheme: light;
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: calc(var(--header-h) + 16px);
+  }
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink-900);
+    font-family: var(--font-sans);
+    font-size: clamp(1rem, 0.98rem + 0.11vw, 1.0625rem);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+  *,
+  ::before,
+  ::after {
+    border-color: var(--color-line);
+  }
+  :where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-focus);
+    outline-offset: 2px;
+    animation: focus-in var(--duration-fast) var(--ease-out);
+  }
+  ::selection {
+    background: var(--color-brand-200);
+    color: var(--color-ink-950);
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    text-wrap: balance;
+  }
+  p {
+    text-wrap: pretty;
+  }
+}
+
+@keyframes focus-in {
+  from {
+    outline-color: transparent;
+  }
+}
+
+/* ---------- Motion primitives shared by server-rendered markup ---------- */
+
+/* Hero entrance (S1/S2 page load). CSS so it runs before hydration and never
+   delays LCP. */
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(0.35em);
+  }
+}
+@keyframes rise-card {
+  from {
+    opacity: 0;
+    transform: translateX(24px) scale(0.97);
+  }
+}
+.anim-rise {
+  animation: rise var(--duration-slow) var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+.anim-rise-card {
+  animation: rise-card 700ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+@keyframes rise-device {
+  from {
+    opacity: 0;
+    transform: translateY(80px) rotate(6deg);
+  }
+}
+.anim-rise-device {
+  animation: rise-device 1000ms var(--ease-out) both;
+  animation-delay: var(--delay, 0ms);
+}
+
+/* Static fallback for the S1 mesh gradient (reduced motion / no WebGL) */
+.hero-gradient-static {
+  background:
+    radial-gradient(45% 60% at 50% 62%, color-mix(in srgb, var(--color-brand-600) 62%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 88% 12%, color-mix(in srgb, var(--color-sky-400) 22%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 8% 90%, color-mix(in srgb, var(--color-brand-800) 55%, transparent), transparent 70%),
+    var(--color-ink-900);
+}
+@media (width < 64rem) {
+  .hero-gradient-static {
+    background:
+      radial-gradient(90% 40% at 50% 62%, color-mix(in srgb, var(--color-brand-600) 60%, transparent), transparent 70%),
+      radial-gradient(60% 25% at 100% 10%, color-mix(in srgb, var(--color-sky-400) 18%, transparent), transparent 70%),
+      var(--color-ink-900);
+  }
+}
+
+/* Dark interior hero: static, quieter cousin of the homepage gradient */
+.page-hero-dark {
+  background:
+    radial-gradient(50% 80% at 100% 100%, color-mix(in srgb, var(--color-brand-700) 45%, transparent), transparent 70%),
+    radial-gradient(30% 50% at 92% 0%, color-mix(in srgb, var(--color-sky-400) 14%, transparent), transparent 70%),
+    var(--color-ink-900);
+}
+
+/* Scroll reveals (M7): fade up once in view. Only hidden when JS is running
+   (html.js is set by the head script), so content never depends on JS. */
+.js [data-reveal],
+.js [data-stagger] > [data-stagger-item] {
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+}
+.js [data-reveal]:not([data-shown]),
+.js [data-stagger]:not([data-shown]) > [data-stagger-item] {
+  opacity: 0;
+  transform: translateY(16px);
+}
+.js [data-reveal] {
+  transition-delay: var(--reveal-delay, 0ms);
+}
+.js [data-stagger] > [data-stagger-item] {
+  transition-delay: calc(min(var(--i, 0), 10) * 80ms);
+}
+@media (prefers-reduced-motion: reduce) {
+  .js [data-reveal]:not([data-shown]),
+  .js [data-stagger]:not([data-shown]) > [data-stagger-item] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* Closing CTA: brand glow rising from the bottom edge */
+.cta-glow {
+  background:
+    radial-gradient(55% 70% at 50% 110%, color-mix(in srgb, var(--color-brand-600) 70%, transparent), transparent 70%),
+    radial-gradient(35% 45% at 85% 100%, color-mix(in srgb, var(--color-sky-400) 22%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 10% 0%, color-mix(in srgb, var(--color-brand-800) 45%, transparent), transparent 70%);
+}
+
+/* Pillar panels (S4): brand glow in a different corner per sheet */
+.pillar-glow-a {
+  background: radial-gradient(60% 80% at 100% 0%, color-mix(in srgb, var(--color-brand-700) 55%, transparent), transparent 70%);
+}
+.pillar-glow-b {
+  background: radial-gradient(60% 80% at 0% 100%, color-mix(in srgb, var(--color-brand-700) 55%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 100% 0%, color-mix(in srgb, var(--color-sky-400) 14%, transparent), transparent 70%);
+}
+.pillar-glow-c {
+  background: radial-gradient(60% 80% at 0% 0%, color-mix(in srgb, var(--color-brand-600) 45%, transparent), transparent 70%);
+}
+.pillar-glow-d {
+  background: radial-gradient(70% 80% at 100% 100%, color-mix(in srgb, var(--color-brand-700) 60%, transparent), transparent 70%),
+    radial-gradient(30% 40% at 0% 0%, color-mix(in srgb, var(--color-sky-400) 12%, transparent), transparent 70%);
+}
+
+/* Approved pill: a single calm pulse ring, no confetti (S2) */
+@keyframes approved-pulse {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-success-600) 45%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 14px color-mix(in srgb, var(--color-success-600) 0%, transparent);
+  }
+}
+.approved-pulse {
+  animation: approved-pulse 900ms var(--ease-out) 150ms 2 both;
+}
+
+/* Mega menu links stagger in (M2, stagger.tight) */
+@keyframes menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(4px);
+  }
+}
+.menu-stagger {
+  animation: menu-in 250ms var(--ease-out) both;
+  /* stagger.tight per item, capped so large panels are fully in by ~0.5s */
+  animation-delay: min(calc(var(--i, 0) * 40ms), 240ms);
+}
+
+/* Route fade (M11) */
+@keyframes route-fade {
+  from {
+    opacity: 0;
+  }
+}
+.route-fade {
+  animation: route-fade 150ms ease-out both;
+}
+
+/* Trust marquee (S3) */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.marquee-track {
+  animation: marquee 48s linear infinite;
+}
+.marquee:hover .marquee-track,
+.marquee:focus-within .marquee-track {
+  animation-play-state: paused;
+}
+
+/* Underline that draws left to right (M5) */
+.link-draw {
+  background-image: linear-gradient(currentColor, currentColor);
+  background-size: 0% 1.5px;
+  background-position: 0 100%;
+  background-repeat: no-repeat;
+  transition: background-size var(--duration-fast) var(--ease-out);
+  text-decoration: none;
+}
+.link-draw:hover,
+.link-draw:focus-visible,
+.link-draw-parent:hover .link-draw,
+.link-draw-parent:focus-visible .link-draw {
+  background-size: 100% 1.5px;
+}
+
+/* Announcement bar dismissal is applied before paint to avoid a flash */
+html[data-announcement="dismissed"] [data-announcement-bar] {
+  display: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  ::before,
+  ::after {
+    animation-duration: 1ms !important;
+    animation-delay: 0ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 1ms !important;
+    scroll-behavior: auto !important;
+  }
+  .marquee-track {
+    animation: none !important;
+    flex-wrap: wrap;
+    width: auto;
+    row-gap: 0.75rem;
+  }
+  .marquee-dup,
+  .marquee-toggle {
+    display: none !important;
+  }
+}
