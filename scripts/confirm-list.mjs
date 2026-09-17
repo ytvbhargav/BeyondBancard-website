@@ -60,6 +60,7 @@ const open = [
   "Licensed logo usage for gateways and sponsor banks (shown as text today)",
   "Apply form required fields (must match the onboarding system)",
   "Drafted supporting copy listed in docs/DECISIONS.md (D-011)",
+  "Footer wordmark lockup: \"Beyond Bancard.\" with a brand-blue full stop (D-053)",
 ];
 
 const md = [
