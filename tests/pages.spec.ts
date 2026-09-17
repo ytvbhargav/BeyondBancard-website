@@ -34,6 +34,11 @@ for (const route of DEMO_ROUTES) {
   });
 }
 
+test("homepage h1 reads as one sentence", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading", { level: 1 })).toHaveAccessibleName("The processor that says yes.");
+});
+
 test("coming-soon shows the requested path", async ({ page }) => {
   await page.goto("/coming-soon?from=%2Fgrow%2Fworking-capital");
   await expect(page.getByRole("heading", { level: 1 })).toHaveText("This page is part of the full redesign.");

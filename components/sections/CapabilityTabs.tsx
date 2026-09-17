@@ -39,7 +39,7 @@ export function CapabilityTabs({ title, items }: { title: string; items: Capabil
       >
         <TabsList
           aria-label="Capabilities by pillar"
-          className="-mx-6 flex gap-2 overflow-x-auto px-6 pb-1 lg:col-span-4 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-line lg:px-0 lg:pb-0"
+          className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:-mx-6 sm:px-6 lg:col-span-4 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-line lg:px-0 lg:pb-0"
         >
           {pillars.map((p) => {
             const Icon = ICONS[p];

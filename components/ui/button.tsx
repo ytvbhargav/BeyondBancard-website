@@ -20,10 +20,10 @@ export const buttonVariants = cva(
   {
     variants: {
       variant: {
-        primary: "bg-brand-600 text-white hover:bg-brand-700",
+        primary: "bg-brand-600 text-white hover:bg-brand-700 forced-colors:border forced-colors:border-solid",
         secondary: "border-[1.5px] border-current bg-transparent text-ink-900 hover:bg-ink-900/5",
         "secondary-dark": "border-[1.5px] border-on-dark/70 bg-transparent text-on-dark hover:border-on-dark hover:bg-on-dark/10",
-        inverse: "bg-surface text-brand-700 hover:bg-brand-50",
+        inverse: "bg-surface text-brand-700 hover:bg-brand-50 forced-colors:border forced-colors:border-solid",
         "inverse-outline": "border-[1.5px] border-white/80 bg-transparent text-white hover:border-white hover:bg-white/10",
         ghost: "h-auto min-h-11 rounded-none px-0 text-brand-700 hover:translate-y-0 active:scale-100",
         "ghost-dark": "h-auto min-h-11 rounded-none px-0 text-on-dark hover:translate-y-0 active:scale-100",

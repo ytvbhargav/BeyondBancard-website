@@ -1,3 +1,4 @@
+import { ConfirmTip } from "@/components/ui/confirm-tip";
 import { cn } from "@/lib/utils";
 
 export const DEMO_MODE = process.env.NEXT_PUBLIC_DEMO_MODE !== "false";
@@ -16,6 +17,7 @@ export function Confirm({
   as: Tag = "span",
   variant = "outline",
   tooltip = "top",
+  tooltipAlign = "start",
   className,
   children,
 }: {
@@ -24,6 +26,8 @@ export function Confirm({
   as?: "span" | "div";
   variant?: "outline" | "marker";
   tooltip?: "top" | "bottom";
+  /** "center" centres the tooltip on the trigger, for triggers in centred text that can sit near either edge at narrow widths. */
+  tooltipAlign?: "start" | "center";
   className?: string;
   children: React.ReactNode;
 }) {
@@ -47,18 +51,19 @@ export function Confirm({
           className="ml-1.5 inline-block size-2 -translate-y-px rounded-pill bg-warning-100 align-middle ring-2 ring-warning-600"
         />
       )}
-      <span
-        aria-hidden
+      <ConfirmTip
         className={cn(
-          "pointer-events-none absolute left-0 z-50 w-max max-w-[18rem] rounded-sm bg-ink-950 px-3 py-2 text-left font-sans text-[0.8125rem] leading-snug font-medium tracking-normal text-on-dark normal-case shadow-float",
-          tooltip === "top" ? "bottom-[calc(100%+10px)] translate-y-1" : "top-[calc(100%+10px)] -translate-y-1",
-          "invisible opacity-0 transition-[opacity,transform,visibility] duration-(--duration-fast) ease-out",
-          "group-hover/confirm:visible group-hover/confirm:translate-y-0 group-hover/confirm:opacity-100",
-          "group-focus-within/confirm:visible group-focus-within/confirm:translate-y-0 group-focus-within/confirm:opacity-100",
+          "pointer-events-none absolute z-50 w-max max-w-[min(18rem,calc(100vw-2rem))] rounded-sm bg-ink-950 px-3 py-2 text-left font-sans text-[0.8125rem] leading-snug font-medium tracking-normal text-on-dark normal-case shadow-float",
+          tooltip === "top" ? "bottom-[calc(100%+10px)] slide-in-from-bottom-1" : "top-[calc(100%+10px)] slide-in-from-top-1",
+          // --tip-shift is set when the tooltip opens, to keep it inside the viewport (ConfirmTip)
+          tooltipAlign === "center" ? "left-[calc(50%+var(--tip-shift,0px))] -translate-x-1/2" : "left-[var(--tip-shift,0px)]",
+          // display:none while hidden, so the tooltip never adds scrollable overflow at narrow widths
+          "hidden animate-in fade-in-0 duration-(--duration-fast) ease-out",
+          "group-hover/confirm:block group-focus-within/confirm:block",
         )}
       >
         <span className="text-warning-100">Client to confirm:</span> {note}
-      </span>
+      </ConfirmTip>
     </Tag>
   );
 }
@@ -70,6 +75,7 @@ export function MaybeConfirm({
   as,
   variant,
   tooltip,
+  tooltipAlign,
   className,
 }: {
   item: { confirm?: boolean; note?: string };
@@ -77,11 +83,19 @@ export function MaybeConfirm({
   as?: "span" | "div";
   variant?: "outline" | "marker";
   tooltip?: "top" | "bottom";
+  tooltipAlign?: "start" | "center";
   className?: string;
 }) {
   if (!item.confirm) return <>{children}</>;
   return (
-    <Confirm note={item.note ?? "Unverified content"} as={as} variant={variant} tooltip={tooltip} className={className}>
+    <Confirm
+      note={item.note ?? "Unverified content"}
+      as={as}
+      variant={variant}
+      tooltip={tooltip}
+      tooltipAlign={tooltipAlign}
+      className={className}
+    >
       {children}
     </Confirm>
   );

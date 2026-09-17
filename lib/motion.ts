@@ -1,6 +1,14 @@
 import type { Transition, Variants } from "motion/react";
 
-export const duration = { instant: 0.12, fast: 0.2, base: 0.35, slow: 0.6, xslow: 0.9 } as const;
+export const duration = {
+  instant: 0.12,
+  fast: 0.2,
+  base: 0.35,
+  slow: 0.6,
+  xslow: 0.9,
+  /** Homepage hero entrance (CSS, --duration-hero-* in globals.css) */
+  hero: { glow: 1, word: 0.9, device: 1.6, shade: 0.5, bar: 0.5 },
+} as const;
 
 export const ease = {
   out: [0.22, 1, 0.36, 1],
