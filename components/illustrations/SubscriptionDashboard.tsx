@@ -2,9 +2,16 @@ import { Badge } from "@/components/ui/badge";
 
 /**
  * Product-style illustration for industry pages: subscription revenue tiles.
- * Deliberately has no figures (PRD §9.4.1); bars stand in for values.
+ * Deliberately has no figures (PRD §9.4.1); bars stand in for values. The two
+ * business-specific labels default to the Nutra page's and are set per industry.
  */
-export function SubscriptionDashboard() {
+export function SubscriptionDashboard({
+  business = "Supplement brand",
+  ordersLabel = "Auto-ship orders",
+}: {
+  business?: string;
+  ordersLabel?: string;
+}) {
   const renewals = [38, 46, 42, 55, 51, 63, 60, 72, 69, 80, 78, 88];
   const disputes = [22, 18, 20, 15, 16, 12, 13, 10];
 
@@ -13,7 +20,7 @@ export function SubscriptionDashboard() {
       <div className="flex items-center justify-between gap-4 border-b border-line px-5 py-4 sm:px-6">
         <div>
           <p className="type-h4">Subscription overview</p>
-          <p className="type-small text-muted">Supplement brand</p>
+          <p className="type-small text-muted">{business}</p>
         </div>
         <Badge status="illustration" icon={false}>
           Illustration
@@ -60,7 +67,7 @@ export function SubscriptionDashboard() {
         </div>
 
         <div className="bg-surface p-5 sm:p-6">
-          <p className="type-small text-muted">Auto-ship orders</p>
+          <p className="type-small text-muted">{ordersLabel}</p>
           <ul className="mt-4 space-y-2.5">
             {["Scheduled", "Processed", "Retrying"].map((s, i) => (
               <li key={s} className="flex items-center gap-2">

@@ -10,7 +10,7 @@ export const groupLabels: Record<Exclude<IndustryGroup, "featured">, string> = {
 
 export const industries: Industry[] = [
   // Featured complex industries
-  { slug: "adult", name: "Adult", group: "featured", teaser: "Payments infrastructure built for the realities of adult commerce." },
+  { slug: "adult", name: "Adult", group: "featured", teaser: "Payments infrastructure built for the realities of adult commerce.", inDemo: true },
   { slug: "gaming", name: "Gaming", group: "featured", teaser: "Built for high-velocity, digital-first payment environments." },
   { slug: "nutra-supplements", name: "Nutra & supplements", group: "featured", teaser: "Payments engineered for fast-growing commerce.", inDemo: true },
   { slug: "ruo-peptides", name: "RUO peptides", group: "featured", teaser: "Processing that understands Research Use Only." },

@@ -20,7 +20,7 @@ export const home = {
     fields: [
       { label: "Sales channel", value: "Online, card-not-present" },
       { label: "Billing", value: "Recurring subscription" },
-      { label: "Monthly volume", value: "$250,000" },
+      { label: "Monthly volume", value: "$250,000", featured: true },
       { label: "Prior processor", value: "Declined" },
     ],
     checks: ["Business model review", "Transaction profile", "Chargeback history", "Risk structuring"],

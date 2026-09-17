@@ -1,7 +1,8 @@
-import type { Capability, Feature, Step } from "@/types/content";
+import type { Capability, Feature, IndustryDetailContent, Step } from "@/types/content";
 import { industriesBySlug } from "@/content/industries";
 
 export const nutra = {
+  meta: { title: "Nutra & supplement payments" },
   breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "Nutra & supplements" }],
   hero: {
     title: "Nutra and supplement payments that keep up with your growth.",
@@ -94,6 +95,7 @@ export const nutra = {
     ],
   },
   process: {
+    id: "nutra-process",
     title: "From first call to a healthy account.",
     steps: [
       { title: "Understand", body: "We start with your products, customers and how you sell." },
@@ -107,4 +109,4 @@ export const nutra = {
     title: "Related industries",
     items: industriesBySlug(["functional-mushroom", "kratom", "cbd-hemp", "ecommerce"]),
   },
-};
+} satisfies IndustryDetailContent;

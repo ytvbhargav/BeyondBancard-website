@@ -5,6 +5,17 @@ export const DEMO_ROUTES = [
   "/industries/nutra-supplements",
   "/partners/isos-agents",
   "/live-form",
+  // Company and Resources pages (D-054).
+  "/about-beyond-bancard",
+  "/careers",
+  "/contact-us",
+  "/news",
+  "/news/what-is-a-high-risk-merchant-account-and-how-does-it-work",
+  "/our-clients",
+  "/faq",
+  // First page of the Industries and Partners menus (D-057).
+  "/industries/adult",
+  "/partners",
 ] as const;
 
 export type DemoRoute = (typeof DEMO_ROUTES)[number];
@@ -12,9 +23,12 @@ export type DemoRoute = (typeof DEMO_ROUTES)[number];
 /**
  * Resolve an internal path. Demo routes link directly; everything else goes to
  * /coming-soon and carries the original path so the client can see where the
- * link will lead in the full build. Hash fragments on demo routes are kept.
+ * link will lead in the full build. Hash fragments on demo routes are kept, and
+ * a bare "#id" stays an in-page link.
  */
 export function href(path: string): string {
+  // Fragment-only links stay on the current page.
+  if (path.startsWith("#")) return path;
   const [base, hash] = path.split("#");
   const cleanBase = base === "" ? "/" : base;
   if ((DEMO_ROUTES as readonly string[]).includes(cleanBase)) {

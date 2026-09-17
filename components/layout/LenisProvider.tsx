@@ -20,7 +20,9 @@ export function LenisProvider() {
     const init = () =>
       import("lenis").then(({ default: Lenis }) => {
         if (cancelled) return;
-        const lenis = new Lenis({ lerp: 0.12, anchors: { offset: -96 }, autoRaf: false });
+        // Lenis already subtracts html scroll-padding-top (header + 16px) when it scrolls to an anchor,
+        // so no extra offset: `{ offset: -96 }` landed every in-page link 96px too low (D-054).
+        const lenis = new Lenis({ lerp: 0.12, anchors: true, autoRaf: false });
         lenisRef.current = lenis;
         const loop = (time: number) => {
           lenis.raf(time);

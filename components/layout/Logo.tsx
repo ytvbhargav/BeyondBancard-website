@@ -10,7 +10,7 @@ export function Logo({ tone = "light", className }: { tone?: "light" | "dark"; c
     <Link
       href="/"
       aria-label="Beyond Bancard home"
-      className={cn("group/logo inline-flex min-h-11 items-center gap-2.5 rounded-sm", className)}
+      className={cn("group/logo inline-flex min-h-11 min-w-11 items-center gap-2.5 rounded-sm", className)}
     >
       <span
         aria-hidden

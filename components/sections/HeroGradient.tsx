@@ -5,45 +5,66 @@ import { useEffect, useState } from "react";
 
 const MeshGradient = dynamic(() => import("@/components/motion/MeshGradient"), { ssr: false });
 
+const DESKTOP = "(min-width: 64rem)";
+const REDUCE = "(prefers-reduced-motion: reduce)";
+
 /**
- * Static CSS gradient (always painted, so there is never a flash) with the
- * WebGL mesh layered on top. The mesh only loads on tablet and desktop widths,
- * with motion allowed, once the browser is idle after load, so it never
- * competes with first paint or hydration.
+ * Hero background (S1). The CSS glow (.hero-glow and its rising core) is
+ * always painted, so there is never a flash. On desktop widths with motion
+ * allowed, the WebGL port of the same layers loads once the browser is idle
+ * after load and fades in on top; it unmounts again below 64rem or when
+ * reduced motion is switched on.
  */
 export function HeroGradient() {
   const [enabled, setEnabled] = useState(false);
 
   useEffect(() => {
-    const ok =
-      window.matchMedia("(min-width: 48rem)").matches &&
-      !window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (!ok) return;
+    const desktop = window.matchMedia(DESKTOP);
+    const reduce = window.matchMedia(REDUCE);
 
     let idle = 0;
     let timer = 0;
-    const start = () => {
+    const cancel = () => {
+      if (idle) window.cancelIdleCallback(idle);
+      window.clearTimeout(timer);
+      idle = 0;
+      timer = 0;
+    };
+    const schedule = () => {
+      cancel();
+      if (!desktop.matches || reduce.matches) return;
       if (typeof window.requestIdleCallback === "function") {
         idle = window.requestIdleCallback(() => setEnabled(true), { timeout: 2500 });
       } else {
-        timer = setTimeout(() => setEnabled(true), 1200) as unknown as number;
+        timer = window.setTimeout(() => setEnabled(true), 1200);
       }
     };
-    if (document.readyState === "complete") start();
-    else window.addEventListener("load", start, { once: true });
+    const onChange = () => {
+      if (desktop.matches && !reduce.matches) schedule();
+      else {
+        cancel();
+        setEnabled(false);
+      }
+    };
+
+    if (document.readyState === "complete") schedule();
+    else window.addEventListener("load", schedule, { once: true });
+    desktop.addEventListener("change", onChange);
+    // Reduced motion switched on mid-visit removes the canvas too, not only at mount.
+    reduce.addEventListener("change", onChange);
 
     return () => {
-      window.removeEventListener("load", start);
-      if (idle) window.cancelIdleCallback(idle);
-      window.clearTimeout(timer);
+      window.removeEventListener("load", schedule);
+      desktop.removeEventListener("change", onChange);
+      reduce.removeEventListener("change", onChange);
+      cancel();
     };
   }, []);
 
   return (
-    <div aria-hidden className="absolute inset-0 -z-10">
-      <div className="hero-gradient-static absolute inset-0" />
+    <div aria-hidden className="hero-glow">
+      <div className="hero-glow-core" />
       {enabled && <MeshGradient className="absolute inset-0 size-full" />}
-      <div className="absolute inset-x-0 bottom-0 h-px bg-ink-800" />
     </div>
   );
 }

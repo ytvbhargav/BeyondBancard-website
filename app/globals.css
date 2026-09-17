@@ -75,7 +75,23 @@
   --duration-base: 350ms;
   --duration-slow: 600ms;
   --color-focus: var(--color-brand-600);
-  --header-h: 80px;
+  /* rem, so the pull-up under the header follows the header's h-20 at any default font size */
+  --header-h: 5rem;
+  /* Announcement bar height at lg and up (one line); 0 once dismissed */
+  --announce-h: 2.75rem;
+
+  /* Homepage hero entrance (D-039, mirrors duration.hero in lib/motion.ts) */
+  --duration-hero-glow: 1000ms;
+  --duration-hero-word: 900ms;
+  --duration-hero-device: 1600ms;
+  --duration-hero-shade: 500ms;
+  --duration-hero-bar: 500ms;
+  --ease-out-cubic: cubic-bezier(0.215, 0.61, 0.355, 1);
+  --ease-in-out-sine: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+html[data-announcement="dismissed"],
+html[data-announcement="dismissing"] {
+  --announce-h: 0px;
 }
 
 /* Type scale (PRD §5.2), fluid between the mobile and desktop sizes */
@@ -87,22 +103,6 @@
   line-height: 0.95;
   letter-spacing: -0.03em;
   text-wrap: balance;
-}
-/* Homepage hero headline: oversized, centred, sized by viewport width and height */
-@utility hero-title {
-  font-family: var(--font-display);
-  font-stretch: 108%;
-  font-weight: 800;
-  font-size: clamp(2.75rem, 11vw, 4rem);
-  line-height: 0.95;
-  letter-spacing: -0.035em;
-  text-align: center;
-  text-wrap: balance;
-  @media (width >= 64rem) {
-    font-stretch: 112%;
-    font-size: clamp(4.25rem, min(7.2vw, 12.5svh), 7rem);
-    line-height: 0.92;
-  }
 }
 @utility type-h1 {
   font-family: var(--font-display);
@@ -241,39 +241,422 @@
     transform: translateX(24px) scale(0.97);
   }
 }
+/* Fill "backwards", not "both": the keyframes are from-only, so the resting
+   style is already the final state, and a finished animation that stays in
+   effect would make the element a backdrop root (a backdrop-blur inside it
+   would blur nothing). */
 .anim-rise {
-  animation: rise var(--duration-slow) var(--ease-out) both;
+  animation: rise var(--duration-slow) var(--ease-out) backwards;
   animation-delay: var(--delay, 0ms);
 }
 .anim-rise-card {
   animation: rise-card 700ms var(--ease-out) both;
   animation-delay: var(--delay, 0ms);
 }
-@keyframes rise-device {
-  from {
-    opacity: 0;
-    transform: translateY(80px) rotate(6deg);
+
+/* ---------- Homepage hero v3 (D-007, D-014, D-039) ---------- */
+
+/* First screen. On desktop it fills the viewport below the announcement bar
+   at every height, so the sticky glass bar is docked on the fold at load
+   (build spec §2, D-009). Portrait desktop-layout viewports (e.g. iPad Pro
+   portrait) stop growing at the viewport width: the height is continuous
+   across the square, and the CTA row shows in the first view there. */
+@media (width >= 64rem) {
+  .hero-first {
+    min-height: calc(100svh - var(--announce-h));
+  }
+  /* The first-screen content box also runs under the bar: its mask fades the
+     terminal out behind the bar and clips it at the first-screen bottom, so
+     nothing of the device shows below the bar once the page scrolls. The
+     bottom 1rem (below the pill) is fully transparent. */
+  .hero-first-body {
+    padding-bottom: 5rem;
+    margin-bottom: -5rem;
+    mask-image: linear-gradient(to top, transparent 1rem, var(--color-ink-950) 5rem);
+    mask-repeat: no-repeat;
   }
 }
-.anim-rise-device {
-  animation: rise-device 1000ms var(--ease-out) both;
+@media (width >= 64rem) and (orientation: portrait) {
+  .hero-first {
+    min-height: min(calc(100svh - var(--announce-h)), calc(100vw - var(--announce-h)));
+  }
+  /* The foot CTAs are in the first view, so the bar drops its own copy of them */
+  .hero-bar-cta {
+    display: none !important;
+  }
+}
+
+/* Headline. One visible h1 at every width. From 64rem the lines are justified
+   inside a 5.12em block, which opens the hole in line 2 that the terminal
+   fills; below that the lines centre. Everything in the stage is sized from
+   --hero-f, so the composition scales as one piece. The h1 paints above the
+   terminal: at rest they never overlap, and with user text spacing or during
+   the entrance the letters stay on top. */
+.hero-stage {
+  position: relative;
+  width: 100%;
+  --hero-f: min(calc((100vw - 2.5rem) * 0.188), 6.4rem, 22svh);
+  font-size: var(--hero-f);
+}
+.hero-display {
+  position: relative;
+  z-index: 30;
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-stretch: 66%;
+  font-size: 1em;
+  line-height: 0.8;
+  letter-spacing: 0;
+  color: var(--color-on-dark);
+  text-align: center;
+  text-wrap: wrap;
+}
+/* Until the display font has loaded (JS only), hold the three-line height so
+   a wider fallback font that wraps to four lines cannot shift the page. */
+.js .hero-stage[data-font-pending]:not(.hero-stage--plain) .hero-display {
+  height: 2.4em;
+}
+.hero-stage--plain .hero-display {
+  text-wrap: balance;
+}
+.hero-line {
+  display: block;
+  text-align: center;
+  text-align-last: center;
+}
+.hero-word {
+  display: inline-block;
+  animation: hero-word-up var(--duration-hero-word) var(--ease-out-cubic) both;
   animation-delay: var(--delay, 0ms);
 }
 
-/* Static fallback for the S1 mesh gradient (reduced motion / no WebGL) */
-.hero-gradient-static {
-  background:
-    radial-gradient(45% 60% at 50% 62%, color-mix(in srgb, var(--color-brand-600) 62%, transparent), transparent 70%),
-    radial-gradient(30% 40% at 88% 12%, color-mix(in srgb, var(--color-sky-400) 22%, transparent), transparent 70%),
-    radial-gradient(40% 50% at 8% 90%, color-mix(in srgb, var(--color-brand-800) 55%, transparent), transparent 70%),
-    var(--color-ink-900);
+/* Terminal placement. Below 64rem it sits in its own masked window under the
+   headline; from 64rem the window covers the h1 box and the terminal is
+   placed in hero units (u = F / 12.8) from its top-left corner. */
+.hero-terminal-window {
+  position: relative;
+  z-index: 20;
+  height: clamp(10rem, 100svh - 33rem, 20rem);
+  margin-top: 1rem;
+  overflow: clip;
+  pointer-events: none;
+  mask-image: linear-gradient(var(--color-ink-950) 62%, transparent 96%);
 }
-@media (width < 64rem) {
-  .hero-gradient-static {
+/* Glow behind the device, sized from the window and fully transparent
+   before the window top, so a short window never shows an edge */
+.hero-terminal-window::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 50%;
+  width: 26rem;
+  transform: translateX(-50%);
+  background: radial-gradient(
+    50% 68% at 50% 70%,
+    color-mix(in srgb, var(--color-brand-500) 70%, transparent),
+    color-mix(in srgb, var(--color-brand-800) 45%, transparent) 55%,
+    transparent 100%
+  );
+}
+.hero-terminal-pos {
+  position: absolute;
+  font-size: min(calc((100vw - 2.5rem) / 30), 0.6875rem);
+  left: calc(50% - 9.6em);
+  top: 3em;
+  width: 17.6em;
+  height: 64em;
+  rotate: 14deg;
+  /* The plate runs long so it always reaches the bar; turn about the upper body */
+  transform-origin: 50% 24em;
+}
+.hero-terminal-anim {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 38em;
+  animation: hero-device-in var(--duration-hero-device) var(--ease-out-cubic) 150ms both;
+}
+.hero-terminal-body {
+  position: absolute;
+  inset: 0;
+}
+.hero-terminal-shade {
+  opacity: 0;
+  animation: hero-shade-off var(--duration-hero-shade) ease-out 750ms both;
+}
+/* The long lower body fades out on its own (below the screen and the
+   contactless mark), so on very tall viewports its end never shows above the
+   bar. Plate: 39.7u to 61.4u; the body svg starts 3u higher. Masked per part,
+   because a mask on the plate-sized wrapper would erase the printer hump. */
+.hero-terminal-fade {
+  mask-image: linear-gradient(to bottom, var(--color-ink-950) 39.7em, transparent 61.4em);
+}
+.hero-terminal-fade-svg {
+  mask-image: linear-gradient(to bottom, var(--color-ink-950) 42.7em, transparent 64.4em);
+}
+
+@media (width >= 64rem) {
+  .hero-stage:not(.hero-stage--plain) {
+    /* The last term keeps the headline above the bar on short desktop viewports */
+    --hero-f: min(9.6rem, 10vw, 21svh, calc((100svh - var(--announce-h) - 13.5rem) / 2.4));
+    width: 5.12em;
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-display {
+    white-space: nowrap;
+    text-wrap: nowrap;
+  }
+  .hero-line {
+    text-align: justify;
+    text-align-last: justify;
+  }
+  .hero-line-end {
+    text-align: right;
+    text-align-last: right;
+  }
+  .hero-word[data-dir="left"] {
+    animation-name: hero-word-left;
+  }
+  .hero-word[data-dir="right"] {
+    animation-name: hero-word-right;
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-terminal-window {
+    position: absolute;
+    inset: 0;
+    height: auto;
+    margin: 0;
+    overflow: visible;
+    mask-image: none;
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-terminal-window::before {
+    content: none;
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-terminal-pos {
+    font-size: calc(var(--hero-f) / 12.8);
+    left: 15.58em;
+    top: 9.95em;
+    rotate: 20deg;
+  }
+}
+
+/* Windows contrast themes paint a backplate behind each line of text; at
+   line-height 0.8 those overlap the line above. The terminal is decorative. */
+@media (forced-colors: active) {
+  .hero-display {
+    line-height: 1.05;
+  }
+  .js .hero-stage[data-font-pending]:not(.hero-stage--plain) .hero-display {
+    height: auto;
+  }
+  .hero-terminal-window {
+    display: none;
+  }
+}
+@media (forced-colors: active) and (width < 64rem) {
+  /* Without the terminal window the status pill would overlap the last line */
+  [data-hero-bar] {
+    margin-top: 1.5rem;
+  }
+}
+
+/* Glass status bar: rises with the entrance on mobile, slides up from the
+   fold on desktop where it is sticky within the first screen. Fill is
+   "backwards" so the finished entrance drops out of effect: while it stays in
+   effect, .hero-bar is the pill's backdrop root and the glass blurs nothing. */
+.hero-bar {
+  animation: rise var(--duration-slow) var(--ease-out) 250ms backwards;
+}
+@media (width >= 64rem) {
+  .hero-bar {
+    animation-name: hero-bar-in;
+    animation-duration: var(--duration-hero-bar);
+    animation-delay: 900ms;
+  }
+}
+@media (width >= 80rem) {
+  .hero-bar-pill {
+    min-width: min(72.75rem, calc(100% - 3rem));
+  }
+}
+/* Once the page scrolls, the foot CTA row comes into view under the bar, so
+   the bar's own "Talk to an expert" and call button fade out (their space is
+   kept, so the pill never reflows). Hidden controls leave the tab order.
+   Browsers without scroll timelines keep them. */
+@supports (animation-timeline: scroll()) {
+  @media (width >= 64rem) {
+    .hero-bar-cta > * {
+      animation: hero-bar-cta-out linear both;
+      animation-timeline: scroll(root block);
+      animation-range: 16px 56px;
+    }
+    /* A focused control stays put: tabbing into the bar can scroll the page
+       (during the entrance the bar is still below the fold), which must not
+       hide the control that has focus */
+    .hero-bar-cta:focus-within > * {
+      animation: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero-bar-cta > * {
+      animation-duration: auto !important;
+    }
+  }
+}
+@keyframes hero-bar-cta-out {
+  to {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+
+/* Before hydration the sequence markup shows the first step; with reduced
+   motion the final (approved) state is shown at once instead. */
+.hero-pre-final {
+  display: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  [data-hero-pre] .hero-pre-now {
+    display: none !important;
+  }
+  [data-hero-pre] .hero-pre-final {
+    display: revert-layer;
+  }
+  [data-hero-pre] .hero-pre-track {
+    --p: 1 !important;
+  }
+  [data-hero-pre] .hero-pre-notch {
+    opacity: 0 !important;
+  }
+  [data-hero-pre] [data-status-cell="progress"] {
+    opacity: 0 !important;
+  }
+  [data-hero-pre] [data-status-cell="approved"] {
+    opacity: 1 !important;
+  }
+  [data-hero-pre] .hero-pre-row {
+    background-color: rgb(255 255 255 / 0.15) !important;
+    color: var(--color-surface) !important;
+  }
+}
+
+/* Background (S1). Brand tokens only. On desktop the glow rises from the
+   first-screen bottom, behind the bar, with a bright low band either side of
+   the terminal just above the bar; its tail fades out by the lead.
+   Two layers share one box: .hero-glow holds the ambient wash (top wash and
+   the wide brand-900 field) and only fades in; .hero-glow-core holds the
+   bright layers and rises. The core has no colour at its top edge, so the
+   rise never shows an edge under the transparent header. Together they paint
+   the same stack as MeshGradient (keep them in sync). */
+.hero-glow {
+  position: absolute;
+  inset-inline: 0;
+  top: 0;
+  z-index: 0;
+  height: 100%;
+  pointer-events: none;
+  background: radial-gradient(
+    70% 50% at 50% 0%,
+    color-mix(in srgb, var(--color-brand-900) 55%, transparent),
+    transparent 72%
+  );
+  animation: hero-glow-in var(--duration-hero-glow) var(--ease-in-out-sine) both;
+}
+.hero-glow-core {
+  position: absolute;
+  inset: 0;
+}
+@media (width >= 64rem) {
+  .hero-glow {
+    height: calc(100% + 16rem);
+    mask-image: linear-gradient(to bottom, var(--color-ink-950) calc(100% - 22rem), transparent);
     background:
-      radial-gradient(90% 40% at 50% 62%, color-mix(in srgb, var(--color-brand-600) 60%, transparent), transparent 70%),
-      radial-gradient(60% 25% at 100% 10%, color-mix(in srgb, var(--color-sky-400) 18%, transparent), transparent 70%),
-      var(--color-ink-900);
+      radial-gradient(90% 150% at 50% calc(100% - 16rem), color-mix(in srgb, var(--color-brand-900) 80%, transparent), transparent 80%),
+      radial-gradient(60% 45% at 50% 0%, color-mix(in srgb, var(--color-brand-900) 55%, transparent), transparent 72%);
+  }
+  .hero-glow-core {
+    background:
+      radial-gradient(30rem 6rem at 50% calc(100% - 17.5rem), color-mix(in srgb, var(--color-sky-400) 50%, transparent), transparent 70%),
+      radial-gradient(60% 22% at 50% calc(100% - 16rem), color-mix(in srgb, var(--color-brand-500) 90%, transparent), transparent 76%),
+      radial-gradient(34% 36% at 50% calc(100% - 16rem), color-mix(in srgb, var(--color-brand-500) 85%, transparent), transparent 72%),
+      radial-gradient(52% 64% at 50% calc(100% - 16rem), color-mix(in srgb, var(--color-brand-600) 80%, transparent), transparent 72%),
+      radial-gradient(62% 100% at 50% calc(100% - 16rem), color-mix(in srgb, var(--color-brand-800) 85%, transparent), transparent 74%);
+    animation: hero-glow-rise var(--duration-hero-glow) var(--ease-in-out-sine) both;
+  }
+}
+
+/* Keyframes are from-only (or partial), so the resting style is the final state */
+@keyframes hero-glow-in {
+  from {
+    opacity: 0;
+  }
+}
+@keyframes hero-glow-rise {
+  from {
+    transform: translateY(12%);
+  }
+}
+@keyframes hero-word-up {
+  from {
+    opacity: 0;
+    transform: translateY(0.065em);
+  }
+}
+@keyframes hero-word-left {
+  from {
+    opacity: 0;
+    transform: translateX(0.12em);
+  }
+}
+@keyframes hero-word-right {
+  from {
+    opacity: 0;
+    transform: translateX(-0.12em);
+  }
+}
+/* The terminal rises into the gap with a small turn and no overshoot, so it
+   never passes over the letters beside it */
+@keyframes hero-device-in {
+  0% {
+    opacity: 0;
+    transform: translateY(3em) rotate(-2deg);
+  }
+  40% {
+    opacity: 1;
+  }
+}
+@keyframes hero-shade-off {
+  from {
+    opacity: 1;
+  }
+}
+@keyframes hero-bar-in {
+  from {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+}
+
+/* Header over the homepage hero: the scrolled background follows the scroll
+   position in CSS, so a reload mid-page never shows a transparent header
+   before hydration. Browsers without scroll timelines use the JS class. */
+@supports (animation-timeline: scroll()) {
+  header[data-overlay] [data-header-bg] {
+    animation: header-bg-in linear both;
+    animation-timeline: scroll(root block);
+    animation-range: 0 24px;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    header[data-overlay] [data-header-bg] {
+      animation-duration: auto !important;
+    }
+  }
+}
+@keyframes header-bg-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -309,6 +692,31 @@
   .js [data-stagger]:not([data-shown]) > [data-stagger-item] {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Keyboard focus never lands inside a block that is still waiting to reveal: a focused
+   descendant shows the block at once (same specificity as the hidden rules, declared later). */
+.js [data-reveal]:focus-within,
+.js [data-stagger] > [data-stagger-item]:focus-within {
+  opacity: 1;
+  transform: none;
+}
+
+/* Mobile CTA bar (StickyMobileCta): focused elements scroll clear of the fixed bar,
+   whose height is 12px + 48px button + 12px (or the safe area) + 1px border. */
+html[data-sticky-cta] {
+  scroll-padding-bottom: calc(4.5625rem + 1rem + env(safe-area-inset-bottom));
+}
+
+/* Footer wordmark (D-056): rises as one piece out of its clip box, once, when its sentinel scrolls
+   into view. Hidden only with JS running and motion allowed. */
+.js [data-wordmark-rise] svg {
+  transition: translate calc(var(--duration-slow) * 1.5) var(--ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-wordmark-rise]:has(> [data-wordmark-sentinel]:not([data-shown])) svg {
+    translate: 0 100%;
   }
 }
 
@@ -426,5 +834,14 @@ html[data-announcement="dismissed"] [data-announcement-bar] {
   .marquee-dup,
   .marquee-toggle {
     display: none !important;
+  }
+  /* Hero: final states at once (words in place, terminal tilted and lit, bar shown) */
+  .hero-glow,
+  .hero-glow-core,
+  .hero-word,
+  .hero-terminal-anim,
+  .hero-terminal-shade,
+  .hero-bar {
+    animation: none !important;
   }
 }

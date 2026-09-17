@@ -11,16 +11,21 @@ import { cta } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /** Routes whose hero is dark, so the header starts on ink. */
-const DARK_ROUTES = ["/", "/partners/isos-agents"];
+const DARK_ROUTES = ["/", "/partners", "/partners/isos-agents"];
+
+/** Routes whose hero is pulled up under the header, so it starts transparent (D-007). */
+const OVERLAY_ROUTES = ["/"];
 
 /**
  * Sticky header (M1): 80px tall at the top of the page, 64px with a blurred
  * background and hairline once scrolled. Hysteresis stops it flickering at
- * the threshold.
+ * the threshold. Backgrounds are two layers that crossfade on opacity: the
+ * resting colour (none on overlay routes) and the scrolled glass.
  */
 export function Header() {
   const pathname = usePathname();
   const tone: "light" | "dark" = DARK_ROUTES.includes(pathname) ? "dark" : "light";
+  const overlay = OVERLAY_ROUTES.includes(pathname);
   const [scrolled, setScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -38,18 +43,30 @@ export function Header() {
 
   return (
     <header
-      className={cn(
-        "sticky top-0 z-50 border-b transition-[background-color,border-color] duration-(--duration-fast) ease-out",
-        dark ? "tone-dark" : "",
-        dark
-          ? scrolled
-            ? "border-ink-800 bg-ink-950/85 backdrop-blur-md"
-            : "border-transparent bg-ink-900"
-          : scrolled
-            ? "border-line bg-surface/85 backdrop-blur-md"
-            : "border-transparent bg-paper",
-      )}
+      data-overlay={overlay || undefined}
+      data-scrolled={scrolled}
+      className={cn("sticky top-0 z-50", dark && "tone-dark")}
     >
+      <div
+        aria-hidden
+        data-header-base
+        className={cn(
+          "pointer-events-none absolute inset-0 -z-10 transition-opacity duration-(--duration-fast) ease-out",
+          dark ? "bg-ink-900" : "bg-paper",
+          overlay || scrolled ? "opacity-0" : "opacity-100",
+        )}
+      />
+      <div
+        aria-hidden
+        data-header-bg
+        className={cn(
+          "pointer-events-none absolute inset-0 -z-10 backdrop-blur-md transition-opacity duration-(--duration-fast) ease-out",
+          dark
+            ? "bg-ink-950/85 shadow-[inset_0_-1px_0_var(--color-ink-800)]"
+            : "bg-surface/85 shadow-[inset_0_-1px_0_var(--color-line)]",
+          scrolled ? "opacity-100" : "opacity-0",
+        )}
+      />
       <div
         ref={containerRef}
         className={cn(
@@ -77,13 +94,13 @@ export function Header() {
             {cta.phone.label}
           </a>
           <LoginMenu tone={tone} />
-          <Button href={cta.apply.href} size="sm" className="ml-2">
+          <Button href={cta.apply.href} size="sm" variant={overlay ? "inverse" : "primary"} className="ml-2">
             {cta.apply.label}
           </Button>
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <Button href={cta.apply.href} size="sm" className="px-4">
+          <Button href={cta.apply.href} size="sm" variant={overlay ? "inverse" : "primary"} className="px-4">
             {cta.apply.label}
           </Button>
           <MobileMenu tone={tone} />

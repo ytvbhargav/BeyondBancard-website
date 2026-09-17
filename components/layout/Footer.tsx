@@ -11,7 +11,7 @@ const linkClass = "link-draw inline-flex min-h-11 items-center text-on-dark-mute
 
 export function Footer() {
   return (
-    <footer className="tone-dark overflow-hidden border-t border-ink-800 bg-ink-950 pt-20" data-site-footer>
+    <footer className="tone-dark overflow-hidden border-t border-ink-800 bg-ink-950 pt-20 pb-10 md:pb-12" data-site-footer>
       <Container>
         <div className="grid gap-12 lg:grid-cols-[1.35fr_repeat(4,1fr)] lg:gap-8">
           <div>
@@ -103,20 +103,35 @@ export function Footer() {
           </ul>
         </div>
 
-        {/* Brand sign-off: the wordmark set edge to edge across the container. */}
-        <svg aria-hidden viewBox="0 0 1000 118" className="mt-14 block w-full translate-y-[14%] select-none md:mt-20">
-          <text
-            x="0"
-            y="104"
-            textLength="1000"
-            lengthAdjust="spacingAndGlyphs"
-            fill="var(--color-on-dark)"
-            className="font-display font-extrabold [font-stretch:112%]"
-            style={{ fontSize: 138, letterSpacing: "-0.03em" }}
-          >
-            Beyond Bancard
-          </text>
-        </svg>
+        {/* Brand sign-off: the wordmark set edge to edge across the container, fully visible, with the
+            footer's bottom padding under it. The viewBox fits the ink: cap tops at y≈4 and the "y"
+            descender at y≈132 below the 104 baseline (Archivo 800 at 138 units). It rises out of its own
+            clip box once, when it scrolls into view (D-056). The sentinel is watched instead of the
+            wordmark: a wordmark hidden below its clip never intersects, and the sentinel reaches 12lvh
+            above it so it still fires at the page end, clear of RevealObserver's ignored bottom 8%. */}
+        <div data-wordmark-rise className="relative mt-10 md:mt-12">
+          <span
+            aria-hidden
+            data-stagger
+            data-wordmark-sentinel
+            className="pointer-events-none absolute inset-x-0 bottom-0 h-[calc(100%+12lvh)]"
+          />
+          <div className="overflow-hidden">
+            <svg aria-hidden viewBox="0 0 1000 136" className="block w-full select-none">
+              <text
+                x="0"
+                y="104"
+                textLength="1000"
+                lengthAdjust="spacingAndGlyphs"
+                fill="var(--color-on-dark)"
+                className="font-display font-extrabold [font-stretch:112%]"
+                style={{ fontSize: 138, letterSpacing: "-0.03em" }}
+              >
+                Beyond Bancard
+              </text>
+            </svg>
+          </div>
+        </div>
       </Container>
     </footer>
   );

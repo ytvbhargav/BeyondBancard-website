@@ -14,14 +14,18 @@ export function SpotlightCard({
   title,
   body,
   size = "md",
+  headingLevel,
   className,
 }: {
   href: string;
   title: string;
   body: string;
   size?: "md" | "lg" | "sm";
+  /** Render the title as a heading (inside the one link) where the cards sit under a section h2. */
+  headingLevel?: "h3";
   className?: string;
 }) {
+  const Title = headingLevel ?? "span";
   function onPointerMove(e: React.PointerEvent<HTMLAnchorElement>) {
     if (e.pointerType !== "mouse") return;
     const rect = e.currentTarget.getBoundingClientRect();
@@ -47,7 +51,7 @@ export function SpotlightCard({
         className="pointer-events-none absolute inset-0 -z-10 opacity-0 transition-opacity duration-(--duration-base) group-hover/card:opacity-100 [background:radial-gradient(22rem_circle_at_var(--x,50%)_var(--y,50%),var(--color-brand-100),transparent_65%)]"
       />
       <span className="flex items-start justify-between gap-4">
-        <span className={cn(size === "sm" ? "type-h4" : "type-h3", "text-ink-900")}>{title}</span>
+        <Title className={cn(size === "sm" ? "type-h4" : "type-h3", "text-ink-900")}>{title}</Title>
         <span
           aria-hidden
           className={cn(

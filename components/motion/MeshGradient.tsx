@@ -4,39 +4,36 @@ import { useEffect, useRef } from "react";
 
 const VERT = `attribute vec2 p;void main(){gl_Position=vec4(p,0.,1.);}`;
 
-// Brand-only palette (ink → brand → sky). The main glow sits centre-low,
-// behind the hero device, with a sky hint top-right.
+// Exact port of .hero-glow (app/globals.css, >=64rem): layered radial
+// gradients in CSS px, drawn bottom layer first (.hero-glow, then
+// .hero-glow-core). Colours are the brand tokens
+// ink-950, brand-900/800/600/500 and sky-400. At uTime 0 the result matches the
+// static CSS; afterwards the core breathes and drifts very slightly.
 const FRAG = `precision mediump float;
-uniform vec2 uRes;uniform float uTime;uniform float uLayout;
-const vec3 INK=vec3(0.0549,0.1059,0.2392);
-const vec3 INK8=vec3(0.1059,0.1647,0.3333);
-const vec3 BRAND=vec3(0.1843,0.3569,1.0);
-const vec3 BRAND7=vec3(0.1137,0.2471,0.8196);
-const vec3 SKY=vec3(0.3686,0.7686,1.0);
-float blob(vec2 p,vec2 c,float r){vec2 d=p-c;return exp(-dot(d,d)/(r*r));}
+uniform vec2 uRes;uniform vec2 uSize;uniform float uRem;uniform float uTime;
+const vec3 INK950=vec3(.0275,.0627,.1647);const vec3 B900=vec3(.1020,.1804,.5020);const vec3 B800=vec3(.1020,.2039,.6510);
+const vec3 B600=vec3(.1843,.3569,1.);const vec3 B500=vec3(.3020,.4471,1.);const vec3 SKY=vec3(.3686,.7686,1.);
+float L(vec2 p,vec2 c,vec2 r,float a,float s){return a*(1.-clamp(length((p-c)/r)/s,0.,1.));}
 float hash(vec2 p){return fract(sin(dot(p,vec2(12.9898,78.233)))*43758.5453);}
 void main(){
-  float m=min(uRes.x,uRes.y);
-  vec2 s=uRes/m;
-  vec2 p=gl_FragCoord.xy/m;
-  float t=uTime*0.055;
-  vec2 a1=mix(vec2(0.50,0.36),vec2(0.50,0.34),uLayout)+0.06*vec2(sin(t*1.1),cos(t*0.9));
-  vec2 a2=mix(vec2(0.12,0.04),vec2(0.10,0.04),uLayout)+0.07*vec2(cos(t*0.7),sin(t*1.3));
-  vec2 a3=mix(vec2(0.90,0.94),vec2(1.02,0.92),uLayout)+0.05*vec2(sin(t*1.7+1.0),cos(t*1.2));
-  vec2 a4=mix(vec2(0.08,0.88),vec2(0.05,0.70),uLayout)+0.05*vec2(cos(t*0.8+2.0),sin(t));
-  a1*=s;a2*=s;a3*=s;a4*=s;
-  vec3 c=INK;
-  c=mix(c,INK8,blob(p,a4,0.62)*0.55);
-  c=mix(c,BRAND7,blob(p,a1,0.62)*0.70);
-  c=mix(c,BRAND,blob(p,a1,0.30)*0.50);
-  c=mix(c,BRAND7,blob(p,a2,0.45)*0.40);
-  c=mix(c,SKY,blob(p,a3,0.30)*0.30);
-  c+=(hash(gl_FragCoord.xy+fract(t))-0.5)*(2.0/255.0);
-  gl_FragColor=vec4(c,1.0);
+  vec2 p=vec2(gl_FragCoord.x,uRes.y-gl_FragCoord.y)*(uSize/uRes);
+  float W=uSize.x,H=uSize.y;
+  float br=1.+.03*sin(uTime*.17);
+  vec2 k=vec2(.5*W+.015*W*sin(uTime*.21),H-16.*uRem);
+  vec3 c=INK950;
+  c=mix(c,B900,L(p,vec2(.5*W,0.),vec2(.60*W,.45*H),.55,.72));
+  c=mix(c,B900,L(p,k,vec2(.90*W,1.50*H),.80,.80));
+  c=mix(c,B800,L(p,k,vec2(.62*W,1.00*H*br),.85,.74));
+  c=mix(c,B600,L(p,k,vec2(.52*W,.64*H*br),.80,.72));
+  c=mix(c,B500,L(p,k,vec2(.34*W,.36*H*br),.85,.72));
+  c=mix(c,B500,L(p,k,vec2(.60*W,.22*H*br),.90,.76));
+  c=mix(c,SKY,L(p,vec2(k.x,H-17.5*uRem),vec2(30.*uRem,6.*uRem),.50,.70));
+  c+=(hash(gl_FragCoord.xy+fract(uTime))-.5)*(2./255.);
+  gl_FragColor=vec4(c,1.);
 }`;
 
 /**
- * Slow brand mesh gradient behind the homepage hero (S1). Renders at half
+ * Slow brand glow behind the homepage hero (S1). Renders at half
  * resolution, caps DPR at 1.5, throttles to ~30fps and pauses when offscreen or
  * the tab is hidden. A fresh canvas is created per mount so a released WebGL
  * context is never reused. Never mounted for reduced motion (static CSS
@@ -86,11 +83,13 @@ export default function MeshGradient({ className }: { className?: string }) {
 
     const uRes = gl.getUniformLocation(prog, "uRes");
     const uTime = gl.getUniformLocation(prog, "uTime");
-    const uLayout = gl.getUniformLocation(prog, "uLayout");
+    const uSize = gl.getUniformLocation(prog, "uSize");
+    const uRem = gl.getUniformLocation(prog, "uRem");
 
     host.appendChild(canvas);
 
-    const start = performance.now() - 20000;
+    // t = 0 at mount, so the first frames match the static CSS composition.
+    const start = performance.now();
     const draw = (now: number) => {
       gl.uniform1f(uTime, (now - start) / 1000);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
@@ -106,7 +105,8 @@ export default function MeshGradient({ className }: { className?: string }) {
         gl.viewport(0, 0, w, h);
       }
       gl.uniform2f(uRes, w, h);
-      gl.uniform1f(uLayout, host.clientWidth < 1024 ? 1 : 0);
+      gl.uniform2f(uSize, host.clientWidth, host.clientHeight);
+      gl.uniform1f(uRem, parseFloat(getComputedStyle(document.documentElement).fontSize) || 16);
       draw(performance.now());
     };
     resize();
