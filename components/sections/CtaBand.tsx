@@ -13,11 +13,14 @@ export function CtaBand({
   body = ctaBandDefault.body,
   primary = cta.apply,
   secondary = cta.expert,
+  primaryArrow = true,
 }: {
   title?: string;
   body?: string;
   primary?: Cta;
   secondary?: Cta;
+  /** The nudging arrow means "go somewhere"; turn it off for actions such as a mailto link. */
+  primaryArrow?: boolean;
 }) {
   return (
     <section
@@ -32,7 +35,7 @@ export function CtaBand({
           </h2>
           <p className="type-body-lg mt-6 max-w-[36rem] text-on-dark-muted">{body}</p>
           <div className="mt-10 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-            <Button href={primary.href} arrow>
+            <Button href={primary.href} arrow={primaryArrow}>
               {primary.label}
             </Button>
             <Button href={secondary.href} variant="secondary-dark">

@@ -1,6 +1,5 @@
 import type { Cta, NavLink, Pillar } from "@/types/content";
 import { PHONE } from "@/lib/links";
-import { featuredIndustries, industryPath } from "@/content/industries";
 
 export const siteName = "Beyond Bancard";
 
@@ -144,58 +143,41 @@ export const companyMenu: NavLink[] = [
   { label: "Contact", href: "/contact-us" },
 ];
 
+/* --------------------------------- Footer --------------------------------- */
+
+export const footerColumns: { title: string; links: NavLink[] }[] = [
+  {
+    title: "Solutions",
+    links: solutionsMenu.map((c): NavLink => ({ label: c.pillar, href: c.href })).concat([
+      { label: "High-risk processing", href: "/accept/high-risk-processing" },
+      { label: "Payment gateways", href: "/operate/payment-gateways" },
+    ]),
+  },
+  {
+    title: "Industries",
+    links: [
+      { label: "Adult", href: "/industries/adult" },
+      { label: "Gaming", href: "/industries/gaming" },
+      { label: "Nutra & supplements", href: "/industries/nutra-supplements" },
+      { label: "RUO peptides", href: "/industries/ruo-peptides" },
+      { label: "Travel", href: "/industries/travel-payment-solutions" },
+      { label: "View all industries", href: "/industries" },
+    ],
+  },
+  {
+    title: "Partners",
+    links: partnersMenu.map(({ label, href }) => ({ label, href })),
+  },
+  {
+    title: "Company",
+    links: [...companyMenu, ...resourcesMenu],
+  },
+];
+
 export const legalLinks: NavLink[] = [
   { label: "Terms", href: "/terms-conditions" },
   { label: "Privacy", href: "/privacy-policy" },
   { label: "Accessibility", href: "/accessibility" },
-];
-
-/* --------------------------------- Footer --------------------------------- */
-
-export type FooterGroup = {
-  /** Visible h2. */
-  title: string;
-  /** Pillar hub. The desktop heading links here; below lg the panel opens with this row. */
-  hub?: { href: string; descriptor: string };
-  links: NavLink[];
-  /** Emphasised closing row with an arrow. */
-  more?: NavLink;
-};
-
-const pillarGroup = (c: SolutionColumn): FooterGroup => ({
-  title: c.pillar,
-  hub: { href: c.href, descriptor: c.descriptor },
-  links: c.links,
-});
-
-/** Footer link groups as three desktop columns. Flattened into one accordion list below lg. */
-export const footerGroups: FooterGroup[][] = [
-  solutionsMenu.map(pillarGroup),
-  [
-    {
-      title: "Complex industries",
-      links: featuredIndustries.map((i) => ({ label: i.name, href: industryPath(i.slug) })),
-    },
-    {
-      title: "Everyday businesses",
-      links: everydayGroups,
-      more: { label: "View all industries", href: "/industries" },
-    },
-    {
-      title: "Partners",
-      // cta.partner.href already points at /coming-soon; the footer passes it through untouched.
-      links: [
-        ...partnersMenu.map(({ label, href }) => ({ label, href })),
-        { label: cta.partner.label, href: cta.partner.href },
-      ],
-    },
-  ],
-  [
-    { title: "Resources", links: resourcesMenu },
-    { title: "Company", links: companyMenu },
-    { title: "Log in", links: [portals.partner, portals.merchant] },
-    { title: "Legal", links: legalLinks },
-  ],
 ];
 
 /** Regulatory disclosures, verbatim (PRD §8.5). Do not edit. */

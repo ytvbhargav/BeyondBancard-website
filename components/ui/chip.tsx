@@ -59,7 +59,7 @@ export function ChipToggle({
       className={cn(
         base,
         pressed
-          ? "border-ink-900 bg-ink-900 text-on-dark"
+          ? "border-ink-900 bg-ink-900 text-on-dark forced-colors:border-2 forced-colors:border-[Highlight]"
           : "border-line bg-surface text-ink-900 hover:border-brand-600 hover:text-brand-700",
       )}
     >

@@ -11,7 +11,7 @@ import { cta } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /** Routes whose hero is dark, so the header starts on ink. */
-const DARK_ROUTES = ["/", "/partners/isos-agents"];
+const DARK_ROUTES = ["/", "/partners", "/partners/isos-agents"];
 
 /** Routes whose hero is pulled up under the header, so it starts transparent (D-007). */
 const OVERLAY_ROUTES = ["/"];

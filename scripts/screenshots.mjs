@@ -8,7 +8,21 @@ const base = process.argv[2] ?? "http://localhost:3000";
 const outDir = process.argv[3] ?? "docs/screenshots";
 const routes = process.argv.slice(4).length
   ? process.argv.slice(4)
-  : ["/", "/accept/high-risk-processing", "/industries", "/industries/nutra-supplements", "/partners/isos-agents", "/live-form"];
+  : [
+      "/",
+      "/accept/high-risk-processing",
+      "/industries",
+      "/industries/nutra-supplements",
+      "/partners/isos-agents",
+      "/live-form",
+      "/about-beyond-bancard",
+      "/careers",
+      "/contact-us",
+      "/news",
+      "/news/what-is-a-high-risk-merchant-account-and-how-does-it-work",
+      "/our-clients",
+      "/faq",
+    ];
 const widths = (process.env.WIDTHS ?? "390,1440").split(",").map(Number);
 const reduced = process.env.REDUCED === "1";
 

@@ -59,8 +59,16 @@ const open = [
   "Brand fonts, if any (currently Archivo + IBM Plex Sans)",
   "Licensed logo usage for gateways and sponsor banks (shown as text today)",
   "Apply form required fields (must match the onboarding system)",
-  "Drafted supporting copy listed in docs/DECISIONS.md (D-011)",
-  "Footer wordmark lockup: \"Beyond Bancard.\" with a brand-blue full stop (D-053)",
+  "Drafted supporting copy listed in docs/DECISIONS.md (D-040, D-054)",
+  "Sponsor banks: the live About page lists Avidia Bank, but the disclosures (PRD §8.5) name Esquire Bank. Which is current? (D-054)",
+  "Is boarding@beyondbancard.com the right address for existing-merchant support? The live Contact page labels it \"Support\" (D-054)",
+  "Live Contact page FAQ: answers are attached to the wrong questions; fix on the current site (D-054)",
+  "Blog URLs: live posts sit at the site root and /news/<slug> redirects there. Which structure should the full build keep? (D-054)",
+  "Blog article inline links point back to the article itself. Where should they lead? (D-054)",
+  "Client stories quote specific savings ($5,000 a month; hundreds of dollars a month). Does legal need a 'results vary' note on /our-clients and the homepage? (D-054)",
+  "Adult: the menu teaser (PRD §9.3) says \"Payments infrastructure built for the realities of adult commerce.\" and the page H1 (live site) \"Payments built for…\". Keep both or align? (D-057)",
+  "Live Adult page FAQ: the answer to \"Can Beyond integrate with my existing website or gateway?\" repeats the next question; fix on the current site (D-057)",
+  "FAQ page in production mode shows only confirmed answers and hides topics with none. OK to hide the rest until confirmed? (D-054)",
 ];
 
 const md = [

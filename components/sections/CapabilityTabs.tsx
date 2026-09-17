@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { m } from "motion/react";
 import { ArrowRight, CreditCard, LayoutDashboard, ShieldCheck, TrendingUp, type LucideIcon } from "lucide-react";
 import Link from "next/link";
@@ -25,6 +25,15 @@ export function CapabilityTabs({ title, items }: { title: string; items: Capabil
   const [value, setValue] = useState<string>(pillars[0]);
   const [touched, setTouched] = useState(false);
   const reduce = useReducedMotionSafe();
+  // The list is vertical from lg, so arrow keys and aria-orientation follow the layout (horizontal before hydration).
+  const [vertical, setVertical] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(min-width: 64rem)");
+    const update = () => setVertical(mq.matches);
+    update();
+    mq.addEventListener("change", update);
+    return () => mq.removeEventListener("change", update);
+  }, []);
 
   return (
     <Section tone="surface" aria-labelledby="capabilities-title">
@@ -35,11 +44,12 @@ export function CapabilityTabs({ title, items }: { title: string; items: Capabil
           setTouched(true);
           setValue(v);
         }}
+        orientation={vertical ? "vertical" : "horizontal"}
         className="grid gap-8 lg:grid-cols-12"
       >
         <TabsList
           aria-label="Capabilities by pillar"
-          className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:-mx-6 sm:px-6 lg:col-span-4 lg:mx-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-line lg:px-0 lg:pb-0"
+          className="-mx-5 -my-1 flex gap-2 overflow-x-auto px-5 py-1 sm:-mx-6 sm:px-6 lg:col-span-4 lg:mx-0 lg:my-0 lg:flex-col lg:gap-0 lg:overflow-visible lg:border-t lg:border-line lg:px-0 lg:py-0"
         >
           {pillars.map((p) => {
             const Icon = ICONS[p];
@@ -71,7 +81,7 @@ export function CapabilityTabs({ title, items }: { title: string; items: Capabil
         </TabsList>
 
         {pillars.map((p) => (
-          <TabsContent key={p} value={p} className="lg:col-span-7 lg:col-start-6">
+          <TabsContent key={p} value={p} className="lg:col-span-7 lg:col-start-6 focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--color-focus)">
             <ul className="border-t border-line">
               {items
                 .filter((i) => i.pillar === p)

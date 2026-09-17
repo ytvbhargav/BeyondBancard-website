@@ -10,7 +10,9 @@ import { DEMO_ROUTES } from "@/lib/links";
 import { duration, ease } from "@/lib/motion";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 
-const ROUTES = DEMO_ROUTES.filter((r) => r !== "/live-form") as readonly string[];
+// Not on pages whose own job is the conversion, or where "Apply now" would compete with it (D-054).
+const EXCLUDED: readonly string[] = ["/live-form", "/contact-us", "/careers"];
+const ROUTES = DEMO_ROUTES.filter((r) => !EXCLUDED.includes(r)) as readonly string[];
 
 /**
  * Mobile-only CTA bar (M10). Slides up once the page's hero CTAs have
@@ -48,6 +50,15 @@ export function StickyMobileCta() {
   }, [enabled, pathname]);
 
   const show = enabled && pastHero && !footerVisible;
+
+  // While the bar covers the bottom of the screen, keyboard focus scrolls clear of it
+  // (html[data-sticky-cta] sets scroll-padding-bottom, WCAG 2.4.11).
+  useEffect(() => {
+    if (!show) return;
+    const root = document.documentElement;
+    root.setAttribute("data-sticky-cta", "");
+    return () => root.removeAttribute("data-sticky-cta");
+  }, [show]);
 
   return (
     <AnimatePresence>

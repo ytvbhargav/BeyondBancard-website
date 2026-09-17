@@ -135,3 +135,163 @@ export const partnerFaqs: Faq[] = [
     a: "Relationship managers, training and marketing resources.",
   },
 ];
+
+/* ------------------------------ Adult page (D-057) ------------------------------ */
+
+/**
+ * Live beyondbancard.com/industries/adult FAQ (17 Sept 2026), wording unchanged. Where the
+ * live answer ends in "[Placeholder — confirm …]", the sentence before it is the answer; the
+ * CONFIRM note names the open question with an "Adult:" prefix (every FAQ note lives in this
+ * file, so the list needs the page), and the placeholder text itself is never shown.
+ */
+export const adultFaqs: Faq[] = [
+  {
+    q: "Does Beyond support my specific adult business model?",
+    a: "Beyond evaluates adult ecommerce, content, subscription, dating, entertainment, and other qualifying models individually.",
+    confirm: true,
+    note: "Adult: current category appetite (live answer marked as a placeholder)",
+  },
+  {
+    q: "Why is adult considered more complex for payment processing?",
+    a: "Card-not-present transactions, recurring billing, and chargeback exposure all require a more specialized payment environment than conventional retail.",
+  },
+  {
+    q: "What documentation may be required?",
+    a: "Underwriting typically reviews the business model, website, policies, and transaction profile.",
+    confirm: true,
+    note: "Adult: required underwriting documents (live answer marked as a placeholder)",
+  },
+  {
+    q: "What payment methods may be available?",
+    a: "Available methods depend on the business model and underwriting outcome.",
+    confirm: true,
+    note: "Adult: payment methods available for this category (live answer marked as a placeholder)",
+  },
+  {
+    q: "Can Beyond support recurring billing?",
+    a: "Yes, recurring and subscription billing is a core capability for qualifying adult merchants.",
+  },
+  {
+    q: "How are chargebacks handled?",
+    a: "Beyond provides monitoring and dispute-management tools to help address chargeback activity as it happens.",
+  },
+  {
+    // The live answer repeats the next question, so there is no answer to copy (same as the Nutra question).
+    q: "Can Beyond integrate with my existing website or gateway?",
+    a: "Answer to be supplied by Beyond Bancard.",
+    confirm: true,
+    note: "Adult: compatibility with existing websites and gateways (live answer repeats the next question)",
+  },
+  {
+    q: "What happens if my processing needs change?",
+    a: "Our team remains involved after launch to help adjust the payment environment as the business evolves.",
+  },
+];
+
+/* ------------------------------- FAQ page (D-054) ------------------------------- */
+
+/** A group of questions on the FAQ page. `id` is the section anchor (/faq#partners). */
+export type FaqTopic = { id: string; title: string; faqs: Faq[] };
+
+/**
+ * Looks a question up by its exact wording, so the FAQ page shows the same objects
+ * as the pages above (one source for each answer and its CONFIRM flag). A reworded
+ * question fails the build here instead of silently dropping off the FAQ page.
+ */
+function pick(list: Faq[], q: string): Faq {
+  const faq = list.find((f) => f.q === q);
+  if (!faq) throw new Error(`faqTopics: no FAQ with the question "${q}"`);
+  return faq;
+}
+
+/**
+ * Every FAQ on the site, grouped for /faq. The "declined elsewhere" question appears
+ * on both the homepage and High-risk pages; it is listed once, from highRiskFaqs, so
+ * the Accounts topic speaks of "Beyond" throughout (same answer and note either way).
+ * Topic titles are searched too, so they name only what every mode shows: in
+ * production the security topic keeps just the monitoring answer.
+ */
+export const faqTopics: FaqTopic[] = [
+  {
+    id: "accounts",
+    title: "Accounts and eligibility",
+    faqs: [
+      pick(highRiskFaqs, "Can Beyond work with businesses declined elsewhere?"),
+      pick(highRiskFaqs, "What industries does Beyond support?"),
+      pick(highRiskFaqs, "How long does underwriting take?"),
+    ],
+  },
+  {
+    id: "high-risk",
+    title: "High-risk processing",
+    faqs: [
+      pick(highRiskFaqs, "What makes a business high risk?"),
+      pick(highRiskFaqs, "Why are high-risk accounts underwritten differently?"),
+      pick(highRiskFaqs, "Are reserves always required?"),
+      pick(highRiskFaqs, "Can high-risk merchants accept payments online?"),
+    ],
+  },
+  { id: "nutra", title: "Nutra and supplements", faqs: nutraFaqs },
+  { id: "adult", title: "Adult", faqs: adultFaqs },
+  {
+    id: "security",
+    title: "Technology and security",
+    faqs: [
+      pick(homeFaqs, "Can I monitor my transactions?"),
+      pick(homeFaqs, "Do you offer equipment?"),
+      pick(homeFaqs, "How are my transactions kept secure?"),
+    ],
+  },
+  {
+    id: "partners",
+    title: "Partners",
+    faqs: [pick(homeFaqs, "Do you have a partner program?"), ...partnerFaqs],
+  },
+];
+
+/**
+ * FAQ page copy. Strings with {placeholders} are filled in by FaqExplorer:
+ * {count} a number, {term} the visitor's search, {phone} the phone number.
+ * `one` / `other` pick the singular or plural sentence.
+ */
+export const faqPage = {
+  breadcrumb: [{ label: "Resources" }, { label: "FAQ" }],
+  hero: {
+    title: "Questions merchants and partners ask.",
+    // Also the meta description. It names no topics: production mode hides some of them until answers are confirmed.
+    lead: "Search every answer about working with Beyond Bancard, or browse by topic.",
+  },
+  explorer: {
+    search: {
+      label: "Search questions",
+      // Both terms match confirmed answers, so they find something in production mode too.
+      placeholder: "Try “chargebacks” or “online”",
+      clear: "Clear search",
+    },
+    count: {
+      /** Beside the search label, and announced when the search is cleared. */
+      all: { one: "1 question", other: "{count} questions" },
+      /** Beside the search label while searching. */
+      short: { one: "1 match", other: "{count} matches" },
+      /** Announced while searching. */
+      match: { one: "1 question matches “{term}”", other: "{count} questions match “{term}”" },
+      /** Announced, and shown as the empty state's heading. */
+      none: "No questions match “{term}”.",
+    },
+    noun: { one: "question", other: "questions" },
+    topicsLabel: "Topics",
+    empty: {
+      // No phone here: the "Still have a question?" block beside (lg) or right below the empty state has it.
+      body: "Try another word, or clear the search to see every question.",
+    },
+    help: {
+      title: "Still have a question?",
+      call: "Call {phone}",
+      message: { label: "Send us a message", href: "/contact-us#contact-form" },
+    },
+    /** Demo-mode flag on a topic heading when every answer in it is unconfirmed. */
+    topicNote: "Whole FAQ topic hidden in production until its answers are confirmed",
+  },
+};
+
+export type FaqExplorerCopy = (typeof faqPage)["explorer"];

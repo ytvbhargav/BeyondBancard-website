@@ -695,6 +695,31 @@ html[data-announcement="dismissing"] {
   }
 }
 
+/* Keyboard focus never lands inside a block that is still waiting to reveal: a focused
+   descendant shows the block at once (same specificity as the hidden rules, declared later). */
+.js [data-reveal]:focus-within,
+.js [data-stagger] > [data-stagger-item]:focus-within {
+  opacity: 1;
+  transform: none;
+}
+
+/* Mobile CTA bar (StickyMobileCta): focused elements scroll clear of the fixed bar,
+   whose height is 12px + 48px button + 12px (or the safe area) + 1px border. */
+html[data-sticky-cta] {
+  scroll-padding-bottom: calc(4.5625rem + 1rem + env(safe-area-inset-bottom));
+}
+
+/* Footer wordmark (D-056): rises as one piece out of its clip box, once, when its sentinel scrolls
+   into view. Hidden only with JS running and motion allowed. */
+.js [data-wordmark-rise] svg {
+  transition: translate calc(var(--duration-slow) * 1.5) var(--ease-out);
+}
+@media (prefers-reduced-motion: no-preference) {
+  .js [data-wordmark-rise]:has(> [data-wordmark-sentinel]:not([data-shown])) svg {
+    translate: 0 100%;
+  }
+}
+
 /* Closing CTA: brand glow rising from the bottom edge */
 .cta-glow {
   background:
