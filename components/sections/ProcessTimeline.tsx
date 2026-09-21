@@ -2,8 +2,12 @@ import { Container } from "@/components/ui/container";
 import { SectionHeader } from "@/components/ui/section";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { ScrollSteps } from "@/components/motion/ScrollSteps";
+import { MaybeConfirm } from "@/components/ui/confirm";
 import { cn } from "@/lib/utils";
-import type { Step } from "@/types/content";
+import type { Flag, Step } from "@/types/content";
+
+/** A step may carry a client-to-confirm flag on its body, like a feature item. */
+type FlaggedStep = Step & Flag;
 
 type Layout = "vertical" | "horizontal" | "scroll";
 
@@ -25,7 +29,7 @@ export function ProcessTimeline({
 }: {
   title: string;
   lead?: string;
-  steps: Step[];
+  steps: FlaggedStep[];
   layout?: Layout;
   tone?: "paper" | "surface" | "ink";
   aside?: React.ReactNode;
@@ -95,7 +99,7 @@ function Node({ n, dark, className }: { n: number; dark?: boolean; className?: s
   );
 }
 
-function VerticalSteps({ steps, dark }: { steps: Step[]; dark: boolean }) {
+function VerticalSteps({ steps, dark }: { steps: FlaggedStep[]; dark: boolean }) {
   return (
     <Stagger as="ol" className="relative">
       {steps.map((s, i) => (
@@ -109,7 +113,9 @@ function VerticalSteps({ steps, dark }: { steps: Step[]; dark: boolean }) {
               <span className="sr-only">Step {i + 1}: </span>
               {s.title}
             </h3>
-            <p className={cn("mt-1.5 max-w-[34rem]", dark ? "text-on-dark-muted" : "text-muted")}>{s.body}</p>
+            <p className={cn("mt-1.5 max-w-[34rem]", dark ? "text-on-dark-muted" : "text-muted")}>
+              <MaybeConfirm item={s}>{s.body}</MaybeConfirm>
+            </p>
           </div>
         </StaggerItem>
       ))}
@@ -117,7 +123,7 @@ function VerticalSteps({ steps, dark }: { steps: Step[]; dark: boolean }) {
   );
 }
 
-function HorizontalSteps({ steps, dark }: { steps: Step[]; dark: boolean }) {
+function HorizontalSteps({ steps, dark }: { steps: FlaggedStep[]; dark: boolean }) {
   const cols = steps.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4";
   return (
     <Stagger as="ol" className={cn("grid gap-10 sm:grid-cols-2 lg:gap-6", cols)}>
@@ -125,15 +131,19 @@ function HorizontalSteps({ steps, dark }: { steps: Step[]; dark: boolean }) {
         <StaggerItem as="li" key={s.title} className="relative">
           <div className="flex items-center">
             <Node n={i + 1} dark={dark} />
+            {/* -mr-3 runs the rule half-way into the grid gap, so it stops 12px short of
+                the next node, matching the 12px after this one */}
             {i < steps.length - 1 && (
-              <span aria-hidden className={cn("ml-3 hidden h-px flex-1 lg:block", dark ? "bg-ink-800" : "bg-line-strong")} />
+              <span aria-hidden className={cn("ml-3 hidden h-px flex-1 lg:-mr-3 lg:block", dark ? "bg-ink-800" : "bg-line-strong")} />
             )}
           </div>
           <h3 className={cn("type-h4 mt-5", dark ? "text-on-dark" : "text-ink-900")}>
             <span className="sr-only">Step {i + 1}: </span>
             {s.title}
           </h3>
-          <p className={cn("mt-2 max-w-[26rem] pr-2", dark ? "text-on-dark-muted" : "text-muted")}>{s.body}</p>
+          <p className={cn("mt-2 max-w-[26rem] pr-2", dark ? "text-on-dark-muted" : "text-muted")}>
+            <MaybeConfirm item={s}>{s.body}</MaybeConfirm>
+          </p>
         </StaggerItem>
       ))}
     </Stagger>

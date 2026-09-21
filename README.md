@@ -4,7 +4,7 @@ Interactive demo of the Beyond Bancard website revamp. Spec: [`docs/PRD.md`](doc
 
 ## Pages
 
-The six PRD pages, plus the Company and Resources pages added in D-054.
+The six PRD pages, the Company and Resources pages (D-054), the first page of every menu (D-057), and the top 6 industries plus every Solutions page (D-058).
 
 | Route | Template |
 |---|---|
@@ -21,6 +21,11 @@ The six PRD pages, plus the Company and Resources pages added in D-054.
 | `/news/what-is-a-high-risk-merchant-account-and-how-does-it-work` | Resources: Blog article |
 | `/our-clients` | Resources: Client stories |
 | `/faq` | Resources: FAQ |
+| `/industries/adult` | Industry detail |
+| `/partners` | Partner hub |
+| `/industries/gaming`, `/industries/ruo-peptides`, `/industries/travel-payment-solutions`, `/industries/crb` | Industry detail |
+| `/accept`, `/protect`, `/grow`, `/operate` | Solutions hub |
+| `/accept/*`, `/protect/*`, `/grow/*`, `/operate/*` (19 pages, every Solutions menu item) | Solution detail |
 
 Every other internal link goes to `/coming-soon?from=<path>`. `/dev/styleguide` shows tokens and components in development.
 

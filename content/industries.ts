@@ -11,11 +11,11 @@ export const groupLabels: Record<Exclude<IndustryGroup, "featured">, string> = {
 export const industries: Industry[] = [
   // Featured complex industries
   { slug: "adult", name: "Adult", group: "featured", teaser: "Payments infrastructure built for the realities of adult commerce.", inDemo: true },
-  { slug: "gaming", name: "Gaming", group: "featured", teaser: "Built for high-velocity, digital-first payment environments." },
+  { slug: "gaming", name: "Gaming", group: "featured", teaser: "Built for high-velocity, digital-first payment environments.", inDemo: true },
   { slug: "nutra-supplements", name: "Nutra & supplements", group: "featured", teaser: "Payments engineered for fast-growing commerce.", inDemo: true },
-  { slug: "ruo-peptides", name: "RUO peptides", group: "featured", teaser: "Processing that understands Research Use Only." },
-  { slug: "travel-payment-solutions", name: "Travel", group: "featured", teaser: "Payments built for what happens before takeoff." },
-  { slug: "crb", name: "Cannabis-related businesses", group: "featured", teaser: "Navigate complex payments with confidence." },
+  { slug: "ruo-peptides", name: "RUO peptides", group: "featured", teaser: "Processing that understands Research Use Only.", inDemo: true },
+  { slug: "travel-payment-solutions", name: "Travel", group: "featured", teaser: "Payments built for what happens before takeoff.", inDemo: true },
+  { slug: "crb", name: "Cannabis-related businesses", group: "featured", teaser: "Navigate complex payments with confidence.", inDemo: true },
 
   // Specialized & regulated
   { slug: "cbd-hemp", name: "CBD & hemp", group: "specialized", teaser: "Underwriting built around product and content review." },

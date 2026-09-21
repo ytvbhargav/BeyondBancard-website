@@ -1,32 +1,38 @@
+import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 
 /**
- * Placeholder wordmark until the client supplies logo files (CONFIRM).
- * The mark is a "B" set in Archivo inside a brand-blue tile.
+ * The Beyond Bancard logo, taken from the live site (D-059). Only a black lockup
+ * is published, so the white files in `public/brand` are knockouts of it: they
+ * lose the blue in the mark, and the client still owes a reversed original
+ * (CONFIRM). Below 380px only the mark shows, so the header still fits the
+ * compact "Apply now" and the menu button.
  */
 export function Logo({ tone = "light", className }: { tone?: "light" | "dark"; className?: string }) {
+  const dark = tone === "dark";
   return (
     <Link
       href="/"
       aria-label="Beyond Bancard home"
-      className={cn("group/logo inline-flex min-h-11 min-w-11 items-center gap-2.5 rounded-sm", className)}
+      className={cn("group/logo inline-flex min-h-11 min-w-11 items-center rounded-sm", className)}
     >
-      <span
-        aria-hidden
-        className="grid size-8 place-items-center rounded-[9px] bg-brand-600 font-display text-[1.125rem] leading-none font-extrabold text-white [font-stretch:112%]"
-      >
-        B
-      </span>
-      <span
-        aria-hidden
-        className={cn(
-          "hidden font-display text-[0.9375rem] leading-none font-extrabold tracking-[-0.02em] whitespace-nowrap [font-stretch:104%] min-[380px]:inline sm:text-[1.1875rem] sm:[font-stretch:112%]",
-          tone === "dark" ? "text-on-dark" : "text-ink-900",
-        )}
-      >
-        Beyond Bancard
-      </span>
+      <Image
+        src={dark ? "/brand/beyond-bancard-mark-white.png" : "/brand/beyond-bancard-mark.png"}
+        alt=""
+        width={175}
+        height={201}
+        priority
+        className="h-8 w-auto min-[380px]:hidden"
+      />
+      <Image
+        src={dark ? "/brand/beyond-bancard-logo-white.png" : "/brand/beyond-bancard-logo.webp"}
+        alt=""
+        width={312}
+        height={42}
+        priority
+        className="hidden h-6 w-auto min-[380px]:block sm:h-7"
+      />
     </Link>
   );
 }

@@ -7,7 +7,8 @@ import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 
 /**
  * Risk and health checklist (S7): items tick one by one as the panel enters
- * the viewport. Reduced motion shows every item ticked.
+ * the viewport. Reduced motion shows every item ticked. An odd last item spans
+ * both columns from sm, so the panel never ends on a half-empty row (D-058).
  */
 export function ChecklistSection({ title, lead, items }: { title: string; lead?: string; items: string[] }) {
   const ref = useRef<HTMLUListElement>(null);
@@ -30,7 +31,7 @@ export function ChecklistSection({ title, lead, items }: { title: string; lead?:
             return (
               <li
                 key={item}
-                className="flex min-h-20 items-center gap-4 border-line px-6 py-5 not-first:border-t sm:nth-2:border-t-0 sm:even:border-l"
+                className="flex min-h-20 items-center gap-4 border-line px-6 py-5 not-first:border-t sm:nth-2:border-t-0 sm:even:border-l sm:odd:last:col-span-2"
               >
                 <svg viewBox="0 0 28 28" className="size-7 shrink-0" aria-hidden>
                   <circle cx="14" cy="14" r="13" fill="none" stroke="var(--color-line-strong)" strokeWidth="1.5" />

@@ -1,6 +1,7 @@
 import type { Capability, Feature, IndustryDetailContent, Step } from "@/types/content";
 import { featuredIndustries } from "@/content/industries";
 import { solutionsMenu } from "@/content/site";
+import { keepTogether } from "@/lib/typography";
 
 /**
  * Pillar and link for a capability, taken from the Solutions menu so both follow the
@@ -17,20 +18,16 @@ function solution(menuLabel: string): Pick<Capability, "pillar" | "href"> {
 }
 
 /**
- * Keeps a hyphenated compound on one line by putting a word joiner (U+2060, invisible,
- * no glyph needed) after each hyphen. Archivo and IBM Plex have no U+2011 glyph, so a
- * non-breaking hyphen would render from a fallback font. The text is otherwise unchanged.
- */
-function keepTogether(compound: string): string {
-  return compound.replaceAll("-", "-\u2060");
-}
-
-/**
  * Adult industry page (D-057). Copy is the live beyondbancard.com/industries/adult page
  * (captured 17 Sept 2026), headings in sentence case. Section labels that sit above the
  * live headings are not repeated as eyebrows (D-003). "Business models we support" stays the
  * chip band title (it describes the chips better than the live heading); Why Beyond uses the
  * live heading and lead, since the label alone left the sticky column empty. FAQs are `adultFaqs`.
+ *
+ * Edits (D-057 follow-up):
+ * - The hero expert button carries the live "Talk to an Adult Payments Expert" in sentence case
+ *   (`hero.expertCta`), as on the sibling industry pages (design spec §1.4), in place of the
+ *   generic "Talk to an expert".
  */
 /** Labels for the hero illustration (SubscriptionDashboard), both from this page's own copy: a business model and a capability. */
 export const adultVisual = { business: "Subscription content", ordersLabel: "Recurring billing" };
@@ -42,6 +39,7 @@ export const adult = {
     title: "Payments built for the realities of adult commerce.",
     // Live wording; "Beyond Bancard" on first mention (PRD §10.5).
     lead: `Adult businesses face payment challenges most processors aren't structured to handle. Beyond Bancard brings ${keepTogether("industry-aware")} underwriting, flexible payment technology, risk capabilities, and experienced support together to build a more durable processing environment.`,
+    expertCta: "Talk to an adult payments expert",
   },
   realities: {
     title: "Adult commerce has its own payment realities.",

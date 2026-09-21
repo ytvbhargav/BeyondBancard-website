@@ -33,7 +33,7 @@ export function FaqSection({ title, faqs, tone = "paper" }: { title: string; faq
           <Accordion type="single" collapsible className="border-t border-line">
             {visible.map((f, i) => (
               <AccordionItem key={f.q} value={`faq-${i}`}>
-                <AccordionTrigger className="type-h4 text-ink-900">{f.q}</AccordionTrigger>
+                <AccordionTrigger className="type-h4 text-pretty text-ink-900">{f.q}</AccordionTrigger>
                 <AccordionContent>
                   <p className="max-w-[40rem] text-muted">
                     {f.confirm ? <Confirm note={f.note ?? "FAQ answer"}>{f.a}</Confirm> : f.a}

@@ -404,3 +404,77 @@ Next steps:
 - **Review:** each page had design, content and accessibility/code reviews, a verify-and-fix pass and an independent recheck. Both rechecks failed only on items in shared files (dark header on `/partners`, the empty Adult hero); those are fixed above and checked in the browser at 390 and 1440.
 - **Drafted copy (client review):** Adult browser title "Adult payments"; FAQ stand-in "Answer to be supplied by Beyond Bancard."; "Related industries". Partners: "Choose your program.", "Contact the partner team", CtaBand body "Tell us about your business and we'll find the program that fits.", and the band body reused from the ISOs programme steps (D-040).
 - **Not changed / follow-ups:** the Adult menu teaser (PRD §9.3, "Payments infrastructure built for…") and the live H1 ("Payments built for…") differ by one word — keep or align; the live capabilities lead isn't shown (CapabilityTabs has no lead); the merchant sticky CTA still shows on `/partners` below 768px, as on ISOs & agents (PRD §8.7); the FAQ and footer phone and legal links are under 44px tall inside sentences (pre-existing); in production `/partners/isos-agents` renders "Uncapped income" and "Fast turnaround" as headings with empty bodies (pre-existing, FeatureGrid).
+
+## Top 6 industries and Solutions
+
+**D-058 · Top 6 industries and every Solutions page (requested 21 Sept 2026).** The client asked for the rest of the top 6 industries and everything in the Solutions menu, using the live site's content. 27 routes join `DEMO_ROUTES`: Gaming, RUO peptides, Travel and Cannabis-related businesses; the hubs `/accept`, `/protect`, `/grow` and `/operate`; and the 19 other Solutions menu pages (High-risk processing already existed). Spec: `docs/superpowers/specs/2026-09-21-industries-solutions-pages-design.md`. Progress: `docs/TRACKER.md`. Problems found on the live site, for the client: `docs/LIVE_SITE_ISSUES.md`.
+- **Source:** the live page for each route, captured 21 Sept 2026 with a headless browser (the site's SiteGround check blocks plain requests) and turned into outlines in page order. The outlines include the collapsed FAQ answers and the Payment technology selector's copy, which lives in a script. Each content file starts with a comment listing its Edits, Dropped items and Live-site issues.
+- **Industries** (`content/gaming.ts`, `ruo-peptides.ts`, `travel.ts`, `crb.ts`) use `IndustryDetail` as Adult does.
+  - **Hero visual:** the static High-risk card ("Example application", in review, 2 of 4). It shows one of the page's business models, two or three rows in the page's own words, and four items from its account-health checklist. CRB skips "Evolving regulatory landscape", which is a condition, not a check.
+  - **Expert buttons:** each uses its live label in sentence case ("Talk to a gaming payments expert"). Adult now does the same ("Talk to an adult payments expert"), so all six match.
+  - **CRB capabilities:** the live section is a copy of Gaming's. "Recurring billing", whose body names gaming, is dropped, and the other five are flagged as a group. `Capability` gains `confirm`/`note`, and `CapabilityTabs` renders the flag.
+  - **"APIs / integrations"** (Gaming, CRB) has no menu page and links to Payment gateways.
+- **Solutions template:** `SolutionPage` renders one `SolutionPageContent` object (`content/solutions/<slug>.ts`) in this order:
+  1. Hero: the expert button (primary; the live label only where it names the expert), then Apply now, with an optional `HeroFile`.
+  2. The page's blocks, in live order.
+  3. Related solutions.
+  4. All four pillars (`PillarLinks`, the live "bigger picture" heading), on one line like the live lifecycle row: the page's own pillar is the filled node, the other three are links. Built first as the other three only, and changed on client feedback (22 Sept 2026) to match the live design. The nodes are dots on a rule, under a centred heading, so the row reads as a lifecycle, not as tabs (D-054).
+  5. FAQ.
+  6. CtaBand.
+  - **Block kinds:** 14, one component each in `components/sections/solution/`: features (panel, ruled, rows or split), steps, flow, hub, chips, compare, table, statement, cards, actions, questions, estimator, selector and callout.
+  - **Section tones** alternate. Back-to-back callouts share one band. When the last block is a chips band, the pillar links come before related solutions, so the static chips never sit directly on the chip links (the live B2B and International pages use that order).
+- **HeroFile:** the hero panels in the underwriting-file style (D-001): title, tag ("Example" with figures, "Illustration" without), then amount, method chips, rows, stats, steps and a status pill.
+  - Done steps tick in as the panel enters the viewport.
+  - Figures the live card leaves unlabelled show alone; no labels are drafted.
+  - Status colours stay semantic (D-002): green only for outcomes, amber for in progress, blue for states such as Live or Connected.
+  - Five live hero cards are hidden at every screen size on the live site (the Grow pages, Chargeback protection, 3D Secure). They are shown here.
+- **Estimator (Cost-reduction programs):** monthly volume × rate × 12 from the visitor's own inputs. The defaults are the live $50,000 and 3.25%. No savings figure is shown.
+- **Selector (Payment technology):** the six live recommendations.
+- **Copy rules:**
+  - Body sentences are verbatim. Headings and labels are in sentence case, and "Beyond Bancard" appears at first mention.
+  - Placeholders never render. An FAQ answer with a "[Placeholder — …]" keeps its sentence and is flagged. A missing or copied answer shows "Answer to be supplied by Beyond Bancard.", flagged. Internal notes, TODO text and the sample testimonial are dropped.
+  - Headings copied from another page are replaced by the section's own words:
+    - Accept hub: Accept's bigger-picture heading.
+    - In-person payments: "Connected acceptance."
+    - Reporting: "Payment visibility."
+    - Payment technology: "Where this fits."
+    - Operate hub: "Why Operate with Beyond." (the h2 repeated a row title).
+    - Chargeback protection and 3D Secure FAQ titles.
+    - Network tokenization's H1 is its own "Keep the card number out of more places.", because the live headline is Fraud & risk tools'.
+  - The Protect hub's live FAQ is Adult's. It now reuses five questions from the Protect pages by reference (`pickFaq`).
+- **Links:** internal links come from the Solutions menu (`solutionLink`), so a renamed page fails the build. Dead live links ("#", null, Integrations, Reconciliation, Merchant Tools) are dropped. Reporting's "Need to connect a system?" row goes to Payment gateways. Hardware links go to `/catalog`, and the three program pages (`/grow/cash-discount`, `/grow/dual-pricing`, `/grow/surcharging`) go to coming soon.
+- **Typography:** `lib/typography.ts` has `keepTogether` (a word joiner after hyphens), `keepArrows` and `NBSP`. It replaces the local helper in `content/adult.ts`. Visible text never changes.
+- **Shared changes:**
+  - **Types and icons:** `types/content.ts` gains the solution types, `Flag` and 22 icon names; `components/ui/icon.tsx` maps them. `confirm-list` skips the blocks' visible `footnote`.
+  - **FeatureGrid:** three panel items share one row, five ruled items sit three over two, and the last ruled row no longer adds 32px of bottom padding.
+  - **ChecklistSection:** an odd last item spans both columns.
+  - **CapabilityTabs:** opens on the pillar with the most tools, and the phone pills are tighter.
+  - **IndustryDetail:** the business-model chips wrap in balanced rows.
+  - **UnderwritingCard:** the header wraps rather than squeezing.
+  - **RelatedLinks:** each link chip has a blue arrow, and the band uses the 4/8 grid from lg.
+  - **PageHero:** the text column has `min-w-0`, and pill buttons may wrap to two lines on phones.
+  - **ProcessTimeline:** steps take flags, and the rule stops 12px short of the next node.
+  - **FaqSection:** questions use `text-pretty`.
+- **Visible on pages built before this work:**
+  - Adult and Nutra open their capabilities on Protect.
+  - Related chips show arrows (High-risk, the industries, the article).
+  - Ruled feature grids end 32px higher.
+  - Adult's expert button uses its live label.
+- **Considered, not done:**
+  - A top-aligned hero text column, so H1s sit at one height on every page. It would move every approved interior hero.
+  - A flag for a block's lead alone.
+  - Adding the new FAQs to `/faq`.
+- **Review:** every content file and component had an independent review and a fix pass. Screenshots at 390 and 1440 of all 27 pages then had a per-page design review and a cross-page consistency review, and the fixes were applied. The main fix: the International payments hero ran off a 390px screen. Checked with lint, types, build (all static), Playwright and axe on every route, with no page wider than the viewport at 390 or 1440.
+- **Drafted copy (client review):**
+  - "Related solutions", "Related industries" and "Business models we support." (template titles).
+  - The hero card rows on the four industries (words from each page).
+  - Hero panel titles where the live card has none ("Payment activity" on Operate; the page names on B2B, 3D Secure and POS).
+  - "Estimate", and "Where do you take payments?"
+  - Network tokenization FAQ question 2 ("Is a network token the same as a gateway token?").
+  - The stand-in answers, and every CONFIRM note.
+
+**D-059 · The real logo (requested 22 Sept 2026).** The placeholder wordmark (a "B" tile beside "Beyond Bancard" in Archivo, PRD §5.6) is replaced by the logo from the live site.
+- **Files:** `public/brand/beyond-bancard-logo.webp` (the black lockup, 312×42, transparent) and `public/brand/beyond-bancard-mark.png` (the mark alone, 270×270), both taken from beyondbancard.com on 22 Sept 2026. `app/icon.png` is the site's own icon, replacing the default Next.js `favicon.ico`.
+- **Dark backgrounds:** only a black lockup is published, so the dark header (homepage, `/partners`) and the footer knock it out to white (`brightness-0 invert`). That drops the blue from the mark, so the open question now asks for a reversed file.
+- **Sizes:** the full lockup is 24px tall, 28px from sm. Below 380px only the mark shows, so the header still fits the compact "Apply now" and the menu button. The link keeps its 44×44 target and its "Beyond Bancard home" name; both images are decorative (`alt=""`).
+- **Not changed:** the footer's oversized "Beyond Bancard" sign-off stays typographic (D-055), and the diagrams keep the drawn "B" tile rather than placing a raster mark inside a diagram.

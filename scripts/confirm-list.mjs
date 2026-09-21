@@ -39,6 +39,8 @@ function scan(file) {
   const named = [...src.matchAll(/^\s*(?:export const )?(\w*[nN]ote)\s*[:=]\s*"([^"]+)"/gm)];
   for (const m of named) {
     if (m[1] === "note" && /confirm:\s*true/.test(src.slice(Math.max(0, m.index - 200), m.index))) continue;
+    // Solution blocks' visible small print is copy, not a client question (D-058)
+    if (m[1] === "footnote") continue;
     const line = src.slice(0, m.index).split("\n").length;
     if (!entries.some((e) => e.file === rel && e.line === line)) entries.push({ note: m[2], file: rel, line });
   }
@@ -55,7 +57,7 @@ for (const e of entries) {
 }
 
 const open = [
-  "Official logo files (primary, reversed, one-colour) and brand blue hex (\"Primary_Logo_Blue_Punchout\")",
+  "Official logo files and brand blue hex (\"Primary_Logo_Blue_Punchout\"). The demo now uses the logo from the live site (D-059); a reversed (white) file is still needed, because dark headers and the footer knock the black lockup out to white, which drops the blue from the mark",
   "Brand fonts, if any (currently Archivo + IBM Plex Sans)",
   "Licensed logo usage for gateways and sponsor banks (shown as text today)",
   "Apply form required fields (must match the onboarding system)",
@@ -69,6 +71,13 @@ const open = [
   "Adult: the menu teaser (PRD §9.3) says \"Payments infrastructure built for the realities of adult commerce.\" and the page H1 (live site) \"Payments built for…\". Keep both or align? (D-057)",
   "Live Adult page FAQ: the answer to \"Can Beyond integrate with my existing website or gateway?\" repeats the next question; fix on the current site (D-057)",
   "FAQ page in production mode shows only confirmed answers and hides topics with none. OK to hide the rest until confirmed? (D-054)",
+  "Live Solutions and industry pages publish writer placeholders ('[Placeholder — TODO: VERIFY WITH BEYOND…]'), internal notes, copied headings, dead links and a sample testimonial. Fix on the current site: every case is listed in docs/LIVE_SITE_ISSUES.md (D-058)",
+  "Solutions FAQ answers marked as placeholders on the live site are flagged here and hidden in production, so several Solutions FAQs show only a few answers until Beyond confirms them. OK? (D-058)",
+  "Hero cards on the Grow pages, Chargeback protection and 3D Secure are hidden at every screen size on the live site but shown in the demo (labelled Example). Keep them? (D-058)",
+  "Protect hub: the live FAQ is a copy of the Adult FAQ. The demo reuses five questions from the Protect pages instead. OK, or will Beyond supply Protect questions? (D-058)",
+  "Hardware catalog (/catalog) and the Cash Discount, Dual Pricing and Surcharging pages are linked but not built. In scope for the full build? (D-058)",
+  "The demo's solution pages use the live section headings where they fit; headings the live site copied from other pages were replaced with each section's own words (list in D-058). Approve the replacements? (D-058)",
+  "Should the new industry and Solutions FAQs also appear on the /faq page, as Adult's do? (D-058)",
 ];
 
 const md = [

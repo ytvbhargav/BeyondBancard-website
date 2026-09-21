@@ -53,7 +53,9 @@ export function UnderwritingCard({
       ref={ref}
       className={cn("relative w-full rounded-md bg-surface text-ink-900 shadow-float", className)}
     >
-      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 sm:px-6">
+      {/* Wraps rather than squeezing: when title and badge can't share a row (phones, lg's
+          narrow column) the badge drops under the industry line, never above the title (D-003). */}
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-3 px-5 pt-5 pb-4 sm:px-6">
         <div>
           <p className="type-h4">{title}</p>
           <p className="type-small mt-0.5 text-muted">{industry}</p>

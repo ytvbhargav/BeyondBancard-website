@@ -51,10 +51,16 @@ export function FeatureGrid({
   }
 
   if (variant === "panel") {
+    // Three items sit in one row from md, so the panel never ends on a half-empty row (D-058).
+    const three = items.length === 3;
     return (
       <Stagger
         as="ul"
-        className={cn("grid overflow-hidden rounded-md border border-line bg-surface md:grid-cols-2", className)}
+        className={cn(
+          "grid overflow-hidden rounded-md border border-line bg-surface",
+          three ? "md:grid-cols-3" : "md:grid-cols-2",
+          className,
+        )}
       >
         {items.map((f, i) => (
           <StaggerItem
@@ -63,8 +69,7 @@ export function FeatureGrid({
             className={cn(
               "border-line p-7 md:p-9",
               i > 0 && "border-t",
-              i === 1 && "md:border-t-0",
-              i % 2 === 1 && "md:border-l",
+              three ? i > 0 && "md:border-t-0 md:border-l" : [i === 1 && "md:border-t-0", i % 2 === 1 && "md:border-l"],
             )}
           >
             {f.icon && <Icon name={f.icon} className="size-6 text-brand-600" />}
@@ -78,10 +83,26 @@ export function FeatureGrid({
     );
   }
 
+  // Five items sit three over two from lg (and two, two, one full width at md), so the
+  // grid never ends on a half-empty row (D-058). Assumes the full content width.
+  const five = items.length === 5;
+  // Row spacing is the grid gap, not item padding, so the last row adds nothing to the
+  // section's bottom padding (D-006 rhythm).
   return (
-    <Stagger as="ul" className={cn("grid gap-x-8 gap-y-2", colClass, className)}>
-      {items.map((f) => (
-        <StaggerItem as="li" key={f.title} className="border-t border-line-strong pt-6 pb-8">
+    <Stagger
+      as="ul"
+      className={cn("grid gap-x-8 gap-y-10", five ? "md:grid-cols-2 lg:grid-cols-6" : colClass, className)}
+    >
+      {items.map((f, i) => (
+        <StaggerItem
+          as="li"
+          key={f.title}
+          className={cn(
+            "border-t border-line-strong pt-6",
+            five && (i < 3 ? "lg:col-span-2" : "lg:col-span-3"),
+            five && i === 4 && "md:col-span-2",
+          )}
+        >
           <div className="flex items-center gap-3">
             {f.icon && <Icon name={f.icon} className="size-5 shrink-0 text-brand-600" />}
             <H className="type-h4">{f.title}</H>
