@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { ActionsBlock } from "@/types/content";
 
@@ -15,11 +15,12 @@ import type { ActionsBlock } from "@/types/content";
  * still makes sense out of context. Prompt above link below sm, side by side
  * from sm; the header stacks above the rows below lg, as in Statement.
  */
-export function ActionRows({ block, tone, headingId }: BlockProps<ActionsBlock>) {
+export function ActionRows({ block, tone, headingId, index }: BlockProps<ActionsBlock>) {
   return (
     <Section id={block.id} tone={tone} aria-labelledby={headingId}>
       <div className="grid gap-10 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h2 max-w-[20ch]">
             <BlockTitle title={block.title} flag={block} />
           </h2>

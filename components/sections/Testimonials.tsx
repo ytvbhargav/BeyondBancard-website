@@ -26,7 +26,18 @@ function Attribution({ t, dark }: { t: Testimonial; dark?: boolean }) {
  * Testimonials (PRD §9.1.7). Desktop: featured quote plus three supporting
  * quotes. Mobile: one quote at a time with a crossfade.
  */
-export function Testimonials({ title, items, note }: { title: string; items: Testimonial[]; note: string }) {
+export function Testimonials({
+  title,
+  items,
+  note,
+  confirmed = false,
+}: {
+  title: string;
+  items: Testimonial[];
+  note: string;
+  /** Display permission confirmed: shows the quotes without the flag, in production too. */
+  confirmed?: boolean;
+}) {
   const [featured, ...rest] = items;
   const [index, setIndex] = useState(0);
   const reduce = useReducedMotionSafe();
@@ -35,7 +46,7 @@ export function Testimonials({ title, items, note }: { title: string; items: Tes
   return (
     <Section tone="paper" aria-labelledby="testimonials-title">
       <SectionHeader id="testimonials-title" title={title} />
-      <Confirm note={note} as="div">
+      <Confirm note={note} confirmed={confirmed} as="div">
         {/* Desktop and tablet */}
         <div className="hidden md:block">
           <figure className="grid gap-8 lg:grid-cols-12">

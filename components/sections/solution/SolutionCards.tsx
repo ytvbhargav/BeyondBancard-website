@@ -22,13 +22,13 @@ type Card = CardsBlock["cards"][number];
  * and the link reads it as its description. Card links are internal (spec C4),
  * so they always go through href().
  */
-export function SolutionCards({ block, tone, headingId }: BlockProps<CardsBlock>) {
+export function SolutionCards({ block, tone, headingId, index }: BlockProps<CardsBlock>) {
   const count = block.cards.length;
   const columns =
     count % 3 === 0 ? (count > 3 ? "md:grid-cols-2 lg:grid-cols-3" : "lg:grid-cols-3") : "md:grid-cols-2";
 
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       {/* Phone-only density pass (D-060): 12px between stacked cards below sm, the 16px gap unchanged
           from sm up — the same step the stacked comparison cards take, so both card lists match. */}
       <Stagger as="ul" className={cn("grid gap-3 sm:gap-4", columns)}>
@@ -43,6 +43,7 @@ export function SolutionCards({ block, tone, headingId }: BlockProps<CardsBlock>
 }
 
 function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueId: string }) {
+  if (!card.link) return <PlainCard card={card} tone={tone} />;
   return (
     <div
       className={cn(
@@ -59,7 +60,7 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
       <CardSpotlight />
       <h3 className="type-h3 text-ink-900">
         <Link
-          href={href(card.link.href)}
+          href={href(card.link!.href)}
           aria-describedby={cueId}
           className={cn(
             "after:absolute after:inset-0 after:rounded-md",
@@ -78,7 +79,7 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
       <span aria-hidden className="mt-auto flex items-center justify-between gap-4 pt-6 sm:pt-8">
         <span className="font-semibold text-ink-900 transition-colors duration-(--duration-fast) group-hover/card:text-brand-700 group-has-focus-visible/card:text-brand-700">
           <span id={cueId} className="link-draw">
-            {card.link.label}
+            {card.link!.label}
           </span>
         </span>
         <span
@@ -94,6 +95,23 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
           />
         </span>
       </span>
+    </div>
+  );
+}
+
+/** A card with no onward page: the same object without the link, hover lift or cue row. */
+function PlainCard({ card, tone }: { card: Card; tone: BlockTone }) {
+  return (
+    <div
+      className={cn(
+        "flex h-full flex-col rounded-md border border-line p-5 sm:p-6 md:p-8",
+        tone === "surface" ? "bg-paper" : "bg-surface",
+      )}
+    >
+      <h3 className="type-h3 text-ink-900">{card.title}</h3>
+      {card.tagline && <p className="type-h4 mt-3 max-w-[30rem] text-balance text-ink-900">{card.tagline}</p>}
+      <p className="mt-3 max-w-[30rem] text-muted">{card.body}</p>
+      {card.detail && <Detail text={card.detail} />}
     </div>
   );
 }

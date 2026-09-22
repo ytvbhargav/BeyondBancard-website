@@ -19,17 +19,17 @@ import { keepTogether } from "@/lib/typography";
  *   are the page script's `recommendations` strings, copied verbatim (the live <strong> emphasis as
  *   **…**, the family names in their live capitals). The legend "Where do you take payments?" is
  *   drafted (§5): the live option row has no visible label. The live "Browse Hardware Catalog"
- *   button (a jump to #hardware-catalog) → "Browse hardware catalog", linked to /catalog.
+ *   button is dropped: the hardware catalog isn't built.
  * - "Six categories, one catalog." → cards (§5): each family name is the card title, its first line
  *   the tagline, its paragraph the body, "Best for: …" the detail (Countertop only, as live) and its
- *   button the link label, linked to /catalog (live: "#").
+ *   button dropped (live: "#"; the catalog isn't built), so the cards have no links.
  * - "A general guide, not a spec sheet." → table, keeping the live anchor "hardware-catalog" (the
  *   live "Browse Hardware Catalog" buttons jumped here). The two "Model-dependent — TODO: VERIFY"
  *   touchscreen cells keep "Model-dependent", flagged (C2).
  * - The chips heading "POS by business model." is the POS systems page's, so the section's own
  *   label is the h2, "Where this fits." (§5) → chips.
- * - "Hardware catalog" band → callout (§5) without its paragraph; its button links to /catalog (live:
- *   a jump to #hardware-catalog).
+ * - The "Hardware catalog" band is dropped, and the table lead and FAQ answers drop their pointers
+ *   to the catalog, which isn't built. The FAQ "Where can I see available devices?" is dropped.
  * - Related solutions: the template's title "Related solutions" and menu labels (In-person payments,
  *   POS systems, as live).
  * - The bigger picture: Operate's heading and paragraph, as live; the lifecycle row (Accept,
@@ -73,9 +73,6 @@ import { keepTogether } from "@/lib/typography";
  *   5, 6 and 7).
  */
 
-/** The hardware catalog (resolves to /coming-soon; C4). */
-const catalogHref = "/catalog";
-
 export const paymentTechnology = {
   meta: { title: "Payment technology" },
   pillar: "Operate",
@@ -118,49 +115,41 @@ export const paymentTechnology = {
           text: "For **on-the-go acceptance**, businesses typically look at **Mobile Readers** — compact payment hardware for field teams and pop-ups.",
         },
       ],
-      link: { label: "Browse hardware catalog", href: catalogHref },
     },
     {
       kind: "cards",
       title: "Six categories, one catalog.",
-      // Every family button links to "#" live; the demo sends them to the catalog (§5).
       cards: [
         {
           title: "Countertop",
           tagline: "Built for the checkout counter.",
           body: "Reliable payment technology for businesses with a fixed point of sale and consistent checkout environment.",
           detail: "Best for: Retail counters, service desks, reception areas, fixed checkout",
-          link: { label: "View countertop devices", href: catalogHref },
         },
         {
           title: "Smart terminals",
           tagline: "More capability at the point of payment.",
           body: "Touchscreen payment devices designed for richer merchant and customer interactions at checkout.",
-          link: { label: "View smart terminals", href: catalogHref },
         },
         {
           title: "Handheld & wireless",
           tagline: "Take checkout to the customer.",
           body: "Portable payment technology for tableside service, line-busting, curbside, events, and teams that don't stay behind a counter.",
-          link: { label: "View handheld & wireless", href: catalogHref },
         },
         {
           title: "Mobile readers",
           tagline: "Compact payment acceptance for businesses on the move.",
           body: "Flexible mobile payment hardware for field teams, events, pop-ups, and other mobile commerce environments.",
-          link: { label: "View mobile devices", href: catalogHref },
         },
         {
           title: `${keepTogether("Customer-facing")} & PIN pads`,
           tagline: "Give customers their own payment interaction.",
           body: "Dedicated customer-facing devices for supported card, PIN, and contactless payment experiences.",
-          link: { label: "View customer-facing devices", href: catalogHref },
         },
         {
           title: "Specialty hardware",
           tagline: "Built for specialized payment environments.",
           body: "Explore kiosks, peripherals, accessories, and other payment technology for more specialized operating needs.",
-          link: { label: "Browse specialty hardware", href: catalogHref },
         },
       ],
     },
@@ -169,7 +158,7 @@ export const paymentTechnology = {
       // The live section anchor (the live "Browse Hardware Catalog" buttons jumped here).
       id: "hardware-catalog",
       title: "A general guide, not a spec sheet.",
-      lead: "Exact specifications vary by device — visit the hardware catalog for actual model details.",
+      lead: "Exact specifications vary by device.",
       columns: ["Countertop", "Smart terminal", "Handheld / wireless", "Mobile reader"],
       rows: [
         {
@@ -219,12 +208,6 @@ export const paymentTechnology = {
       title: "Where this fits.",
       chips: ["Restaurants & quick service", "Retail", "Service businesses", "Multi-location", "Mobile / events"],
     },
-    {
-      kind: "callout",
-      // The live paragraph is the bigger picture's, so the band has no body (§5).
-      title: "Hardware catalog.",
-      link: { label: "Browse hardware catalog", href: catalogHref },
-    },
   ],
   related: {
     title: "Related solutions",
@@ -240,7 +223,7 @@ export const paymentTechnology = {
     items: [
       {
         q: "What type of payment terminal do I need?",
-        a: "It depends on where and how you sell — use the selector above, or browse the full catalog to compare devices.",
+        a: "It depends on where and how you sell — use the selector above.",
       },
       {
         q: "What's the difference between a smart terminal and a traditional terminal?",
@@ -273,10 +256,6 @@ export const paymentTechnology = {
         a: "Compatibility depends on the specific hardware and setup.",
         confirm: true,
         note: "Payment technology: existing hardware compatibility (live answer marked as a placeholder)",
-      },
-      {
-        q: "Where can I see available devices?",
-        a: "Browse the complete Beyond hardware catalog for actual devices, specifications, and configurations.",
       },
     ],
   },

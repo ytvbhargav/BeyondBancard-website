@@ -1,17 +1,14 @@
 import Link from "next/link";
-import { Confirm, DEMO_MODE } from "@/components/ui/confirm";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
 import { href } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import type { ClientStory as Story } from "@/content/client-stories";
-import type { NavLink } from "@/types/content";
 
 type Flag = { confirm?: boolean; note: string };
 type FileLabels = { industry: string; related: string };
 
 /** Unconfirmed content shows in demo mode only and is omitted in production, as in FaqSection (D-042). */
-export const shown = (flag: Flag) => !flag.confirm || DEMO_MODE;
 
 /*
  * Quote sizes (D-054). The featured story is set a clear step larger than the rest: fluid from 24px on
@@ -45,7 +42,9 @@ function Row({ label, dark, children }: { label: React.ReactNode; dark: boolean;
 }
 
 /** Internal link value: brand colour at rest (a lighter brand tint on ink), underline drawn on hover. No arrow, as in the contact file. */
-function ValueLink({ link, dark }: { link: NavLink; dark: boolean }) {
+/** The value as a link, or as plain text when it has no page. */
+function ValueLink({ link, dark }: { link: { label: string; href?: string }; dark: boolean }) {
+  if (!link.href) return <span className="inline-flex min-h-11 items-center">{link.label}</span>;
   return (
     <Link
       href={href(link.href)}
@@ -66,7 +65,6 @@ const headingId = (story: Story) => `story-${story.company.toLowerCase().replace
 export function ClientStory({
   story,
   labels,
-  context,
   featured = false,
 }: {
   story: Story;
@@ -130,24 +128,9 @@ export function ClientStory({
             </div>
             <div className={cn("@container border-t px-6 py-1 @[36rem]:border-t-0 @[36rem]:border-l", dark && "border-ink-800")}>
               <dl className="grid grid-cols-1 @[17rem]:grid-cols-[minmax(4.5rem,auto)_minmax(0,1fr)] @[17rem]:gap-x-3">
-                {shown(context) && (
-                  <Row
-                    dark={dark}
-                    label={
-                      <>
-                        {labels.industry}
-                        {/* The marker sits beside the label, never around it, so the label survives in production */}
-                        {context.confirm && (
-                          <Confirm note={context.note} variant="marker">
-                            {null}
-                          </Confirm>
-                        )}
-                      </>
-                    }
-                  >
-                    <ValueLink link={story.industry} dark={dark} />
-                  </Row>
-                )}
+                <Row dark={dark} label={labels.industry}>
+                  <ValueLink link={story.industry} dark={dark} />
+                </Row>
                 {story.related && (
                   <Row label={labels.related} dark={dark}>
                     <ValueLink link={story.related} dark={dark} />
@@ -164,8 +147,7 @@ export function ClientStory({
 
 /**
  * The stories in page order: the first featured on ink, the rest on paper split by hairlines. One labelled
- * region with a visually hidden heading, so each company name is an h3 under it. The page redirects in
- * production until display permission is confirmed, so this never renders an empty region.
+ * region with a visually hidden heading, so each company name is an h3 under it.
  */
 export function ClientStories({
   title,

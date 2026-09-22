@@ -697,6 +697,26 @@ html[data-announcement="dismissing"] {
 
 /* Keyboard focus never lands inside a block that is still waiting to reveal: a focused
    descendant shows the block at once (same specificity as the hidden rules, declared later). */
+/* Word-by-word heading reveal (RevealWords). Plain text without JS. */
+.js [data-words] [data-word] {
+  display: inline-block;
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out);
+  transition-delay: calc(var(--i) * 45ms);
+}
+.js [data-words]:not([data-shown]) [data-word] {
+  opacity: 0;
+  transform: translateY(0.4em);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .js [data-words]:not([data-shown]) [data-word] {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 .js [data-reveal]:focus-within,
 .js [data-stagger] > [data-stagger-item]:focus-within {
   opacity: 1;

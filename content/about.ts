@@ -26,7 +26,7 @@ export type CompanyFileContent = {
   banks: SponsorBank[];
 };
 
-export type Audience = { title: string; body: string; icon: IconName; link: NavLink };
+export type Audience = { title: string; body: string; icon: IconName; link?: NavLink };
 
 /**
  * About (spec §3.1, D-054). Values live in content/company.ts, shared with Careers.
@@ -89,8 +89,6 @@ export const about = {
         title: "Everyday businesses",
         body: "Retail, restaurants, field services, healthcare and more.",
         icon: "store",
-        // The grouped list of every non-featured industry, not only the retail group.
-        link: { label: "View everyday businesses", href: "/industries#all-industries" },
       },
       {
         title: "Partners",

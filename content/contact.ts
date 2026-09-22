@@ -92,7 +92,6 @@ export const contactPage = {
         body: "Refer merchants or build a partner business with Beyond.",
         icon: "handshake",
         topic: "partner",
-        action: { label: cta.partner.label, href: cta.partner.href },
         channels: [
           { label: "Portal", value: "Log in to partner portal", href: portals.partner.href },
           { label: "Learn more", value: "ISOs & agents program", href: "/partners/isos-agents" },

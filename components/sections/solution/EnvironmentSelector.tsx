@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { ChipToggle } from "@/components/ui/chip";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { SelectorBlock } from "@/types/content";
 
@@ -24,7 +24,7 @@ import type { SelectorBlock } from "@/types/content";
  * (aria-hidden); screen readers get the chosen text from a polite live region,
  * which announces each change.
  */
-export function EnvironmentSelector({ block, tone, headingId }: BlockProps<SelectorBlock>) {
+export function EnvironmentSelector({ block, tone, headingId, index }: BlockProps<SelectorBlock>) {
   const [active, setActive] = useState(0);
   const current = block.options[active];
   if (!current) return null;
@@ -34,6 +34,7 @@ export function EnvironmentSelector({ block, tone, headingId }: BlockProps<Selec
     <Section id={block.id} tone={tone} aria-labelledby={headingId}>
       <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
         <Reveal className="min-w-0 lg:col-span-5">
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h2">
             <BlockTitle title={block.title} flag={block} />
           </h2>
@@ -77,17 +78,19 @@ export function EnvironmentSelector({ block, tone, headingId }: BlockProps<Selec
             <p aria-live="polite" aria-atomic="true" className="sr-only">
               <Emphasis text={current.text} />
             </p>
-            <div className="mt-8 border-t border-line pt-6">
-              {/* Wraps rather than overflowing if a label outgrows a phone-width panel */}
-              <Button
-                href={block.link.href}
-                variant="secondary"
-                arrow
-                className="h-auto min-h-12 py-3 text-center whitespace-normal"
-              >
-                {block.link.label}
-              </Button>
-            </div>
+            {block.link && (
+              <div className="mt-8 border-t border-line pt-6">
+                {/* Wraps rather than overflowing if a label outgrows a phone-width panel */}
+                <Button
+                  href={block.link.href}
+                  variant="secondary"
+                  arrow
+                  className="h-auto min-h-12 py-3 text-center whitespace-normal"
+                >
+                  {block.link.label}
+                </Button>
+              </div>
+            )}
           </div>
         </Reveal>
       </div>

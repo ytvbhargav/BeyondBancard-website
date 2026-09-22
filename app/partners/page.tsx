@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { DEMO_MODE } from "@/components/ui/confirm";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
@@ -20,8 +19,7 @@ export const metadata: Metadata = {
 };
 
 export default function PartnersPage() {
-  // Production drops unconfirmed benefits whole (D-042), so no heading is left without its body.
-  const benefits = partners.benefits.items.filter((f) => !f.confirm || DEMO_MODE);
+  const benefits = partners.benefits.items;
 
   return (
     <>

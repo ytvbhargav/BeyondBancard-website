@@ -5,7 +5,6 @@ import { Phone } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Button } from "@/components/ui/button";
 import { ChipLink } from "@/components/ui/chip";
-import { Confirm, DEMO_MODE } from "@/components/ui/confirm";
 import { Section } from "@/components/ui/section";
 import { Highlighted, fill, plural, useFaqExplorer, type TopicResult } from "@/components/sections/FaqExplorer";
 import { PHONE } from "@/lib/links";
@@ -29,7 +28,7 @@ export function FaqTopics() {
     <Section
       tone="surface"
       space="none"
-      className="section-b pt-8 md:pt-10"
+      className="pt-8 section-b md:pt-10"
       containerClassName="lg:grid lg:grid-cols-12 lg:gap-8"
     >
       <div className="hidden lg:col-span-4 lg:block xl:col-span-3">
@@ -54,14 +53,7 @@ export function FaqTopics() {
                 className="animate-in duration-(--duration-fast) fade-in-0"
               >
                 <h2 id={`${topic.id}-title`} className="type-h3">
-                  {/* Production mode hides a topic whose answers are all unconfirmed: flag it once, on the heading. */}
-                  {DEMO_MODE && topic.unconfirmed ? (
-                    <Confirm note={copy.topicNote} variant="marker">
-                      {title}
-                    </Confirm>
-                  ) : (
-                    title
-                  )}
+                  {title}
                 </h2>
                 <Accordion
                   type="multiple"
@@ -76,13 +68,7 @@ export function FaqTopics() {
                       </AccordionTrigger>
                       <AccordionContent>
                         <p className="max-w-[34rem] text-muted">
-                          {faq.confirm ? (
-                            <Confirm note={faq.note ?? "FAQ answer"}>
-                              <Highlighted text={faq.a} ranges={a} />
-                            </Confirm>
-                          ) : (
-                            <Highlighted text={faq.a} ranges={a} />
-                          )}
+                          <Highlighted text={faq.a} ranges={a} />
                         </p>
                       </AccordionContent>
                     </AccordionItem>
@@ -230,7 +216,7 @@ function TopicChips({ topics }: { topics: TopicResult[] }) {
           <li key={t.id} className="flex shrink-0">
             <ChipLink href={`#${t.id}`} className="whitespace-nowrap">
               {t.title}
-              <span className="tabular type-small text-muted">
+              <span className="type-small text-muted tabular">
                 {t.items.length}
                 <span className="sr-only"> {plural(t.items.length, copy.noun)}</span>
               </span>

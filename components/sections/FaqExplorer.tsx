@@ -1,7 +1,6 @@
 "use client";
 
 import { createContext, useCallback, useContext, useMemo, useRef, useState } from "react";
-import { DEMO_MODE } from "@/components/ui/confirm";
 import { useReducedMotionSafe } from "@/lib/useReducedMotionSafe";
 import type { FaqExplorerCopy, FaqTopic } from "@/content/faqs";
 import type { Faq } from "@/types/content";
@@ -159,7 +158,6 @@ export function FaqExplorer({
           unconfirmed: t.faqs.every((faq) => faq.confirm),
           items: t.faqs
             .map((faq, i) => ({ id: itemId(t.id, i), faq, q: fold(faq.q), a: fold(faq.a) }))
-            .filter(({ faq }) => !faq.confirm || DEMO_MODE),
         }))
         .filter((t) => t.items.length > 0),
     [topics],

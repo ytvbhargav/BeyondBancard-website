@@ -27,8 +27,8 @@ import { solutionBreadcrumb } from "@/content/solutions/links";
  *   done. No status: the live card has none. The live card is set hidden at every breakpoint; its
  *   labels are used as on the other Grow pages.
  * - "One goal. Different ways to get there." → cards (§5): each tile's small title is the card
- *   title, its heading the tagline, and "Explore …" the link label. The links go to
- *   /grow/cash-discount, /grow/dual-pricing and /grow/surcharging (coming soon, C4).
+ *   title and its heading the tagline. The live "Explore …" links are dropped: the program pages
+ *   aren't built.
  * - "Compare the three approaches side by side." → table, keeping the live anchor "cost-reduction".
  *   Cells reading "Text — TODO: VERIFY …" keep the text and are flagged (C2), so production shows
  *   only the two rows without a flag.
@@ -105,25 +105,21 @@ export const costReductionPrograms = {
     {
       kind: "cards",
       title: "One goal. Different ways to get there.",
-      // The program pages aren't built yet: these hrefs resolve to coming soon (C4).
       cards: [
         {
           title: "Cash discount",
           tagline: "Reward lower-cost ways to pay.",
           body: "Set pricing appropriately and offer customers a clearly disclosed discount when they use qualifying lower-cost payment methods.",
-          link: { label: "Explore cash discount", href: "/grow/cash-discount" },
         },
         {
           title: "Dual pricing",
           tagline: "Show the choice clearly.",
           body: "Display separate prices for cash and card so customers understand the payment economics before checkout.",
-          link: { label: "Explore dual pricing", href: "/grow/dual-pricing" },
         },
         {
           title: "Surcharging",
           tagline: "Offset eligible credit-card costs.",
           body: "Add a disclosed surcharge to qualifying credit-card transactions where permitted and configured appropriately.",
-          link: { label: "Explore surcharging", href: "/grow/surcharging" },
         },
       ],
     },

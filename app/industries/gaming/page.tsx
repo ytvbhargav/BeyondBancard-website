@@ -1,15 +1,9 @@
+import { industryImages } from "@/content/industry-images";
 import { IndustryDetail, industryDetailMetadata } from "@/components/sections/IndustryDetail";
-import { UnderwritingCard } from "@/components/motion/UnderwritingCard";
-import { gaming, gamingFaqs, gamingVisual } from "@/content/gaming";
+import { gaming, gamingFaqs } from "@/content/gaming";
 
 export const metadata = industryDetailMetadata(gaming);
 
 export default function GamingPage() {
-  return (
-    <IndustryDetail
-      content={gaming}
-      faqs={gamingFaqs}
-      visual={<UnderwritingCard {...gamingVisual} mode="static" completed={2} />}
-    />
-  );
+  return <IndustryDetail content={gaming} faqs={gamingFaqs} images={industryImages["gaming"]} />;
 }

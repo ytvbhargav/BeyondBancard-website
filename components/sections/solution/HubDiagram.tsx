@@ -26,14 +26,14 @@ const LINE_FADE = "transition-opacity duration-(--duration-base) ease-out";
  * centre fades up after them; the lines sit outside both and fade in (opacity
  * only) once what they join has settled.
  */
-export function HubDiagram({ block, tone, headingId }: BlockProps<HubBlock>) {
+export function HubDiagram({ block, tone, headingId, index }: BlockProps<HubBlock>) {
   const outputs = block.outputs ?? [];
   const hasOutputs = outputs.length > 0;
   // Chips take the opposite background to the section so they read on either tone.
   const chipBg = tone === "surface" ? "bg-paper" : "bg-surface";
 
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       <div
         className={cn(
           "flex flex-col items-center gap-4 lg:grid lg:items-center lg:gap-0",

@@ -27,10 +27,8 @@ import { solutionBreadcrumb, solutionLink } from "@/content/solutions/links";
  *   model." → chips.
  * - "The best checkout experience connects both sides." → hub: "Business operations" in, the live
  *   "BEYOND" node as the centre, the four live labels out (the Payment gateways pattern).
- * - "Explore terminals, handhelds, readers, and other payment hardware…" → callout; its button
- *   "Explore Payment Hardware" (live: /contact-us/) → "Explore payment hardware", linked to the
- *   hardware catalog, /catalog (C4 allows no raw /contact-us/ link; FAQ 7 points to the catalog, and
- *   the Payment technology page's band links there too).
+ * - The "Explore terminals, handhelds, readers, and other payment hardware…" band is dropped: its
+ *   button's destination, a hardware catalog, isn't built. FAQ 7's answer drops its pointer to it.
  * - Related solutions: the template's title "Related solutions" and menu labels (In-person
  *   payments, Payment technology, "Dashboard & Reporting" → Reporting).
  * - The bigger picture: Operate's heading and paragraph, as live; the lifecycle row (Accept,
@@ -59,9 +57,6 @@ import { solutionBreadcrumb, solutionLink } from "@/content/solutions/links";
  *   PORTFOLIO for full list.]", "[Placeholder — TODO: VERIFY WITH BEYOND POS PORTFOLIO.]" (answers 4
  *   and 5) and "[Placeholder — TODO: VERIFY WITH BEYOND POS PORTFOLIO on specific compatibility.]".
  */
-
-/** The hardware catalog (resolves to /coming-soon; C4). */
-const catalogHref = "/catalog";
 
 export const pos = {
   meta: { title: "POS systems" },
@@ -132,13 +127,6 @@ export const pos = {
       // Centre: the live "BEYOND" node (the template's default).
       outputs: ["POS", "Payment technology", "Payment processing", "Reporting"],
     },
-    {
-      kind: "callout",
-      title: "Explore terminals, handhelds, readers, and other payment hardware available through Beyond.",
-      // Live button links to /contact-us/; the demo sends it to the hardware catalog, as the Payment
-      // technology page's band does (and as FAQ 7 points).
-      link: { label: "Explore payment hardware", href: catalogHref },
-    },
   ],
   related: {
     title: "Related solutions",
@@ -186,7 +174,7 @@ export const pos = {
       },
       {
         q: "Does Beyond provide POS hardware?",
-        a: "Yes — see the hardware catalog for available devices.",
+        a: "Yes.",
       },
       {
         q: "How do I choose the right POS?",

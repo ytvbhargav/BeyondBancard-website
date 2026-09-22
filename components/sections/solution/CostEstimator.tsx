@@ -8,7 +8,7 @@ import { Label } from "@/components/ui/label";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
 import { FieldError, describedBy } from "@/components/forms/Field";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { EstimatorBlock } from "@/types/content";
 
@@ -62,7 +62,7 @@ function estimate(values: Values, block: EstimatorBlock) {
  * settled result is announced through a polite live region, empty until the
  * first edit so nothing is read out on load. Stacks below lg.
  */
-export function CostEstimator({ block, tone, headingId }: BlockProps<EstimatorBlock>) {
+export function CostEstimator({ block, tone, headingId, index }: BlockProps<EstimatorBlock>) {
   const [initial] = useState<Values>(() => ({
     volume: plain.format(block.volume.defaultValue),
     rate: plain.format(block.rate.defaultValue),
@@ -100,6 +100,7 @@ export function CostEstimator({ block, tone, headingId }: BlockProps<EstimatorBl
     <Section id={block.id} tone={tone} aria-labelledby={headingId}>
       <div className="grid gap-6 lg:grid-cols-12 lg:items-start lg:gap-8">
         <Reveal className="lg:col-span-5">
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h2 max-w-[20ch]">
             <BlockTitle title={block.title} flag={block} />
           </h2>

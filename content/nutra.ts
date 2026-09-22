@@ -1,5 +1,5 @@
 import type { Capability, Feature, IndustryDetailContent, Step } from "@/types/content";
-import { industriesBySlug } from "@/content/industries";
+import { featuredIndustries } from "@/content/industries";
 
 export const nutra = {
   meta: { title: "Nutra & supplement payments" },
@@ -107,6 +107,7 @@ export const nutra = {
   faq: { title: "Nutra and supplement payment questions." },
   related: {
     title: "Related industries",
-    items: industriesBySlug(["functional-mushroom", "kratom", "cbd-hemp", "ecommerce"]),
+    // The other featured complex industries, in menu order.
+    items: featuredIndustries.filter((i) => i.slug !== "nutra-supplements"),
   },
 } satisfies IndustryDetailContent;

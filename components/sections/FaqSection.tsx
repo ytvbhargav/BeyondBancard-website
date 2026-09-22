@@ -1,7 +1,7 @@
 import { Phone } from "lucide-react";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Container } from "@/components/ui/container";
-import { Confirm, DEMO_MODE } from "@/components/ui/confirm";
+import { Confirm } from "@/components/ui/confirm";
 import { cta } from "@/content/site";
 import type { Faq } from "@/types/content";
 
@@ -11,7 +11,7 @@ import type { Faq } from "@/types/content";
  * mode and omitted in production.
  */
 export function FaqSection({ title, faqs, tone = "paper" }: { title: string; faqs: Faq[]; tone?: "surface" | "paper" }) {
-  const visible = faqs.filter((f) => !f.confirm || DEMO_MODE);
+  const visible = faqs;
   return (
     <section className={tone === "surface" ? "section-y bg-surface" : "section-y bg-paper"} aria-labelledby="faq-title">
       <Container className="grid gap-10 lg:grid-cols-12 lg:gap-8">
