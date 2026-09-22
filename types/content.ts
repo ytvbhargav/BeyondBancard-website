@@ -246,20 +246,34 @@ export type SolutionBlock =
   | QuestionsBlock
   | EstimatorBlock
   | SelectorBlock
-  | CalloutBlock;
+  | CalloutBlock
+  | CapabilitiesBlock;
+
+/** Capabilities grouped by pillar, shown as the industry pages' tabs (partner pages, D-061). */
+export type CapabilitiesBlock = BlockBase & { kind: "capabilities"; items: Capability[] };
 
 export type SolutionPageContent = {
   /** Browser title (the menu label), and the meta description (defaults to the hero lead). */
   meta: { title: string; description?: string };
-  pillar: Pillar;
-  /** "hub" for /accept, /protect, /grow, /operate; "detail" for the pages inside them. */
+  /** The Solutions pillar this page belongs to. Omitted on partner pages, which sit outside the four. */
+  pillar?: Pillar;
+  /** "hub" for /accept, /protect, /grow, /operate; "detail" for the pages inside them and the partner pages. */
   kind: "hub" | "detail";
   breadcrumb: { label: string; href?: string }[];
-  /** `expertCta` overrides the "Talk to an expert" label where the live page names the expert. */
-  hero: { title: string; lead: string; expertCta?: string; visual?: HeroFileContent };
+  /**
+   * `expertCta` overrides the "Talk to an expert" label where the live page names the expert.
+   * `ctas: "partner"` swaps the hero pair to "Become a partner" and "Talk to an expert" (PRD §5.5).
+   */
+  hero: {
+    title: string;
+    lead: string;
+    expertCta?: string;
+    ctas?: "merchant" | "partner";
+    visual?: HeroFileContent;
+  };
   blocks: SolutionBlock[];
   related?: { title: string; links: NavLink[] };
-  /** "The bigger picture": this pillar's role, above links to the other three pillars. */
-  bigPicture: { title: string; lead: string };
+  /** "The bigger picture": this pillar's role, above links to the other three pillars. Omit with no pillar. */
+  bigPicture?: { title: string; lead: string };
   faq: { title: string; items: Faq[] };
 };

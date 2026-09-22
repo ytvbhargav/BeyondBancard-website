@@ -34,7 +34,15 @@ export function PillarsSection({
   return (
     <section className="section-y tone-dark bg-ink-950" aria-labelledby="pillars-title">
       <Container>
-        <SectionHeader id="pillars-title" title={title} lead={lead} tone="dark" align="center" />
+        {/* Phone-only density pass (D-060): 32px under the lead below sm; sm keeps today's 40px and md its 56px. */}
+        <SectionHeader
+          id="pillars-title"
+          title={title}
+          lead={lead}
+          tone="dark"
+          align="center"
+          className="mb-8 sm:mb-10"
+        />
         <PillarStack label="Accept, Protect, Grow and Operate">
           {items.map((p, i) => {
             const Icon = ICONS[p.pillar];
@@ -48,18 +56,27 @@ export function PillarsSection({
                 <div aria-hidden className={`${GLOW[i % GLOW.length]} absolute inset-0 -z-10`} />
                 <div aria-hidden data-shade className="pointer-events-none absolute inset-0 z-20 bg-ink-950 opacity-0" />
 
-                <div className="grid h-full content-start gap-8 p-6 sm:p-8 lg:grid-cols-2 lg:content-center lg:items-center lg:gap-14 lg:p-14">
+                {/* Phone-only density pass (D-060): p-5 and gap-6 below sm; sm and up keep p-8 / gap-8. */}
+                <div className="grid h-full content-start gap-6 p-5 sm:gap-8 sm:p-8 lg:grid-cols-2 lg:content-center lg:items-center lg:gap-14 lg:p-14">
                   <div className="lg:order-2">
-                    <span aria-hidden className="grid size-12 place-items-center rounded-sm bg-brand-600 text-white">
-                      <Icon strokeWidth={1.75} className="size-6" />
-                    </span>
-                    <h3 id={`pillar-${p.pillar}`} className="type-h2 mt-6 text-on-dark">
-                      <TextLink href={p.href} className="font-bold">
-                        {p.pillar}
-                      </TextLink>
-                    </h3>
-                    <p className="type-body-lg mt-3 text-on-dark-muted">{p.descriptor}.</p>
-                    <ul className="mt-7 flex flex-wrap gap-2">
+                    {/* Phone-only density pass (D-060): the icon sits on the heading's line below sm and stacks above it from sm, as before. */}
+                    <div className="flex items-center gap-3 sm:block">
+                      <span
+                        aria-hidden
+                        className="grid size-10 shrink-0 place-items-center rounded-sm bg-brand-600 text-white sm:size-12"
+                      >
+                        <Icon strokeWidth={1.75} className="size-5 sm:size-6" />
+                      </span>
+                      <h3 id={`pillar-${p.pillar}`} className="type-h2 mt-0 text-on-dark sm:mt-6">
+                        <TextLink href={p.href} className="font-bold">
+                          {p.pillar}
+                        </TextLink>
+                      </h3>
+                    </div>
+                    {/* Phone-only density pass (D-060): type-body (16px) and a tighter top margin below sm. */}
+                    <p className="type-body mt-2 text-on-dark-muted sm:type-body-lg sm:mt-3">{p.descriptor}.</p>
+                    {/* Phone-only density pass (D-060): tighter list margin and gap below sm. The chips keep their 44px target. */}
+                    <ul className="mt-5 flex flex-wrap gap-1.5 sm:mt-7 sm:gap-2">
                       {p.links.map((l) => (
                         <li key={l.href}>
                           <ChipLink href={l.href} tone="dark">

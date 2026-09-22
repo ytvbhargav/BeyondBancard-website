@@ -37,7 +37,19 @@ export function CompareColumns({ block, tone, headingId }: BlockProps<CompareBlo
         {columns.map((column, i) => (
           <Fragment key={column.title}>
             {pair && i === 1 && <p className="sr-only">versus</p>}
-            <StaggerItem className={cn("relative border-line p-7 md:p-9", i > 0 && divider)}>
+            <StaggerItem
+              className={cn(
+                // Phone-only density pass (D-060): 20px inset below sm, today's 28/36px from sm up.
+                // Stacked, a pair spends four padding edges on one panel, so this is the biggest win here.
+                "relative border-line p-5 sm:p-7 md:p-9",
+                // Stacked, the "vs" disc straddles the divider and hangs 20px into the column on
+                // either side of it. Keep a little more room on a phone at both of those edges, so
+                // it crowds neither the last line above it nor the title below it (D-060).
+                pair && i === 0 && "pb-6 sm:pb-7 md:pb-9",
+                pair && i === 1 && "pt-6 sm:pt-7 md:pt-9",
+                i > 0 && divider,
+              )}
+            >
               {pair && i === 1 && (
                 // Sits on the divider: the top rule when stacked, the middle of the vertical rule from md.
                 // Paper on the white panel, so it reads as one small object on any section tone.
@@ -94,9 +106,10 @@ function ColumnCopy({ column }: { column: Column }) {
         shows("points") &&
         flag(
           "points",
-          <ul className="mt-6 max-w-[30rem]">
+          // Phone-only density pass (D-060): tighter lead-in and row rhythm below sm
+          <ul className="mt-5 max-w-[30rem] sm:mt-6">
             {points.map((point) => (
-              <li key={point} className="flex gap-3 border-t border-line py-3 text-ink-900">
+              <li key={point} className="flex gap-3 border-t border-line py-2.5 text-ink-900 sm:py-3">
                 {/* Neutral dot, not a check: points describe an option, they don't endorse it */}
                 <span aria-hidden className="mt-2.5 size-1.5 shrink-0 rounded-pill bg-brand-600" />
                 <span>{point}</span>

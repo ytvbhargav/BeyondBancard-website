@@ -72,15 +72,19 @@ export function ComparisonTable({ block, tone, headingId }: BlockProps<TableBloc
         </table>
       </Reveal>
 
-      <Stagger as="ul" className="grid gap-4 tabular wrap-break-word md:hidden">
+      {/* Phone-only density pass (D-060): below sm the cards sit closer and each label/value row
+          loses a little height; from sm (where these cards still show, up to md) everything is
+          restored to today's spacing. */}
+      <Stagger as="ul" className="grid gap-3 tabular wrap-break-word sm:gap-4 md:hidden">
         {block.columns.map((c, i) => (
           <StaggerItem as="li" key={c} className="rounded-md border border-line bg-surface">
-            <h3 className="type-h4 rounded-t-md border-b border-line bg-paper px-5 py-4">{c}</h3>
-            <dl className="px-5 py-1">
+            <h3 className="type-h4 rounded-t-md border-b border-line bg-paper px-5 py-3 sm:py-4">{c}</h3>
+            <dl className="px-5 py-0.5 sm:py-1">
               {rows.map((r) => (
-                <div key={r.label} className="border-t border-line py-3 first:border-t-0">
+                <div key={r.label} className="border-t border-line py-2.5 first:border-t-0 sm:py-3">
                   <dt className="type-small text-muted">{r.label}</dt>
-                  <dd className="mt-1 text-[0.9375rem] text-ink-900">
+                  {/* The denser row keeps full body size below sm (the 16px floor); sm up stays at 15px, as the table does. */}
+                  <dd className="mt-1 text-ink-900 sm:text-[0.9375rem]">
                     <CellText cell={r.cells[i]} />
                   </dd>
                 </div>

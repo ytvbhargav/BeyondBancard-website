@@ -44,6 +44,13 @@ export const DEMO_ROUTES = [
   "/operate/payment-technology",
   "/operate/pos",
   "/operate/virtual-terminal",
+  // The last two Partners menu pages (D-061).
+  "/partners/isvs-platforms",
+  "/partners/associations",
+  // Legal pages (D-062).
+  "/terms-conditions",
+  "/privacy-policy",
+  "/accessibility",
 ] as const;
 
 export type DemoRoute = (typeof DEMO_ROUTES)[number];

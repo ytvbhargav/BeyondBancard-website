@@ -31,6 +31,10 @@ const statCols = ["grid-cols-1", "grid-cols-2", "grid-cols-3"];
  * and the status pill. Done steps tick in one by one once the panel is in the
  * viewport and its entrance has finished, then the active step pulses twice;
  * reduced motion shows the final state.
+ *
+ * Below sm the panel runs at phone density (D-060): tighter padding and row
+ * heights so the hero fits the screen. Every `sm:` here restores the desktop
+ * value, so nothing from 640px up changes. Content is identical at both sizes.
  */
 export function HeroFile({ title, subtitle, tag, status, amount, methods, fields, stats, steps }: HeroFileContent) {
   const ref = useRef<HTMLElement>(null);
@@ -65,7 +69,8 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
       aria-label={`${tag}: ${title}`}
       className="w-full overflow-hidden rounded-md bg-surface text-ink-900 shadow-float"
     >
-      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 sm:px-6">
+      {/* Phone-only density pass (D-060): 16/16/12 padding on phones, was 20/20/16; sm up keeps 24/20/16. */}
+      <div className="flex items-start justify-between gap-3 px-4 pt-4 pb-3 sm:gap-4 sm:px-6 sm:pt-5 sm:pb-4">
         <div className="min-w-0">
           <p className="type-h4">{title}</p>
           {subtitle && <p className="type-small mt-0.5 text-muted">{subtitle}</p>}
@@ -76,7 +81,8 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
       </div>
 
       {(amount || hasMethods) && (
-        <div className="border-t border-line px-5 py-5 sm:px-6">
+        // Phone-only density pass (D-060): 16px block padding on phones, 20px from sm up.
+        <div className="border-t border-line px-4 py-4 sm:px-6 sm:py-5">
           {amount &&
             (amount.label ? (
               <dl>
@@ -88,11 +94,13 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
               <p className="type-h2 tabular">{amount.value}</p>
             ))}
           {methods && hasMethods && (
-            <ul className={cn("flex flex-wrap gap-1.5", amount && "mt-4")}>
+            // Phone-only density pass (D-060): tighter chip gap and side padding on phones, so more
+            // chips fit a row and a long list loses a row; the old 6px gap and 10px padding from sm up.
+            <ul className={cn("flex flex-wrap gap-1 sm:gap-1.5", amount && "mt-3 sm:mt-4")}>
               {methods.map((method) => (
                 <li
                   key={method}
-                  className="inline-flex h-7 items-center rounded-pill border border-line bg-paper px-2.5 text-[0.8125rem] font-medium whitespace-nowrap"
+                  className="inline-flex h-7 items-center rounded-pill border border-line bg-paper px-2 text-[0.8125rem] font-medium whitespace-nowrap sm:px-2.5"
                 >
                   {method}
                 </li>
@@ -103,9 +111,13 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
       )}
 
       {fields && fields.length > 0 && (
-        <dl className="border-t border-line px-5 py-1.5 sm:px-6">
+        // Phone-only density pass (D-060): 40px rows on phones (44px from sm up); the values stay 15px.
+        <dl className="border-t border-line px-4 py-1 sm:px-6 sm:py-1.5">
           {fields.map((f) => (
-            <div key={f.label} className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 first:border-t-0">
+            <div
+              key={f.label}
+              className="flex items-baseline justify-between gap-3 border-t border-line py-2 first:border-t-0 sm:gap-4 sm:py-2.5"
+            >
               <dt className="type-small text-muted">{f.label}</dt>
               <dd className="tabular text-right text-[0.9375rem] font-medium">{f.value}</dd>
             </div>
@@ -119,7 +131,8 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
         // and long words wrap inside their cell rather than run under the next one.
         <dl className={cn("@container grid gap-px border-t border-line bg-line", statCols[shownStats.length - 1])}>
           {shownStats.map((s) => (
-            <div key={s.label} className="flex min-w-0 flex-col gap-1 bg-surface px-2.5 py-4 @[24rem]:px-5">
+            // Phone-only density pass (D-060): 12px block padding on phones, the old 16px from sm up.
+            <div key={s.label} className="flex min-w-0 flex-col gap-1 bg-surface px-2.5 py-3 sm:py-4 @[24rem]:px-5">
               <dt className="type-small hyphens-auto text-muted wrap-break-word">{s.label}</dt>
               <dd className="type-h4 tabular order-first wrap-anywhere @[27rem]:type-h3">{s.value}</dd>
             </div>
@@ -128,15 +141,22 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
       )}
 
       {steps && steps.length > 0 && (
-        <ol className="border-t border-line bg-paper px-5 py-3 sm:px-6">
+        // Phone-only density pass (D-060): 8px band padding and 36px step rows on phones
+        // (12px and 40px from sm up); the 24px mark and the 15px/24px label are unchanged.
+        <ol className="border-t border-line bg-paper px-4 py-2 sm:px-6 sm:py-3">
           {steps.map((s, i) => {
             // Done steps tick in their own order; others wait for the last tick.
             const delay = FIRST_TICK + steps.slice(0, i).filter((p) => p.state === "done").length * TICK_GAP;
             return (
-              <li key={s.label} className="relative flex items-start gap-3 py-2">
+              <li key={s.label} className="relative flex items-start gap-3 py-1.5 sm:py-2">
                 {i < steps.length - 1 && (
-                  // Rail to the next step; it fills in green once this step is done.
-                  <span aria-hidden className="absolute top-8 -bottom-2 left-3 w-0.5 -translate-x-1/2 overflow-hidden rounded-pill bg-line">
+                  // Rail to the next step; it fills in green once this step is done. Its ends follow the
+                  // row padding, so they still meet the marks exactly at phone density (D-060): top =
+                  // padding + the 24px mark, bottom = the next row's padding.
+                  <span
+                    aria-hidden
+                    className="absolute top-7.5 -bottom-1.5 left-3 w-0.5 -translate-x-1/2 overflow-hidden rounded-pill bg-line sm:top-8 sm:-bottom-2"
+                  >
                     {s.state === "done" && (
                       <m.span
                         className="block h-full origin-top bg-success-600"
@@ -166,7 +186,8 @@ export function HeroFile({ title, subtitle, tag, status, amount, methods, fields
 
       {status && (
         // Static pill: the approved pulse ring animates box-shadow, which rule 3 (transform/opacity) rules out.
-        <div className="flex min-h-16 items-center border-t border-line px-5 py-3 sm:px-6">
+        // Phone-only density pass (D-060): a 48px footer band on phones, the old 64px from sm up.
+        <div className="flex min-h-12 items-center border-t border-line px-4 py-2.5 sm:min-h-16 sm:px-6 sm:py-3">
           <Badge status={status.tone}>{status.label}</Badge>
         </div>
       )}

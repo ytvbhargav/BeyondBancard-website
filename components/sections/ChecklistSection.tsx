@@ -18,7 +18,9 @@ export function ChecklistSection({ title, lead, items }: { title: string; lead?:
 
   return (
     <Section tone="paper" aria-labelledby="checklist-title">
-      <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
+      {/* Phone-only density pass (D-060): 32px between the heading block and the
+          panel below sm, restored to today's 48px from sm up. lg:gap-8 is unchanged. */}
+      <div className="grid gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
           <h2 id="checklist-title" className="type-h2">
             {title}
@@ -31,7 +33,9 @@ export function ChecklistSection({ title, lead, items }: { title: string; lead?:
             return (
               <li
                 key={item}
-                className="flex min-h-20 items-center gap-4 border-line px-6 py-5 not-first:border-t sm:nth-2:border-t-0 sm:even:border-l sm:odd:last:col-span-2"
+                // Phone-only density pass (D-060): 56px rows and tighter padding below sm,
+                // restored to the 80px row and px-6 py-5 from sm up.
+                className="flex min-h-14 items-center gap-3 border-line px-4 py-3 not-first:border-t sm:min-h-20 sm:gap-4 sm:px-6 sm:py-5 sm:nth-2:border-t-0 sm:even:border-l sm:odd:last:col-span-2"
               >
                 <svg viewBox="0 0 28 28" className="size-7 shrink-0" aria-hidden>
                   <circle cx="14" cy="14" r="13" fill="none" stroke="var(--color-line-strong)" strokeWidth="1.5" />

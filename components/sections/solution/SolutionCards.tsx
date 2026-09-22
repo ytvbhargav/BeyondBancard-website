@@ -29,7 +29,9 @@ export function SolutionCards({ block, tone, headingId }: BlockProps<CardsBlock>
 
   return (
     <BlockSection block={block} tone={tone} headingId={headingId}>
-      <Stagger as="ul" className={cn("grid gap-4", columns)}>
+      {/* Phone-only density pass (D-060): 12px between stacked cards below sm, the 16px gap unchanged
+          from sm up — the same step the stacked comparison cards take, so both card lists match. */}
+      <Stagger as="ul" className={cn("grid gap-3 sm:gap-4", columns)}>
         {block.cards.map((card, i) => (
           <StaggerItem as="li" key={card.title}>
             <SolutionCard card={card} tone={tone} cueId={`${headingId}-cue-${i + 1}`} />
@@ -44,7 +46,8 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
   return (
     <div
       className={cn(
-        "group/card link-draw-parent relative isolate flex h-full flex-col rounded-md border border-line p-6 md:p-8",
+        // Phone-only density pass (D-060): 20px padding below sm, the p-6/p-8 steps unchanged from sm up
+        "group/card link-draw-parent relative isolate flex h-full flex-col rounded-md border border-line p-5 sm:p-6 md:p-8",
         // Tailwind's translate utilities set `translate`, not `transform`
         "transition-[translate,border-color] duration-(--duration-fast) ease-out hover:-translate-y-0.5 hover:border-brand-600",
         // Keyboard focus on the stretched link lifts the card as hover does
@@ -71,7 +74,8 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
       <p className="mt-3 max-w-[30rem] text-muted">{card.body}</p>
       {card.detail && <Detail text={card.detail} />}
       {/* Hidden, so it isn't read twice; aria-describedby still reads a hidden element it points at */}
-      <span aria-hidden className="mt-auto flex items-center justify-between gap-4 pt-8">
+      {/* Phone-only density pass (D-060): the gap above the link row is 24px below sm, 32px from sm up */}
+      <span aria-hidden className="mt-auto flex items-center justify-between gap-4 pt-6 sm:pt-8">
         <span className="font-semibold text-ink-900 transition-colors duration-(--duration-fast) group-hover/card:text-brand-700 group-has-focus-visible/card:text-brand-700">
           <span id={cueId} className="link-draw">
             {card.link.label}
@@ -97,11 +101,13 @@ function SolutionCard({ card, tone, cueId }: { card: Card; tone: BlockTone; cueI
 /**
  * Small print under the body ("Best for: …"). A short "Label: value" reads as
  * a file row (D-001): the label in ink, the value muted, under a hairline.
+ * Phone-only density pass (D-060): the hairline sits closer below sm; the
+ * 20/16px steps return from sm up.
  */
 function Detail({ text }: { text: string }) {
   const match = /^([^:]{1,24}):\s+(.+)$/.exec(text);
   return (
-    <p className="type-small mt-5 border-t border-line pt-4 text-muted">
+    <p className="type-small mt-4 border-t border-line pt-3 text-muted sm:mt-5 sm:pt-4">
       {match ? (
         <>
           <span className="font-semibold text-ink-900">{match[1]}:</span> {match[2]}

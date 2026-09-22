@@ -53,6 +53,11 @@ const routes = process.argv.slice(4).length
       "/operate/payment-technology",
       "/operate/pos",
       "/operate/virtual-terminal",
+      "/partners/isvs-platforms",
+      "/partners/associations",
+      "/terms-conditions",
+      "/privacy-policy",
+      "/accessibility",
     ];
 const widths = (process.env.WIDTHS ?? "390,1440").split(",").map(Number);
 const reduced = process.env.REDUCED === "1";

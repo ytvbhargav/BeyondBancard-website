@@ -26,6 +26,21 @@ Found on beyondbancard.com on 21 Sept 2026, while copying the live content into 
 - **Grow:** "Explore Growth Solutions" links to "#".
 - **Operate:** the hero button reads "Talk to a Payments Technology"; two "why" bodies repeat industry-page copy; the "why" heading repeats a box title; the Virtual Terminal tile heading "Turn your workspace to get paid." looks like it is missing a word.
 
+## Legal
+
+- **Terms:** "Service availability" repeats the "Account registration and usage" paragraph, and "Modifications" repeats "Termination", so two sections say nothing about their own subject.
+- **Terms:** "Governing law and jurisdiction" still reads "[Jurisdiction]" in both places.
+- **Terms and Privacy:** neither page shows when it was last updated.
+- **Privacy:** its own link to the terms points at /terms-and-conditions, which is not the page's address (/terms-conditions).
+- **Privacy:** there is no "Information collection" section, although "Information use" refers to "the collected information".
+- **Accessibility:** the statement describes the accessibility overlay (Alt+1 profiles, AI remediation, a Wikipedia dictionary) rather than the site itself, so it will not describe the redesign.
+- **Both:** a sentence runs into the next with no space after the full stop (Terms' "Limitation of liability", Privacy's "Information disclosure").
+## Partners
+
+- **ISVs & platforms and Associations:** both publish a sample testimonial ("pending approved partner content") above four "Partner Logo" placeholders, and both show placeholder FAQ answers, including one that says revenue-share terms must not be published.
+- **Associations:** the hero card presents programme results and a rating (1,240 members enrolled, 86% adoption, $42K non-dues revenue, 4.8/5 member rating) as real figures; the "Value for your organization" lead is the industry pages' paragraph.
+- **ISVs & platforms:** the "Integration story" label heads a list it doesn't describe.
+- **Both:** capabilities are filed under Accept even where they belong to Protect, Grow or Operate, and two of them (Payment security, Flexible pricing) name no page at all.
 ## Accept
 
 - **Online payments:** sample testimonial (above).

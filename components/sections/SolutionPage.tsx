@@ -4,6 +4,7 @@ import { DEMO_MODE } from "@/components/ui/confirm";
 import { HeroFile } from "@/components/illustrations/HeroFile";
 import { PageHero } from "@/components/sections/PageHero";
 import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
+import { CapabilityTabs } from "@/components/sections/CapabilityTabs";
 import { RelatedLinks } from "@/components/sections/RelatedLinks";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaBand } from "@/components/sections/CtaBand";
@@ -73,6 +74,8 @@ function Block({ block, index, tone }: { block: SolutionBlock; index: number; to
       return <EnvironmentSelector block={block} {...props} />;
     case "callout":
       return <CalloutBand block={block} {...props} />;
+    case "capabilities":
+      return <CapabilityTabs title={block.title} items={block.items} />;
   }
 }
 
@@ -107,24 +110,38 @@ export function SolutionPage({ content }: { content: SolutionPageContent }) {
   const bands = toBands(blocks);
   const hasRelated = Boolean(related && related.links.length > 0);
   const pillarsFirst = blocks.at(-1)?.kind === "chips";
+  const hasPillars = Boolean(content.pillar && content.bigPicture);
   const toneAt = (i: number) => tones[i % 2];
-  // After the bands: related solutions (if any) and the other pillars, in that order unless
-  // `pillarsFirst`, then the FAQ. Tones keep alternating from the band count.
-  const relatedTone = toneAt(bands.length + (pillarsFirst ? 1 : 0));
-  const pillarsTone = toneAt(bands.length + (pillarsFirst || !hasRelated ? 0 : 1));
-  const faqTone = toneAt(bands.length + (hasRelated ? 2 : 1));
+  // After the bands come related solutions and the lifecycle row, in that order unless
+  // `pillarsFirst`, then the FAQ. Tones keep alternating, skipping whichever is absent.
+  let after = bands.length;
+  const take = () => toneAt(after++);
+  const order = pillarsFirst ? (["pillars", "related"] as const) : (["related", "pillars"] as const);
+  const sectionTones: { related?: BlockTone; pillars?: BlockTone } = {};
+  for (const key of order) {
+    if (key === "related" && !hasRelated) continue;
+    if (key === "pillars" && !hasPillars) continue;
+    sectionTones[key] = take();
+  }
+  const relatedTone = sectionTones.related ?? "surface";
+  const pillarsTone = sectionTones.pillars ?? "surface";
+  const faqTone = toneAt(after);
 
   const relatedLinks =
     related && hasRelated ? <RelatedLinks title={related.title} links={related.links} tone={relatedTone} /> : null;
-  const pillarLinks = (
-    <PillarLinks
-      pillar={content.pillar}
-      title={bigPicture.title}
-      lead={bigPicture.lead}
-      tone={pillarsTone}
-      isHub={content.kind === "hub"}
-    />
-  );
+  // Partner pages sit outside the four pillars, so they have no lifecycle row.
+  const pillar = content.pillar;
+  const pillarLinks =
+    pillar && bigPicture ? (
+      <PillarLinks
+        pillar={pillar}
+        title={bigPicture.title}
+        lead={bigPicture.lead}
+        tone={pillarsTone}
+        isHub={content.kind === "hub"}
+      />
+    ) : null;
+  const partnerCtas = hero.ctas === "partner";
 
   return (
     <>
@@ -138,14 +155,14 @@ export function SolutionPage({ content }: { content: SolutionPageContent }) {
                 phone's column: let it wrap to two balanced lines in a taller pill rather than widen
                 the hero. One line stays exactly 48px (py-3 + 24px line), like the size-md button. */}
             <Button
-              href={cta.expert.href}
+              href={partnerCtas ? cta.partner.href : cta.expert.href}
               arrow
               className="h-auto min-h-12 py-3 text-center text-balance whitespace-normal"
             >
-              {hero.expertCta ?? cta.expert.label}
+              {partnerCtas ? cta.partner.label : (hero.expertCta ?? cta.expert.label)}
             </Button>
-            <Button href={cta.apply.href} variant="secondary">
-              {cta.apply.label}
+            <Button href={partnerCtas ? cta.expert.href : cta.apply.href} variant="secondary">
+              {partnerCtas ? cta.expert.label : cta.apply.label}
             </Button>
           </>
         }

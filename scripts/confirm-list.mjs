@@ -78,6 +78,8 @@ const open = [
   "Hardware catalog (/catalog) and the Cash Discount, Dual Pricing and Surcharging pages are linked but not built. In scope for the full build? (D-058)",
   "The demo's solution pages use the live section headings where they fit; headings the live site copied from other pages were replaced with each section's own words (list in D-058). Approve the replacements? (D-058)",
   "Should the new industry and Solutions FAQs also appear on the /faq page, as Adult's do? (D-058)",
+  "Accessibility page: the live statement describes the accessibility overlay on the current site. The redesign meets WCAG 2.2 AA in the build itself and runs no overlay, so those sections are flagged. Keep the overlay on the new site, or rewrite the statement? (D-062)",
+  "Legal pages: Terms and Privacy are copied verbatim from the live site (22 Sept 2026). Confirm they are current, supply a 'last updated' date, and send the text for the three sections the live Terms page leaves unfinished (service availability, modifications, governing law) (D-062)",
 ];
 
 const md = [

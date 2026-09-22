@@ -2,11 +2,11 @@
 
 Started 21 Sept 2026. Copy comes from the live beyondbancard.com page for each route (captured 21 Sept 2026). Unverified or placeholder live copy is flagged with `<Confirm>`, never shown as fact.
 
-**27 new pages:** 4 industries, 4 Solutions hubs, 19 solution pages. Already built before this work: Adult, Nutra & supplements, High-risk processing.
+**29 new pages:** 4 industries, 4 Solutions hubs, 19 solution pages, 2 Partners pages. Already built before this work: Adult, Nutra & supplements, High-risk processing.
 
 Status: `Todo` · `In progress` · `Built` (page renders) · `Done` (reviewed at 390 and 1440; lint, types, build and tests pass)
 
-**Result: 27 of 27 new pages done** (30 of 30 in scope, with the 3 built earlier).
+**Result: 29 of 29 new pages done** (27 industries and Solutions, plus the last two Partners pages). With the 3 built earlier, 32 of 32 pages in scope.
 
 Design spec: `docs/superpowers/specs/2026-09-21-industries-solutions-pages-design.md`
 
@@ -70,6 +70,14 @@ Design spec: `docs/superpowers/specs/2026-09-21-industries-solutions-pages-desig
 | 26 | POS systems | `/operate/pos` | Solution detail | Done | Live copy, reviewed at 390 and 1440, tests pass |
 | 27 | Virtual terminal | `/operate/virtual-terminal` | Solution detail | Done | Live copy, reviewed at 390 and 1440, tests pass |
 
+## Partners (added 22 Sept 2026, D-061)
+
+| # | Page | Route | Template | Status | Notes |
+|---|---|---|---|---|---|
+| — | Partner programs (hub) | `/partners` | Partner hub | Done | Built earlier (D-057) |
+| — | ISOs & agents | `/partners/isos-agents` | Partner detail (PRD) | Done | Built earlier (PRD) |
+| 28 | ISVs & platforms | `/partners/isvs-platforms` | Solution template | Done | Live copy; hero panel kept |
+| 29 | Associations | `/partners/associations` | Solution template | Done | Live copy; hero panel dropped (invented results) |
 ## Shared work
 
 | Item | Status | Notes |

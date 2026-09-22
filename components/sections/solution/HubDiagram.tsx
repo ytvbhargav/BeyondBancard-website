@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { ArrowDown } from "lucide-react";
 import { Chip } from "@/components/ui/chip";
 import { Reveal } from "@/components/motion/Reveal";
@@ -167,8 +168,8 @@ function Down() {
 }
 
 /**
- * The centre. "Beyond" is set as the logo lockup on ink: the "B" tile (same
- * classes as Logo) beside the word. Any other centre ("POS", "Stronger payment
+ * The centre. "Beyond" is set as the logo lockup on ink: the brand mark (white,
+ * as in the dark header) beside the word. Any other centre ("POS", "Stronger payment
  * risk strategy") is its own words on the ink pill; long phrases wrap onto two
  * balanced lines, so the corners are radius-lg rather than a full pill.
  */
@@ -176,12 +177,13 @@ function Center({ label }: { label: string }) {
   if (label.trim().toLowerCase() === "beyond") {
     return (
       <p className="inline-flex shrink-0 items-center gap-2.5 rounded-pill bg-ink-900 py-2.5 pr-6 pl-2.5 text-on-dark shadow-float">
-        <span
-          aria-hidden
-          className="grid size-8 place-items-center rounded-[9px] bg-brand-600 font-display text-[1.125rem] leading-none font-extrabold text-white [font-stretch:112%]"
-        >
-          B
-        </span>
+        <Image
+          src="/brand/beyond-bancard-mark-white.png"
+          alt=""
+          width={175}
+          height={201}
+          className="h-6 w-auto"
+        />
         <span className="font-display text-[1.1875rem] leading-none font-extrabold tracking-[-0.02em] [font-stretch:112%]">
           {label}
         </span>
