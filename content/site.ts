@@ -3,14 +3,18 @@ import { PHONE } from "@/lib/links";
 
 export const siteName = "Beyond Bancard";
 
+/** Default meta description (root layout and the global 404). */
+export const siteDescription =
+  "Merchant accounts for complex and high-risk industries, and for everyday businesses too. Registered ISO/MSP of Esquire Bank, Merrick Bank and Mission Valley Bank.";
+
 /** CTA vocabulary (PRD §5.5). Use these objects, never retype labels. */
 export const cta = {
   apply: { label: "Apply now", href: "/live-form", variant: "primary" },
   expert: { label: "Talk to an expert", href: "/schedule-a-demo", variant: "secondary" },
   partner: {
     label: "Become a partner",
-    // PRD §5.5: always routes to coming-soon, even though the ISOs page is in the demo.
-    href: `/coming-soon?from=${encodeURIComponent("/partners/isos-agents#apply")}`,
+    // The partner application isn't built; Contact takes partner enquiries ("Partner with Beyond").
+    href: "/contact-us",
     variant: "primary",
   },
   phone: { label: PHONE.label, href: PHONE.href },
@@ -104,13 +108,8 @@ export const solutionsMenu: SolutionColumn[] = [
   },
 ];
 
-export const everydayGroups: NavLink[] = [
-  { label: "Specialized & regulated", href: "/industries#specialized" },
-  { label: "Retail & hospitality", href: "/industries#retail" },
-  { label: "Professional & field services", href: "/industries#professional" },
-  { label: "Healthcare & wellness", href: "/industries#healthcare" },
-  { label: "Digital businesses", href: "/industries#digital" },
-];
+/** Everyday-industry groups in the Industries menu. Empty: those industries have no pages yet. */
+export const everydayGroups: NavLink[] = [];
 
 export const partnersMenu: NavLink[] = [
   { label: "Partner programs", href: "/partners", description: "Every way to work with Beyond." },

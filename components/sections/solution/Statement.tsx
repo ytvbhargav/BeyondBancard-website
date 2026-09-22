@@ -1,6 +1,6 @@
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { StatementBlock } from "@/types/content";
 
@@ -12,12 +12,13 @@ import type { StatementBlock } from "@/types/content";
  * (the same header-left, content-right shape), so the two read as one family.
  * Stacks below lg. An empty body renders the header alone.
  */
-export function Statement({ block, tone, headingId }: BlockProps<StatementBlock>) {
+export function Statement({ block, tone, headingId, index }: BlockProps<StatementBlock>) {
   const [first, ...rest] = block.body;
   return (
     <Section id={block.id} tone={tone} aria-labelledby={headingId}>
       <div className="grid gap-5 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-5">
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h2 max-w-[20ch]">
             <BlockTitle title={block.title} flag={block} />
           </h2>

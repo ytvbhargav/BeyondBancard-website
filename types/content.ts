@@ -33,52 +33,55 @@ export type Testimonial = { quote: string; name: string; role: string; company: 
 
 export type NavLink = { label: string; href: string; description?: string; external?: boolean };
 
-export type IconName =
-  | "store"
-  | "laptop"
-  | "repeat"
-  | "receipt"
-  | "file-search"
-  | "globe"
-  | "layers"
-  | "shield"
-  | "users"
-  | "wallet"
-  | "headset"
-  | "clock"
-  | "sliders"
-  | "badge-check"
-  | "megaphone"
-  | "trending-up"
-  | "package"
-  | "handshake"
-  | "briefcase"
-  | "credit-card"
-  | "chart"
-  | "activity"
-  // Added for the Solutions pages (D-058).
-  | "lock"
-  | "key"
-  | "landmark"
-  | "banknote"
-  | "smartphone"
-  | "monitor"
-  | "calendar"
-  | "zap"
-  | "link"
-  | "percent"
-  | "file-text"
-  | "building"
-  | "truck"
-  | "alert"
-  | "eye"
-  | "gauge"
-  | "plug"
-  | "tag"
-  | "calculator"
-  | "coins"
-  | "map-pin"
-  | "arrows";
+/** Every icon a content field may name (components/ui/icon.tsx maps each to a glyph). Also the CMS select options. */
+export const ICON_NAMES = [
+  "store",
+  "laptop",
+  "repeat",
+  "receipt",
+  "file-search",
+  "globe",
+  "layers",
+  "shield",
+  "users",
+  "wallet",
+  "headset",
+  "clock",
+  "sliders",
+  "badge-check",
+  "megaphone",
+  "trending-up",
+  "package",
+  "handshake",
+  "briefcase",
+  "credit-card",
+  "chart",
+  "activity",
+  "lock",
+  "key",
+  "landmark",
+  "banknote",
+  "smartphone",
+  "monitor",
+  "calendar",
+  "zap",
+  "link",
+  "percent",
+  "file-text",
+  "building",
+  "truck",
+  "alert",
+  "eye",
+  "gauge",
+  "plug",
+  "tag",
+  "calculator",
+  "coins",
+  "map-pin",
+  "arrows",
+] as const;
+
+export type IconName = (typeof ICON_NAMES)[number];
 
 export type Feature = { title: string; body: string; icon?: IconName; confirm?: boolean; note?: string };
 
@@ -199,10 +202,10 @@ export type TableBlock = BlockBase & {
 /** A single idea in a few sentences. */
 export type StatementBlock = BlockBase & { kind: "statement"; body: string[] };
 
-/** Linked cards: the solutions inside a hub, or program options. */
+/** Cards: the solutions inside a hub, or program options. A card without a link is shown plain. */
 export type CardsBlock = BlockBase & {
   kind: "cards";
-  cards: { title: string; tagline?: string; body: string; detail?: string; link: NavLink }[];
+  cards: { title: string; tagline?: string; body: string; detail?: string; link?: NavLink }[];
 };
 
 /** "If this, go there" rows. */
@@ -226,7 +229,8 @@ export type SelectorBlock = BlockBase & {
   kind: "selector";
   legend: string;
   options: { label: string; text: string }[];
-  link: NavLink;
+  /** Onward link under the recommendation. Optional. */
+  link?: NavLink;
 };
 
 /** A compact band with one onward link. */

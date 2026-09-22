@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { DEMO_MODE } from "@/components/ui/confirm";
 import { Container } from "@/components/ui/container";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
@@ -16,8 +15,7 @@ import { blogPosts, formatPostDate, highRiskArticle as article, postLabels, post
 const post = blogPosts.find((p) => p.slug === article.slug)!;
 const path = postPath(article.slug);
 
-// Flagged blocks render only in demo mode (Confirm), so the contents list and the reading time follow the same rule
-const shownBlocks = article.blocks.filter((b) => !b.confirm || DEMO_MODE);
+const shownBlocks = article.blocks;
 
 export const metadata: Metadata = {
   title: post.title,

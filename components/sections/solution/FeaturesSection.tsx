@@ -9,7 +9,7 @@ import type { FeaturesBlock } from "@/types/content";
  * industry template: sticky title and lead on the left, rows on the right.
  * `panel` and `ruled` pick two or three columns from the item count.
  */
-export function FeaturesSection({ block, tone, headingId }: BlockProps<FeaturesBlock>) {
+export function FeaturesSection({ block, tone, headingId, index }: BlockProps<FeaturesBlock>) {
   if (block.layout === "split") {
     return (
       <Section id={block.id} tone={tone} aria-labelledby={headingId}>
@@ -35,7 +35,7 @@ export function FeaturesSection({ block, tone, headingId }: BlockProps<FeaturesB
   // opposite tone so it still reads as an object, like ChipBand/CalloutBand/SolutionCards.
   const panelBg = block.layout === "panel" && tone === "surface" ? "bg-paper" : undefined;
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       <FeatureGrid items={block.items} variant={block.layout} columns={columns} className={panelBg} />
     </BlockSection>
   );

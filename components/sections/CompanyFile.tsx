@@ -1,6 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import { DEMO_MODE, MaybeConfirm } from "@/components/ui/confirm";
+import { MaybeConfirm } from "@/components/ui/confirm";
 import { cn } from "@/lib/utils";
 import type { CompanyFileContent } from "@/content/about";
 
@@ -20,8 +20,6 @@ export function CompanyFile({
   banks,
   className,
 }: CompanyFileContent & { className?: string }) {
-  // Production drops unconfirmed rows whole (D-042), so no label is left without its value.
-  const rows = facts.filter((f) => !f.confirm || DEMO_MODE);
   return (
     <div className={cn("relative w-full", className)}>
       {/* The sheet underneath: a white page with a firmer edge, so its lip reads as paper and not as a border */}
@@ -56,7 +54,7 @@ export function CompanyFile({
 
         {/* Rows are direct children of the <dl> (a nested wrapper would break dt/dd grouping) */}
         <dl className="border-t border-line pt-1.5">
-          {rows.map((f) => (
+          {facts.map((f) => (
             <div
               key={f.label}
               className="mx-5 flex items-baseline justify-between gap-4 border-t border-line py-2.5 first:border-t-0 sm:mx-6"

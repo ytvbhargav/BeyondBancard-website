@@ -3,10 +3,10 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const SELECTOR = "[data-reveal]:not([data-shown]), [data-stagger]:not([data-shown])";
+const SELECTOR = "[data-reveal]:not([data-shown]), [data-stagger]:not([data-shown]), [data-words]:not([data-shown])";
 
 /**
- * One IntersectionObserver for every Reveal and Stagger on the page, so those
+ * One IntersectionObserver for every Reveal, Stagger and RevealWords on the page, so those
  * wrappers stay server components with no hydration cost. Picks up elements
  * added later (route changes, filtered lists) with a MutationObserver.
  */

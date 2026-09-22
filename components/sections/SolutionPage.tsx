@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { DEMO_MODE } from "@/components/ui/confirm";
 import { HeroFile } from "@/components/illustrations/HeroFile";
-import { PageHero } from "@/components/sections/PageHero";
-import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
-import { CapabilityTabs } from "@/components/sections/CapabilityTabs";
+import { SolutionHero } from "@/components/sections/solution/SolutionHero";
+import { SolutionProgress } from "@/components/sections/solution/SolutionProgress";
+import { ProcessSteps } from "@/components/sections/industry/ProcessSteps";
+import { CapabilityExplorer } from "@/components/sections/industry/CapabilityExplorer";
 import { RelatedLinks } from "@/components/sections/RelatedLinks";
 import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaBand } from "@/components/sections/CtaBand";
@@ -31,20 +31,20 @@ export function solutionMetadata(content: SolutionPageContent): Metadata {
   return { title: content.meta.title, description: content.meta.description ?? content.hero.lead };
 }
 
+/** Chapter backgrounds alternate, so neighbouring chapters never share a tone. */
 const tones: BlockTone[] = ["surface", "paper"];
 
 function Block({ block, index, tone }: { block: SolutionBlock; index: number; tone: BlockTone }) {
   const headingId = `${block.id ?? `section-${index + 1}`}-title`;
-  const props = { tone, headingId };
+  const props = { tone, headingId, index };
   switch (block.kind) {
     case "features":
       return <FeaturesSection block={block} {...props} />;
     case "steps":
+      // The stepper from the industry pages: the sequence is always whole, never cut off the side.
       return (
-        <ProcessTimeline
+        <ProcessSteps
           id={block.id ?? `section-${index + 1}`}
-          layout="horizontal"
-          tone={tone}
           title={block.title}
           lead={block.lead}
           steps={block.steps}
@@ -75,7 +75,7 @@ function Block({ block, index, tone }: { block: SolutionBlock; index: number; to
     case "callout":
       return <CalloutBand block={block} {...props} />;
     case "capabilities":
-      return <CapabilityTabs title={block.title} items={block.items} />;
+      return <CapabilityExplorer title={block.title} items={block.items} />;
   }
 }
 
@@ -106,18 +106,26 @@ function toBands(blocks: SolutionBlock[]): Band[] {
  */
 export function SolutionPage({ content }: { content: SolutionPageContent }) {
   const { hero, related, bigPicture, faq } = content;
-  const blocks = content.blocks.filter((b) => !b.confirm || DEMO_MODE);
+  const blocks = content.blocks;
   const bands = toBands(blocks);
   const hasRelated = Boolean(related && related.links.length > 0);
   const pillarsFirst = blocks.at(-1)?.kind === "chips";
   const hasPillars = Boolean(content.pillar && content.bigPicture);
-  const toneAt = (i: number) => tones[i % 2];
+  const toneAt = (i: number) => tones[i % tones.length];
+  // The closing sections (related, the pillar row, the FAQ) stay light, so the page
+  // settles before the closing band.
+  const lightToneAt = (i: number) => (i % 2 === 0 ? "surface" : "paper") as "surface" | "paper";
+  // The nodes of the progress rail: one per chapter, in page order.
+  const chapters = blocks.map((block, i) => ({
+    id: `${block.id ?? `section-${i + 1}`}-title`,
+    title: block.title,
+  }));
   // After the bands come related solutions and the lifecycle row, in that order unless
   // `pillarsFirst`, then the FAQ. Tones keep alternating, skipping whichever is absent.
   let after = bands.length;
-  const take = () => toneAt(after++);
+  const take = () => lightToneAt(after++);
   const order = pillarsFirst ? (["pillars", "related"] as const) : (["related", "pillars"] as const);
-  const sectionTones: { related?: BlockTone; pillars?: BlockTone } = {};
+  const sectionTones: { related?: "surface" | "paper"; pillars?: "surface" | "paper" } = {};
   for (const key of order) {
     if (key === "related" && !hasRelated) continue;
     if (key === "pillars" && !hasPillars) continue;
@@ -125,7 +133,7 @@ export function SolutionPage({ content }: { content: SolutionPageContent }) {
   }
   const relatedTone = sectionTones.related ?? "surface";
   const pillarsTone = sectionTones.pillars ?? "surface";
-  const faqTone = toneAt(after);
+  const faqTone = lightToneAt(after);
 
   const relatedLinks =
     related && hasRelated ? <RelatedLinks title={related.title} links={related.links} tone={relatedTone} /> : null;
@@ -145,7 +153,11 @@ export function SolutionPage({ content }: { content: SolutionPageContent }) {
 
   return (
     <>
-      <PageHero
+      <SolutionProgress sections={chapters} />
+
+      <SolutionHero
+        pillar={content.pillar}
+        kind={content.kind}
         breadcrumb={content.breadcrumb}
         title={hero.title}
         lead={hero.lead}

@@ -8,8 +8,8 @@ import type { NavLink, Testimonial } from "@/types/content";
  * name, role and company come from content/testimonials.ts untouched (PRD §9.8).
  */
 export type ClientStory = Testimonial & {
-  /** Industry page the business belongs to. */
-  industry: NavLink;
+  /** The business's industry; `href` only when the industry has a page. */
+  industry: { label: string; href?: string };
   /** The Beyond page covering something the quote names, where one exists. */
   related?: NavLink;
 };

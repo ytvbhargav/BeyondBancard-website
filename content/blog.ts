@@ -186,14 +186,6 @@ export const blogIndex = {
         : `Showing ${total} recent ${total === 1 ? "article" : "articles"}`,
     showAll: "Show all recent articles",
   },
-  // Live archive: 12 posts per page, 8 pages. Older pages are not in the demo.
-  pagination: {
-    label: "Blog pages",
-    page: 1,
-    pages: 8,
-    older: { label: "Older articles", href: "/news/page/2" },
-    summary: (page: number, pages: number) => `Page ${page} of ${pages}`,
-  },
 };
 
 /* --------------------------------- Article --------------------------------- */
@@ -220,10 +212,7 @@ const articleBlocks: ArticleBlock[] = [
   {
     type: "p",
     text: [
-      {
-        text: "Online merchant service providers",
-        href: "/news/how-payment-processors-and-merchant-acquirers-work-together-and-why-it-matters",
-      },
+      "Online merchant service providers",
       " often structure high-risk accounts with additional monitoring tools and reserve requirements to manage exposure. While processing terms may differ from standard accounts, high-risk merchant accounts provide payment access that would otherwise be unavailable. Understanding how these accounts function helps businesses evaluate costs, compliance expectations, and long-term sustainability.",
     ],
   },
@@ -420,10 +409,7 @@ const articleBlocks: ArticleBlock[] = [
       "A high-risk merchant account enables businesses with elevated dispute potential or regulatory exposure to accept electronic payments securely. A ",
       { text: "merchant processing service", href: "/news/what-is-a-high-risk-merchant-account-and-how-does-it-work" },
       " provider evaluates operational risk factors and structures safeguards such as reserves and monitoring tools. Online ",
-      {
-        text: "merchant service",
-        href: "/news/how-payment-processors-and-merchant-acquirers-work-together-and-why-it-matters",
-      },
+      "merchant service",
       " providers support ongoing compliance, fraud prevention, and chargeback management to maintain processing continuity. Understanding how these accounts function helps businesses assess costs, risk controls, and long-term payment stability.",
     ],
   },

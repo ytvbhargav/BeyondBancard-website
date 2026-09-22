@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { CalloutBlock } from "@/types/content";
 
@@ -19,7 +19,7 @@ import type { CalloutBlock } from "@/types/content";
  * panel and its label may wrap to two balanced lines, so it never overflows at
  * 390px.
  */
-export function CalloutBand({ block, tone, headingId }: BlockProps<CalloutBlock>) {
+export function CalloutBand({ block, tone, headingId, index }: BlockProps<CalloutBlock>) {
   return (
     <Section id={block.id} tone={tone} space="compact" aria-labelledby={headingId}>
       <Reveal
@@ -29,6 +29,7 @@ export function CalloutBand({ block, tone, headingId }: BlockProps<CalloutBlock>
         )}
       >
         <div className="min-w-0 grow basis-96">
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h3 max-w-[36rem] text-ink-900">
             <BlockTitle title={block.title} flag={block} />
           </h2>

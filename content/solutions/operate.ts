@@ -183,7 +183,7 @@ export const operate = {
     items: [
       {
         q: "What payment technology does Beyond support?",
-        a: "Countertop, smart, handheld, wireless, mobile, and customer-facing devices, among other configurations. See our hardware catalog for actual devices.",
+        a: "Countertop, smart, handheld, wireless, mobile, and customer-facing devices, among other configurations.",
       },
       {
         q: "What's the difference between a payment terminal and a POS system?",
@@ -195,7 +195,7 @@ export const operate = {
       },
       {
         q: "Can Beyond help me choose payment hardware?",
-        a: "Yes — our Payment Technology page can help you identify the right hardware category before you browse the catalog.",
+        a: "Yes — our Payment Technology page can help you identify the right hardware category.",
       },
       {
         q: "Can I use my existing POS or gateway?",

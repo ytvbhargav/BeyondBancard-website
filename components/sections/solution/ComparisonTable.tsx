@@ -1,4 +1,4 @@
-import { DEMO_MODE, MaybeConfirm } from "@/components/ui/confirm";
+import { MaybeConfirm } from "@/components/ui/confirm";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { BlockSection, type BlockProps } from "@/components/sections/solution/BlockSection";
@@ -13,8 +13,8 @@ import type { TableBlock, TableCell } from "@/types/content";
  * scrolls sideways. Flagged cells are outlined in demo mode; production drops any row
  * with an unconfirmed cell (D-042), so no option is ever left with a gap.
  */
-export function ComparisonTable({ block, tone, headingId }: BlockProps<TableBlock>) {
-  const rows = block.rows.filter((r) => DEMO_MODE || r.cells.every((c) => !c.confirm));
+export function ComparisonTable({ block, tone, headingId, index }: BlockProps<TableBlock>) {
+  const rows = block.rows;
   if (rows.length === 0) return null;
   // Small print under the panel (`note` is the client question on a flagged block, shown by the title marker).
   const note = block.footnote;
@@ -23,7 +23,7 @@ export function ComparisonTable({ block, tone, headingId }: BlockProps<TableBloc
   const cellPad = block.columns.length >= 4 ? "px-4 py-4 lg:px-6" : "px-5 py-4 lg:px-6";
 
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       {/* No overflow-hidden on either panel: it would clip the CONFIRM tooltips of the top rows */}
       <Reveal className="hidden rounded-md border border-line bg-surface tabular md:block">
         {/* Fixed layout never widens a column to fit, so a long word (or zoomed text) breaks instead of spilling */}

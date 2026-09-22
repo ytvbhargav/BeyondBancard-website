@@ -42,14 +42,16 @@ export function AboutAudiences({ title, items }: { title: string; items: Audienc
             <p className="mt-2.5 max-w-[26rem] text-muted md:col-span-7 md:col-start-6 md:row-start-1 md:mt-0 lg:col-span-1 lg:col-start-auto lg:row-start-auto lg:mt-2.5">
               {a.body}
             </p>
-            <Button
-              href={a.link.href}
-              variant="ghost"
-              arrow
-              className="mt-3 justify-self-start md:col-span-7 md:col-start-6 md:row-start-2 md:mt-2 lg:col-span-1 lg:col-start-auto lg:row-start-auto lg:mt-4"
-            >
-              {a.link.label}
-            </Button>
+            {a.link && (
+              <Button
+                href={a.link.href}
+                variant="ghost"
+                arrow
+                className="mt-3 justify-self-start md:col-span-7 md:col-start-6 md:row-start-2 md:mt-2 lg:col-span-1 lg:col-start-auto lg:row-start-auto lg:mt-4"
+              >
+                {a.link.label}
+              </Button>
+            )}
           </StaggerItem>
         ))}
       </Stagger>

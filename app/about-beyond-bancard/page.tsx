@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Button } from "@/components/ui/button";
-import { Confirm, DEMO_MODE } from "@/components/ui/confirm";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { PageHero } from "@/components/sections/PageHero";
 import { CompanyFile } from "@/components/sections/CompanyFile";
@@ -37,31 +36,18 @@ export default function AboutPage() {
         visual={<CompanyFile {...about.file} />}
       />
 
-      {/* Careers links here (valuesHref). The wording is confirmed as a group, flagged beside the heading.
-          Like any unconfirmed content (D-042), production drops the whole section, not just its heading. */}
-      {DEMO_MODE && (
-        <Section tone="surface" id="values" aria-labelledby="values-title">
-          <SectionHeader
-            id="values-title"
-            title={
-              <>
-                {about.values.title}
-                <Confirm note={companyValues.note} variant="marker">
-                  {null}
-                </Confirm>
-              </>
-            }
-          />
-          <ValuesList items={companyValues.items} />
-          {/* Values lead to careers: one line and the route to open roles close the section */}
-          <div className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 md:mt-10">
-            <p className="type-body-lg text-ink-900">{about.values.careers.body}</p>
-            <Button href={about.values.careers.cta.href} variant="secondary" arrow>
-              {about.values.careers.cta.label}
-            </Button>
-          </div>
-        </Section>
-      )}
+      {/* Careers links here (valuesHref). */}
+      <Section tone="surface" id="values" aria-labelledby="values-title">
+        <SectionHeader id="values-title" title={about.values.title} />
+        <ValuesList items={companyValues.items} />
+        {/* Values lead to careers: one line and the route to open roles close the section */}
+        <div className="mt-8 flex flex-col items-start gap-5 sm:flex-row sm:flex-wrap sm:items-center sm:gap-x-8 md:mt-10">
+          <p className="type-body-lg text-ink-900">{about.values.careers.body}</p>
+          <Button href={about.values.careers.cta.href} variant="secondary" arrow>
+            {about.values.careers.cta.label}
+          </Button>
+        </div>
+      </Section>
 
       <AboutAudiences title={about.audiences.title} items={about.audiences.items} />
 

@@ -13,9 +13,9 @@ import type { QuestionsBlock } from "@/types/content";
  * quotation marks. The optional body answers them and closes the section in
  * body-lg ink.
  */
-export function QuestionList({ block, tone, headingId }: BlockProps<QuestionsBlock>) {
+export function QuestionList({ block, tone, headingId, index }: BlockProps<QuestionsBlock>) {
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       <Stagger as="ul" className="grid gap-x-8 md:grid-cols-2">
         {block.items.map((quote, i) => (
           <StaggerItem

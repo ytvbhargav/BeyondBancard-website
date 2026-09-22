@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Container } from "@/components/ui/container";
-import { DEMO_MODE } from "@/components/ui/confirm";
 import { PageHero } from "@/components/sections/PageHero";
 import { ArticleReader } from "@/components/sections/ArticleReader";
 import { ArticleBody } from "@/components/sections/ArticleBody";
@@ -18,7 +17,7 @@ export function legalMetadata(content: LegalPageContent): Metadata {
  * list follows them.
  */
 export function LegalPage({ content }: { content: LegalPageContent }) {
-  const blocks = content.blocks.filter((b) => !b.confirm || DEMO_MODE);
+  const blocks = content.blocks;
   const toc = blocks.flatMap((b) =>
     b.type === "h2" ? [{ id: b.id, label: b.text, confirm: b.confirm, note: b.note }] : [],
   );

@@ -1,6 +1,6 @@
 import { ArrowRight } from "lucide-react";
 import { Chip } from "@/components/ui/chip";
-import { DEMO_MODE, MaybeConfirm } from "@/components/ui/confirm";
+import { MaybeConfirm } from "@/components/ui/confirm";
 import { Reveal } from "@/components/motion/Reveal";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { BlockSection, type BlockProps } from "@/components/sections/solution/BlockSection";
@@ -23,16 +23,16 @@ import type { FlowBlock } from "@/types/content";
  * reads as tiles. The focus label is a <strong>, so the emphasis is not visual
  * only. Stages stagger in; each arrow fades in after the stage it leads to.
  */
-export function FlowDiagram({ block, tone, headingId }: BlockProps<FlowBlock>) {
+export function FlowDiagram({ block, tone, headingId, index }: BlockProps<FlowBlock>) {
   const { nodes } = block;
   const dense = nodes.length >= 6;
   const tags = block.tags ?? [];
-  const showNote = Boolean(block.footnote) && (!block.footnoteFlag?.confirm || DEMO_MODE);
+  const showNote = Boolean(block.footnote);
   // Opposite background to the section, as on the chip bands
   const tileBg = tone === "surface" ? "bg-paper" : "bg-surface";
 
   return (
-    <BlockSection block={block} tone={tone} headingId={headingId}>
+    <BlockSection block={block} tone={tone} headingId={headingId} index={index}>
       <div className="mx-auto max-w-[28rem] lg:max-w-none">
         <Stagger
           as="ol"

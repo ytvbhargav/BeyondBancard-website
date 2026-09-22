@@ -1,18 +1,11 @@
 import type { Metadata } from "next";
-import { Button } from "@/components/ui/button";
-import { Chip } from "@/components/ui/chip";
-import { Section, SectionHeader } from "@/components/ui/section";
-import { Reveal } from "@/components/motion/Reveal";
-import { PageHero } from "@/components/sections/PageHero";
-import { FeatureGrid } from "@/components/sections/FeatureGrid";
-import { CapabilityTabs } from "@/components/sections/CapabilityTabs";
-import { ChecklistSection } from "@/components/sections/ChecklistSection";
-import { ProcessTimeline } from "@/components/sections/ProcessTimeline";
+import { IndustryHero } from "@/components/sections/industry/IndustryHero";
+import { RealityAnswer } from "@/components/sections/industry/RealityAnswer";
+import { CapabilityExplorer } from "@/components/sections/industry/CapabilityExplorer";
+import { ProcessSteps } from "@/components/sections/industry/ProcessSteps";
+import { FitCheck } from "@/components/sections/industry/FitCheck";
 import { FaqSection } from "@/components/sections/FaqSection";
-import { RelatedLinks } from "@/components/sections/RelatedLinks";
 import { CtaBand } from "@/components/sections/CtaBand";
-import { industryPath } from "@/content/industries";
-import { cta } from "@/content/site";
 import type { Faq, IndustryDetailContent } from "@/types/content";
 
 /** Page metadata for an industry detail page: its browser title, with the hero lead as the description. */
@@ -21,95 +14,53 @@ export function industryDetailMetadata(content: IndustryDetailContent): Metadata
 }
 
 /**
- * Industry detail page (PRD §9.4, the template for every industry page; D-057).
- * Hero, realities, business models, why Beyond, capabilities, account-health
- * checklist, process, FAQ, related industries and the closing band, all driven
- * by one `IndustryDetailContent` object. `visual` is the optional hero illustration.
+ * Industry page. The page makes one argument, in four movements: the opening,
+ * the realities of the industry set against what Beyond does about each of them,
+ * the tools the account comes with, and how an account is opened and kept
+ * healthy — then the questions merchants ask, and the way in.
+ *
+ * Every section is laid out on the same 12-column grid and arrives through the
+ * page's reveal observer, so the motion is consistent and nothing depends on
+ * JavaScript to be readable. The hero's illustration is the one scripted
+ * movement, and it is dropped below lg and with reduced motion.
+ *
+ * The business models sit in the hero rail rather than in a band of their own,
+ * and the page links on to applying and to an expert, never to another industry.
  */
 export function IndustryDetail({
   content,
   faqs,
-  visual,
+  images,
 }: {
   content: IndustryDetailContent;
   faqs: Faq[];
-  visual?: React.ReactNode;
+  images?: { src: string; alt: string }[];
 }) {
-  const { hero, realities, models, whyBeyond, capabilities, checklist, process, faq, related } = content;
+  const { hero, realities, models, whyBeyond, capabilities, checklist, process, faq } = content;
+  // The page's own name, for the hero eyebrow: the last breadcrumb is the current page.
+  const eyebrow = content.breadcrumb.at(-1)?.label ?? "";
 
   return (
     <>
-      <PageHero
-        breadcrumb={content.breadcrumb}
+      <IndustryHero
+        eyebrow={eyebrow}
         title={hero.title}
         lead={hero.lead}
-        actions={
-          <>
-            <Button href={cta.expert.href} arrow>
-              {hero.expertCta ?? cta.expert.label}
-            </Button>
-            <Button href={cta.apply.href} variant="secondary">
-              {cta.apply.label}
-            </Button>
-          </>
-        }
-        visual={visual}
+        expertCta={hero.expertCta}
+        breadcrumb={content.breadcrumb}
+        images={images}
+        models={models}
       />
 
-      <Section tone="paper" aria-labelledby="realities-title">
-        <SectionHeader id="realities-title" title={realities.title} />
-        <FeatureGrid items={realities.items} variant="panel" />
-      </Section>
+      <RealityAnswer title={realities.title} problems={realities.items} answers={whyBeyond.features} />
 
-      <Section tone="surface" space="compact" aria-labelledby="models-title">
-        <div className="grid gap-8 lg:grid-cols-12 lg:items-center lg:gap-8">
-          <div className="lg:col-span-4">
-            <h2 id="models-title" className="type-h3">
-              {models.title}
-            </h2>
-            <p className="mt-2 type-small text-muted">{models.disclaimer}</p>
-          </div>
-          {/* Chips are inline boxes, not flex items, so text-wrap: balance evens the rows (four RUO
-              chips wrap 2 + 2, not 3 + 1 with one left alone). The li margins and the list's
-              negative margin stand in for gap-2. Without balance support they wrap as before. */}
-          <Reveal as="ul" className="-m-1 text-balance lg:col-span-8">
-            {models.chips.map((c) => (
-              <li key={c} className="m-1 inline-flex align-top">
-                <Chip className="bg-paper">{c}</Chip>
-              </li>
-            ))}
-          </Reveal>
-        </div>
-      </Section>
+      <CapabilityExplorer title={capabilities.title} items={capabilities.items} />
 
-      <Section tone="paper" aria-labelledby="why-title">
-        <div className="grid gap-12 lg:grid-cols-12 lg:gap-8">
-          <div className="lg:col-span-5">
-            <div className="lg:sticky lg:top-36">
-              <h2 id="why-title" className="type-h2">
-                {whyBeyond.title}
-              </h2>
-              {whyBeyond.lead && <p className="type-body-lg mt-5 max-w-[28rem] text-muted">{whyBeyond.lead}</p>}
-            </div>
-          </div>
-          <div className="lg:col-span-6 lg:col-start-7">
-            <FeatureGrid items={whyBeyond.features} variant="rows" />
-          </div>
-        </div>
-      </Section>
+      <ProcessSteps id={process.id} title={process.title} steps={process.steps} />
 
-      <CapabilityTabs title={capabilities.title} items={capabilities.items} />
-
-      <ChecklistSection title={checklist.title} lead={checklist.lead} items={checklist.items} />
-
-      <ProcessTimeline id={process.id} layout="horizontal" tone="surface" title={process.title} steps={process.steps} />
+      <FitCheck title={checklist.title} lead={checklist.lead} items={checklist.items} />
 
       <FaqSection title={faq.title} faqs={faqs} />
-
-      <RelatedLinks
-        title={related.title}
-        links={related.items.map((i) => ({ label: i.name, href: industryPath(i.slug) }))}
-      />
 
       <CtaBand />
     </>

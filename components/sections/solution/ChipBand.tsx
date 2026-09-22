@@ -1,7 +1,7 @@
 import { Chip } from "@/components/ui/chip";
 import { Section } from "@/components/ui/section";
 import { Reveal } from "@/components/motion/Reveal";
-import { BlockTitle, type BlockProps } from "@/components/sections/solution/BlockSection";
+import { BlockTitle, ChapterMark, type BlockProps } from "@/components/sections/solution/BlockSection";
 import { cn } from "@/lib/utils";
 import type { ChipsBlock } from "@/types/content";
 
@@ -21,11 +21,12 @@ import type { ChipsBlock } from "@/types/content";
  * list's negative margin stand in for gap-2. Without balance support they wrap
  * as before.
  */
-export function ChipBand({ block, tone, headingId }: BlockProps<ChipsBlock>) {
+export function ChipBand({ block, tone, headingId, index }: BlockProps<ChipsBlock>) {
   return (
     <Section id={block.id} tone={tone} space="compact" aria-labelledby={headingId}>
       <div className="grid gap-8 lg:grid-cols-12 lg:items-center">
         <div className={block.lead ? "lg:col-span-5" : "lg:col-span-4"}>
+          <ChapterMark index={index} />
           <h2 id={headingId} className="type-h3">
             <BlockTitle title={block.title} flag={block} />
           </h2>

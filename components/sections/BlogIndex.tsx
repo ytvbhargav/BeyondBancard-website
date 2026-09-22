@@ -25,7 +25,6 @@ export function BlogIndex({ posts }: { posts: BlogPost[] }) {
   const [filtered, setFiltered] = useState(false);
   const chipsRef = useRef<HTMLDivElement>(null);
   const copy = blogIndex.list;
-  const pagination = blogIndex.pagination;
 
   const categories = useMemo(() => {
     const counts = new Map<BlogCategory, { count: number; newest: string }>();
@@ -100,20 +99,10 @@ export function BlogIndex({ posts }: { posts: BlogPost[] }) {
         <p aria-live="polite" className={cn("type-small text-muted tabular", !category && "sr-only")}>
           {copy.status(visible.length, posts.length, category ?? undefined)}
         </p>
-        {category ? (
+        {category && (
           <Button variant="ghost" onClick={reset}>
             {copy.showAll}
           </Button>
-        ) : (
-          <nav
-            aria-label={pagination.label}
-            className="flex w-full flex-wrap items-center justify-between gap-x-8 gap-y-2 sm:w-auto"
-          >
-            <p className="type-small text-muted tabular">{pagination.summary(pagination.page, pagination.pages)}</p>
-            <Button href={pagination.older.href} variant="ghost" arrow>
-              {pagination.older.label}
-            </Button>
-          </nav>
         )}
       </div>
     </section>
