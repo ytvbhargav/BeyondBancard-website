@@ -31,12 +31,12 @@ export function IndustryDetail({
   content,
   faqs,
   images,
-  cutout,
 }: {
   content: IndustryDetailContent;
   faqs: Faq[];
+  /** The hero photograph that floats over the colour field. */
   images?: { src: string; alt: string }[];
-  cutout?: { src: string; alt: string };
+  /** The subject cut out of it, where the industry has one. */
 }) {
   const { hero, realities, models, whyBeyond, capabilities, checklist, process, faq } = content;
   // The page's own name, for the hero eyebrow: the last breadcrumb is the current page.
@@ -44,18 +44,23 @@ export function IndustryDetail({
 
   return (
     <>
-      <IndustryHero
-        eyebrow={eyebrow}
-        title={hero.title}
-        lead={hero.lead}
-        expertCta={hero.expertCta}
-        breadcrumb={content.breadcrumb}
-        images={images}
-        cutout={cutout}
-        models={models}
-      />
+      {/* The hero is sticky so the realities can rise over it. Both live in
+          one box, which is what bounds the stickiness: the hero is released
+          the moment that panel has passed, rather than staying pinned behind
+          the rest of the page. */}
+      <div className="relative">
+        <IndustryHero
+          eyebrow={eyebrow}
+          title={hero.title}
+          lead={hero.lead}
+          expertCta={hero.expertCta}
+          breadcrumb={content.breadcrumb}
+          images={images}
+          models={models}
+        />
 
-      <RealityAnswer title={realities.title} problems={realities.items} answers={whyBeyond.features} />
+        <RealityAnswer title={realities.title} problems={realities.items} answers={whyBeyond.features} />
+      </div>
 
       <CapabilityExplorer title={capabilities.title} items={capabilities.items} />
 

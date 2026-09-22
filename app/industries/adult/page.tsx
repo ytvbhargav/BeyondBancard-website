@@ -11,7 +11,6 @@ export default function AdultPage() {
       content={adult}
       faqs={adultFaqs}
       images={industryImages["adult"]}
-      cutout={{ src: "/industries/adult-cut.png", alt: "A couple laughing together" }}
     />
   );
 }

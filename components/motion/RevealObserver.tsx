@@ -3,12 +3,19 @@
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
 
-const SELECTOR = "[data-reveal]:not([data-shown]), [data-stagger]:not([data-shown]), [data-words]:not([data-shown])";
+const SELECTOR = "[data-reveal], [data-stagger], [data-words]";
 
 /**
- * One IntersectionObserver for every Reveal, Stagger and RevealWords on the page, so those
- * wrappers stay server components with no hydration cost. Picks up elements
- * added later (route changes, filtered lists) with a MutationObserver.
+ * One IntersectionObserver for every Reveal, Stagger and RevealWords on the
+ * page, so those wrappers stay server components with no hydration cost. Picks
+ * up elements added later (route changes, filtered lists) with a
+ * MutationObserver.
+ *
+ * A reveal plays every time it is scrolled to, not only the first time: an
+ * element that leaves below the fold is reset, so coming back down the page
+ * fills it in again. Leaving above the fold does not reset anything — content
+ * already read would otherwise re-animate under the reader on the way back up,
+ * which reads as a glitch rather than as motion.
  */
 export function RevealObserver() {
   const pathname = usePathname();
@@ -17,12 +24,15 @@ export function RevealObserver() {
     const io = new IntersectionObserver(
       (entries) => {
         for (const entry of entries) {
-          if (!entry.isIntersecting) continue;
-          entry.target.setAttribute("data-shown", "");
-          io.unobserve(entry.target);
+          if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
+            entry.target.setAttribute("data-shown", "");
+          } else if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
+            // Gone off the bottom: arm it again for the next time down.
+            entry.target.removeAttribute("data-shown");
+          }
         }
       },
-      { threshold: 0.15, rootMargin: "0px 0px -8% 0px" },
+      { threshold: [0, 0.15], rootMargin: "0px 0px -8% 0px" },
     );
 
     const register = (root: ParentNode) => {
@@ -54,7 +64,7 @@ export function RevealObserver() {
       cancelAnimationFrame(frame);
       io.disconnect();
       mo.disconnect();
-      document.querySelectorAll("[data-observed]:not([data-shown])").forEach((el) => el.removeAttribute("data-observed"));
+      document.querySelectorAll("[data-observed]").forEach((el) => el.removeAttribute("data-observed"));
     };
   }, [pathname]);
 
