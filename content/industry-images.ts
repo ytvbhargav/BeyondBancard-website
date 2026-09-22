@@ -1,40 +1,23 @@
 /**
- * Hero photographs for the industry pages (public/industries). The first leads
- * the mosaic; the other two sit beside it. Sourced under the Unsplash License
- * (free for commercial use, no attribution required); see
+ * The hero photograph for each industry page (public/industries). Sourced under
+ * the Unsplash License (free for commercial use, no attribution required); see
  * public/industries/credits.json for each photographer and source.
+ *
+ * They are chosen to sit in the hero rather than be cut out of it: blue-toned or
+ * lifestyle shots that belong beside the headline without any crop shape or
+ * colour treatment.
  */
 export type IndustryImage = { src: string; alt: string };
 
 export const industryImages: Record<string, IndustryImage[]> = {
+  adult: [{ src: "/industries/adult.webp", alt: "A couple laughing together against a blue background" }],
+  gaming: [{ src: "/industries/gaming.webp", alt: "A player at a monitor in blue light" }],
   "nutra-supplements": [
-    { src: "/industries/nutra-supplements-1.webp", alt: "Citrus slices, supplement beads and capsules" },
-    { src: "/industries/nutra-supplements-2.webp", alt: "A clear bottle filled with capsules" },
-    { src: "/industries/nutra-supplements-3.webp", alt: "Capsules spilled from a brown bottle" },
+    { src: "/industries/nutra-supplements.webp", alt: "A woman holding two bottles of supplements" },
   ],
-  adult: [
-    { src: "/industries/adult-1.webp", alt: "A pink and blue swirl on black" },
-    { src: "/industries/adult-2.webp", alt: "Purple and pink gradient waves" },
-    { src: "/industries/adult-3.webp", alt: "Deep blue and purple flowing shapes" },
-  ],
-  gaming: [
-    { src: "/industries/gaming-1.webp", alt: "A wireless game controller lit in cyan and magenta" },
-    { src: "/industries/gaming-2.webp", alt: "A crowd watching a match on a big screen" },
-    { src: "/industries/gaming-3.webp", alt: "Team banners at an esports event" },
-  ],
-  "ruo-peptides": [
-    { src: "/industries/ruo-peptides-1.webp", alt: "A researcher using a pipette with test tubes" },
-    { src: "/industries/ruo-peptides-2.webp", alt: "Rows of laboratory tubes in a tray" },
-    { src: "/industries/ruo-peptides-3.webp", alt: "A gloved hand holding a beaker of clear liquid" },
-  ],
+  "ruo-peptides": [{ src: "/industries/ruo-peptides.webp", alt: "A researcher at a microscope in a laboratory" }],
   "travel-payment-solutions": [
-    { src: "/industries/travel-payment-solutions-1.webp", alt: "An aircraft at the gate, seen through a terminal window" },
-    { src: "/industries/travel-payment-solutions-2.webp", alt: "A parent and child watching an aircraft at the gate" },
-    { src: "/industries/travel-payment-solutions-3.webp", alt: "An aircraft taking off past a terminal" },
+    { src: "/industries/travel-payment-solutions.webp", alt: "Travellers with luggage in an airport terminal" },
   ],
-  crb: [
-    { src: "/industries/crb-1.webp", alt: "Cannabis plants growing under cultivation lights" },
-    { src: "/industries/crb-2.webp", alt: "A cannabis plant in close-up" },
-    { src: "/industries/crb-3.webp", alt: "A cultivation room of green plants" },
-  ],
+  crb: [{ src: "/industries/crb.webp", alt: "Cannabis plants growing under cultivation lights" }],
 };
