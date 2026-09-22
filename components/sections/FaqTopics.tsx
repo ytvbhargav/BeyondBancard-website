@@ -71,7 +71,9 @@ export function FaqTopics() {
                 >
                   {topic.items.map(({ id, faq, q, a }) => (
                     <AccordionItem key={id} value={id} className="animate-in duration-(--duration-fast) fade-in-0">
-                      <AccordionTrigger className="type-h4 text-ink-900">
+                      {/* phone pass (D-063): below sm the plus is centred on the question (one- and two-line rows
+                          both line up) and rows are py-4 (was py-5); sm:items-start sm:py-5 restore today's values. */}
+                      <AccordionTrigger className="items-center py-4 type-h4 text-ink-900 sm:items-start sm:py-5">
                         <Highlighted text={faq.q} ranges={q} />
                       </AccordionTrigger>
                       <AccordionContent>

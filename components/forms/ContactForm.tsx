@@ -178,7 +178,8 @@ export function ContactForm() {
           aria-labelledby="contact-form-title"
           aria-describedby="contact-required-hint"
         >
-          <div className="border-b border-line px-6 pt-7 pb-6 sm:px-8 lg:px-9">
+          {/* phone pass (D-063): px-5 below sm lines the card's text up with the need directory's panels (was px-6); sm+ unchanged. */}
+          <div className="border-b border-line px-5 pt-7 pb-6 sm:px-8 lg:px-9">
             <h2 id="contact-form-title" className="type-h3">
               {copy.title}
               {/* The heading always renders; only the demo marker depends on the flag. */}
@@ -198,10 +199,11 @@ export function ContactForm() {
           </div>
 
           {/* Groups nothing for assistive tech (the form is already named); it only disables the fields while sending. */}
+          {/* phone pass (D-063): px-5 below sm (was px-6), so the fields are 8px wider on phones; sm+ unchanged. */}
           <fieldset
             role="none"
             disabled={sending}
-            className="grid min-w-0 gap-6 px-6 py-8 sm:grid-cols-2 sm:px-8 lg:px-9"
+            className="grid min-w-0 gap-6 px-5 py-8 sm:grid-cols-2 sm:px-8 lg:px-9"
           >
             {text("firstName", { autoComplete: "given-name" }, { required: true })}
             {text("lastName", { autoComplete: "family-name" }, { required: true })}
@@ -252,7 +254,8 @@ export function ContactForm() {
             />
           </fieldset>
 
-          <div className="flex flex-col gap-5 border-t border-line px-6 py-6 sm:flex-row sm:items-center sm:gap-6 sm:px-8 lg:px-9">
+          {/* phone pass (D-063): px-5 below sm (was px-6); sm+ unchanged. */}
+          <div className="flex flex-col gap-5 border-t border-line px-5 py-6 sm:flex-row sm:items-center sm:gap-6 sm:px-8 lg:px-9">
             <Button id={SUBMIT_ID} type="submit" aria-disabled={sending || undefined} className="w-full sm:w-auto">
               {sending ? (
                 <span className="inline-flex items-center gap-2">
@@ -354,9 +357,10 @@ function ContactSuccess({ firstName, onAgain }: { firstName: string; onAgain: ()
 
   const draw = (delay: number, d: number) => (reduce ? { duration: 0 } : { delay, duration: d, ease: ease.inOut });
 
+  // phone pass (D-063): px-5 below sm (was px-6), matching the form it replaces; sm+ unchanged.
   return (
     <m.div
-      className="px-6 py-10 sm:px-8 sm:py-12 lg:px-9"
+      className="px-5 py-10 sm:px-8 sm:py-12 lg:px-9"
       initial={reduce ? false : { opacity: 0, y: 12 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: reduce ? 0 : duration.base, ease: ease.out }}

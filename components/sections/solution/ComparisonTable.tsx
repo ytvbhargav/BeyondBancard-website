@@ -21,6 +21,10 @@ export function ComparisonTable({ block, tone, headingId }: BlockProps<TableBloc
   // Shared by every cell so the label column and the options line up. Four or more
   // options share the md width, so their cells pad less there.
   const cellPad = block.columns.length >= 4 ? "px-4 py-4 lg:px-6" : "px-5 py-4 lg:px-6";
+  // phone pass (D-063): when every label and value is short (payment technology's device guide,
+  // not cost-reduction's sentence cells), each phone card row puts the value beside its label,
+  // as a file row does (D-001). The 8.5rem label column fits the longest label at 14px.
+  const inline = rows.every((r) => r.label.length <= 22 && r.cells.every((c) => c.text.length <= 28));
 
   return (
     <BlockSection block={block} tone={tone} headingId={headingId}>
@@ -74,17 +78,25 @@ export function ComparisonTable({ block, tone, headingId }: BlockProps<TableBloc
 
       {/* Phone-only density pass (D-060): below sm the cards sit closer and each label/value row
           loses a little height; from sm (where these cards still show, up to md) everything is
-          restored to today's spacing. */}
+          restored to today's spacing. Short-value tables also sit label and value side by side
+          below sm (D-063); from sm every row is stacked again. */}
       <Stagger as="ul" className="grid gap-3 tabular wrap-break-word sm:gap-4 md:hidden">
         {block.columns.map((c, i) => (
           <StaggerItem as="li" key={c} className="rounded-md border border-line bg-surface">
             <h3 className="type-h4 rounded-t-md border-b border-line bg-paper px-5 py-3 sm:py-4">{c}</h3>
             <dl className="px-5 py-0.5 sm:py-1">
               {rows.map((r) => (
-                <div key={r.label} className="border-t border-line py-2.5 first:border-t-0 sm:py-3">
+                <div
+                  key={r.label}
+                  className={cn(
+                    "border-t border-line py-2.5 first:border-t-0 sm:py-3",
+                    // phone pass (D-063): label beside value below sm; sm:block restores the stacked row
+                    inline && "grid grid-cols-[8.5rem_minmax(0,1fr)] items-baseline gap-x-3 sm:block",
+                  )}
+                >
                   <dt className="type-small text-muted">{r.label}</dt>
                   {/* The denser row keeps full body size below sm (the 16px floor); sm up stays at 15px, as the table does. */}
-                  <dd className="mt-1 text-ink-900 sm:text-[0.9375rem]">
+                  <dd className={cn("text-ink-900 sm:text-[0.9375rem]", inline ? "mt-0 sm:mt-1" : "mt-1")}>
                     <CellText cell={r.cells[i]} />
                   </dd>
                 </div>

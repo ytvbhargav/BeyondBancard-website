@@ -42,11 +42,18 @@ export default function IsosAgentsPage() {
 
       <Section tone="paper" aria-labelledby="audience-title">
         <SectionHeader id="audience-title" title={isosAgents.audience.title} />
-        <Stagger as="ul" className="grid gap-4 md:grid-cols-3">
+        {/*
+          phone pass (D-063): below sm the gap is gap-3, the cards p-5, and the icon (size-5) sits
+          beside the title, as in FeatureGrid's panel items (D-060). From sm up the wrapper is a
+          plain block, so gap-4, p-7, the size-6 icon and the title's mt-6 are exactly as before.
+        */}
+        <Stagger as="ul" className="grid gap-3 sm:gap-4 md:grid-cols-3">
           {isosAgents.audience.items.map((a) => (
-            <StaggerItem as="li" key={a.title} className="rounded-md border border-line bg-surface p-7">
-              {a.icon && <Icon name={a.icon} className="size-6 text-brand-600" />}
-              <h3 className="type-h3 mt-6">{a.title}</h3>
+            <StaggerItem as="li" key={a.title} className="rounded-md border border-line bg-surface p-5 sm:p-7">
+              <div className="flex items-center gap-3 sm:block">
+                {a.icon && <Icon name={a.icon} className="size-5 shrink-0 text-brand-600 sm:size-6" />}
+                <h3 className="type-h3 sm:mt-6">{a.title}</h3>
+              </div>
               <p className="mt-2 text-muted">{a.body}</p>
             </StaggerItem>
           ))}

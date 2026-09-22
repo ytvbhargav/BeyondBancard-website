@@ -35,9 +35,15 @@ export function ChipBand({ block, tone, headingId }: BlockProps<ChipsBlock>) {
         <Reveal as="ul" className={cn("-m-1 text-balance", block.lead ? "lg:col-span-7" : "lg:col-span-8")}>
           {block.chips.map((c) => (
             <li key={c} className="m-1 inline-flex align-top">
+              {/* phone pass (D-063): below sm the chips set their labels at 14px (the label floor) with 12px
+                  sides, so the long pairs share a row at 390. In-person 2/1/1/2 becomes 2/2/2, International
+                  5 rows becomes 4, Recurring billing 2/2/1/1 becomes 2/2/2 and ISVs 5 rows becomes 4. No band
+                  gains a row or a lone chip at 320-639. /[1.6] keeps the 1.6 line height the chip inherited, and
+                  the chip stays 36px tall. sm:px-3.5 and sm:text-[0.9375rem] restore today's 14px sides and
+                  15px/24px label. */}
               <Chip
                 className={cn(
-                  "min-h-9 border-transparent px-3.5 py-1.5",
+                  "min-h-9 border-transparent px-3 py-1.5 text-sm/[1.6] sm:px-3.5 sm:text-[0.9375rem]",
                   tone === "surface" ? "bg-paper" : "bg-surface",
                 )}
               >

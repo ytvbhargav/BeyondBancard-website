@@ -104,23 +104,34 @@ html[data-announcement="dismissing"] {
   letter-spacing: -0.03em;
   text-wrap: balance;
 }
+/* phone pass (D-063): below sm, type-h1 and type-h2 take one step down (34px and 28px up to 400px
+   wide, a phone scale of 34/28/21/17). At 32-40px, Archivo at 112% overflowed the 350px phone column,
+   so balanced headings split into 4-5 lines with a lone word. The phone value grows with the
+   viewport and meets today's size at 640px, so there is no jump at sm. The sm block restores
+   today's fluid size, so nothing from 640px up changes. */
 @utility type-h1 {
   font-family: var(--font-display);
   font-stretch: 112%;
   font-weight: 800;
-  font-size: clamp(2.5rem, 2.01rem + 2.17vw, 3.75rem);
+  font-size: max(2.125rem, 0.87rem + 5.02vw);
   line-height: 1.05;
   letter-spacing: -0.025em;
   text-wrap: balance;
+  @media (width >= 40rem) {
+    font-size: clamp(2.5rem, 2.01rem + 2.17vw, 3.75rem);
+  }
 }
 @utility type-h2 {
   font-family: var(--font-display);
   font-stretch: 112%;
   font-weight: 700;
-  font-size: clamp(2rem, 1.71rem + 1.3vw, 2.75rem);
+  font-size: max(1.75rem, 0.95rem + 3.2vw);
   line-height: 1.1;
   letter-spacing: -0.02em;
   text-wrap: balance;
+  @media (width >= 40rem) {
+    font-size: clamp(2rem, 1.71rem + 1.3vw, 2.75rem);
+  }
 }
 @utility type-h3 {
   font-family: var(--font-display);

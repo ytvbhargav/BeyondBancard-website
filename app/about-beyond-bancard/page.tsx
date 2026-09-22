@@ -41,7 +41,9 @@ export default function AboutPage() {
           Like any unconfirmed content (D-042), production drops the whole section, not just its heading. */}
       {DEMO_MODE && (
         <Section tone="surface" id="values" aria-labelledby="values-title">
+          {/* phone pass (D-063): mb-8 (32px) below sm so the heading stays with its list; sm:mb-12 restores today's 48px, md:mb-16 unchanged. */}
           <SectionHeader
+            className="mb-8 sm:mb-12"
             id="values-title"
             title={
               <>

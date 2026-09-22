@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
+import { PostTitle } from "@/components/sections/PostTitle";
 import { Button } from "@/components/ui/button";
 import { Confirm } from "@/components/ui/confirm";
 import type { ArticleBlock, ArticleText } from "@/content/blog";
@@ -73,10 +74,12 @@ function Block({ block, path, first }: { block: ArticleBlock; path: string; firs
   const space = first ? undefined : spacing(block);
   switch (block.type) {
     case "h2":
-      // outline-none: the contents list moves focus here (tabindex -1) after a smooth jump
+      // outline-none: the contents list moves focus here (tabindex -1) after a smooth jump.
+      // phone pass (D-063): PostTitle keeps "high-risk" whole on phones, where balanced wrap split it
+      // at the hyphen; from sm up its spans go back to white-space: normal, so wrapping is unchanged.
       return (
-        <h2 id={block.id} className={cn("type-h3 text-ink-900 outline-none", space)}>
-          {block.text}
+        <h2 id={block.id} className={cn("type-h3 text-ink-900 outline-none sm:[&>span]:whitespace-normal", space)}>
+          <PostTitle>{block.text}</PostTitle>
         </h2>
       );
     case "h3":

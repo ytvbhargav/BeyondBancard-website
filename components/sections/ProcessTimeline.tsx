@@ -123,13 +123,37 @@ function VerticalSteps({ steps, dark }: { steps: FlaggedStep[]; dark: boolean })
   );
 }
 
+/**
+ * Phone pass (D-063): below sm the steps take VerticalSteps' form instead of the
+ * desktop columns stacked up. The node sits beside the title (grid column 1,
+ * spanning the title and body rows), the body runs in column 2, and a phone-only
+ * rail joins each node to the next. From sm up the li is a list item again, so the
+ * grid-only classes do nothing and the 2-column (sm) and ruled 4/5-column (lg)
+ * layouts are unchanged.
+ */
 function HorizontalSteps({ steps, dark }: { steps: FlaggedStep[]; dark: boolean }) {
   const cols = steps.length === 5 ? "lg:grid-cols-5" : "lg:grid-cols-4";
   return (
-    <Stagger as="ol" className={cn("grid gap-10 sm:grid-cols-2 lg:gap-6", cols)}>
+    // phone pass (D-063): 32px between steps below sm; sm:gap-10 restores today's 40px, lg:gap-6 unchanged.
+    <Stagger as="ol" className={cn("grid gap-8 sm:grid-cols-2 sm:gap-10 lg:gap-6", cols)}>
       {steps.map((s, i) => (
-        <StaggerItem as="li" key={s.title} className="relative">
-          <div className="flex items-center">
+        <StaggerItem
+          as="li"
+          key={s.title}
+          // phone pass (D-063): a node | text grid below sm; sm:list-item restores the li's default display.
+          className="relative grid grid-cols-[auto_minmax(0,1fr)] gap-x-4 sm:list-item"
+        >
+          {/* phone pass (D-063): the rail runs from the bottom of this node through the 32px gap
+              (-bottom-8 matches gap-8) to the top of the next node, as in VerticalSteps. */}
+          {i < steps.length - 1 && (
+            <span
+              aria-hidden
+              className={cn("absolute top-10 -bottom-8 left-5 w-px sm:hidden", dark ? "bg-ink-800" : "bg-line-strong")}
+            />
+          )}
+          {/* phone pass (D-063): row-span-2 and self-start hold the node at the top of column 1,
+              beside the title; both do nothing once the li is a list item from sm. */}
+          <div className="row-span-2 flex items-center self-start">
             <Node n={i + 1} dark={dark} />
             {/* -mr-3 runs the rule half-way into the grid gap, so it stops 12px short of
                 the next node, matching the 12px after this one */}
@@ -137,11 +161,13 @@ function HorizontalSteps({ steps, dark }: { steps: FlaggedStep[]; dark: boolean 
               <span aria-hidden className={cn("ml-3 hidden h-px flex-1 lg:-mr-3 lg:block", dark ? "bg-ink-800" : "bg-line-strong")} />
             )}
           </div>
-          <h3 className={cn("type-h4 mt-5", dark ? "text-on-dark" : "text-ink-900")}>
+          {/* phone pass (D-063): mt-2 centres the 22px title line on the 40px node; sm:mt-5 restores today's value. */}
+          <h3 className={cn("type-h4 mt-2 sm:mt-5", dark ? "text-on-dark" : "text-ink-900")}>
             <span className="sr-only">Step {i + 1}: </span>
             {s.title}
           </h3>
-          <p className={cn("mt-2 max-w-[26rem] pr-2", dark ? "text-on-dark-muted" : "text-muted")}>
+          {/* phone pass (D-063): mt-1.5 as in VerticalSteps; sm:mt-2 restores today's value. */}
+          <p className={cn("mt-1.5 max-w-[26rem] pr-2 sm:mt-2", dark ? "text-on-dark-muted" : "text-muted")}>
             <MaybeConfirm item={s}>{s.body}</MaybeConfirm>
           </p>
         </StaggerItem>

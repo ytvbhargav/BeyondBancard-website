@@ -29,10 +29,12 @@ export function RelatedLinks({
         <h2 id="related-title" className="type-h4 shrink-0 lg:col-span-4">
           {title}
         </h2>
-        <ul className="flex flex-wrap gap-2 lg:col-span-8">
+        {/* phone pass (D-063): below sm the links stack as full-width rows with the arrow at the
+            right edge, so no pill is left alone on a wrapped row; from sm the auto-width pills wrap. */}
+        <ul className="flex flex-col gap-2 sm:flex-row sm:flex-wrap lg:col-span-8">
           {links.map((l) => (
             <li key={l.href}>
-              <ChipLink href={l.href} className="group/related">
+              <ChipLink href={l.href} className="group/related w-full justify-between sm:w-auto sm:justify-start">
                 {l.label}
                 <ArrowRight
                   aria-hidden

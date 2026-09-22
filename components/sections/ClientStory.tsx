@@ -79,7 +79,9 @@ export function ClientStory({
   const id = headingId(story);
 
   return (
-    <figure aria-labelledby={id} className="grid gap-10 lg:grid-cols-12 lg:gap-8">
+    <figure aria-labelledby={id} className="grid gap-6 sm:gap-10 lg:grid-cols-12 lg:gap-8">
+      {/* phone pass (D-063): 24px from quote to file below 640px so the file reads as the quote's attribution;
+          sm:gap-10 restores 40px and lg:gap-8 is unchanged. */}
       {/* From 1280px the quote mark hangs in its own page column (inner grid with the outer gap); below that
           it sits above the quote, so the quote keeps the full width of its columns. Quote and file split 8/4
           from 1280px and 7/5 from 1024px, where four columns are too narrow for the file. */}
@@ -194,8 +196,10 @@ export function ClientStories({
       {rest.length > 0 && (
         <Section tone="paper">
           <div className="divide-y divide-line">
+            {/* phone pass (D-063): 40px either side of each hairline below 640px (80px between stories, still more
+                than the 24px inside one); sm:py-14 restores 56px, and first:pt-0 / last:pb-0 still win on specificity. */}
             {rest.map((story) => (
-              <div key={story.name} className="py-14 first:pt-0 last:pb-0 md:py-20">
+              <div key={story.name} className="py-10 first:pt-0 last:pb-0 sm:py-14 md:py-20">
                 <ClientStory story={story} labels={labels} context={context} />
               </div>
             ))}

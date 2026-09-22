@@ -56,7 +56,9 @@ export function PostRow({
         >
           {post.categories.map((c) => (
             <li key={c}>
-              <Chip className="min-h-8 px-3 text-[0.8125rem] text-muted">{c}</Chip>
+              {/* phone pass (D-063): 14px chip label below sm (the label floor); sm:text-[0.8125rem] restores
+                  today's 13px, and /[1.6] keeps the 1.6 line height the chip inherited, so sm+ is unchanged. */}
+              <Chip className="min-h-8 px-3 text-sm/[1.6] text-muted sm:text-[0.8125rem]">{c}</Chip>
             </li>
           ))}
         </ul>

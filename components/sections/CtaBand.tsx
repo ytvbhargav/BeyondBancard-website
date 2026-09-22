@@ -22,15 +22,21 @@ export function CtaBand({
   /** The nudging arrow means "go somewhere"; turn it off for actions such as a mailto link. */
   primaryArrow?: boolean;
 }) {
+  // phone pass (D-063): py-16 below sm, one step above the 56px section rhythm (D-006) so the
+  // band still reads as the closing moment without ~190px of empty dark into the footer.
+  // sm:py-24 restores today's 96px; md and lg are unchanged.
   return (
     <section
-      className="tone-dark relative isolate overflow-hidden bg-ink-900 py-24 md:py-32 lg:py-40"
+      className="tone-dark relative isolate overflow-hidden bg-ink-900 py-16 sm:py-24 md:py-32 lg:py-40"
       aria-labelledby="cta-band-title"
     >
       <div aria-hidden className="cta-glow absolute inset-0 -z-10" />
       <Container>
         <Reveal className="flex flex-col items-center text-center">
-          <h2 id="cta-band-title" className="type-h1 max-w-[18ch] text-on-dark">
+          {/* phone pass (D-063): one type step down below sm, matching PageHero's h1, so the default
+              title sets as "Build a better / payments program." (2 lines, not 3 with two orphan
+              words) at 375-430px. sm:type-h1 restores it. */}
+          <h2 id="cta-band-title" className="type-h2 max-w-[18ch] text-on-dark sm:type-h1">
             {title}
           </h2>
           <p className="type-body-lg mt-6 max-w-[36rem] text-on-dark-muted">{body}</p>

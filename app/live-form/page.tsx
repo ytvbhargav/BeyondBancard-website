@@ -15,8 +15,9 @@ export const metadata: Metadata = {
 };
 
 export default function ApplyPage() {
+  // phone pass (D-063): pb-14 (56px, section-y's phone value) below sm; sm:pb-24 restores today's value, md:pb-32 unchanged.
   return (
-    <section className="bg-paper pt-10 pb-24 md:pt-16 md:pb-32">
+    <section className="bg-paper pt-10 pb-14 sm:pb-24 md:pt-16 md:pb-32">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7">
           <h1 className="anim-rise type-h1 max-w-[16ch]">{apply.title}</h1>

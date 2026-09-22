@@ -51,12 +51,17 @@ export function ProgramSteps({ title, steps }: { title: string; steps: Step[] })
                       duration={0.45}
                       className="ml-4 hidden h-0.5 flex-1 lg:block"
                     />
+                    {/* phone pass (D-063): below sm the line no longer sets the step height. flex: 1's 0% basis
+                        falls back to the SVG's 100px viewBox height while the column is measured, and min-height:
+                        auto holds it there, so basis-0 and min-h-0 let it shrink to the text. -mb-7 carries it
+                        28px into the li's pb-10, stopping 12px short of the next number, like its mt-3 at the top.
+                        sm:flex-1 sm:min-h-auto sm:mb-0 restore today's values; lg:hidden unchanged. */}
                     <DrawLine
                       orientation="vertical"
                       play={on}
                       delay={delay + 0.2}
                       duration={0.45}
-                      className="mt-3 w-0.5 flex-1 lg:hidden"
+                      className="mt-3 -mb-7 min-h-0 w-0.5 grow basis-0 sm:mb-0 sm:min-h-auto sm:flex-1 lg:hidden"
                     />
                   </>
                 )}

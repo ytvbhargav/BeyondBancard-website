@@ -50,7 +50,8 @@ export function RolesBoard({
               aria-labelledby={`${id}-title ${id}-link`}
               aria-describedby={`${id}-summary`}
               className={cn(
-                "group/role link-draw-parent relative grid gap-x-10 px-5 py-6 sm:px-7 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:px-9 md:py-7",
+                // phone pass (D-063): 20px rows below sm, like the other file panels; sm:py-6 restores 24px
+                "group/role link-draw-parent relative grid gap-x-10 px-5 py-5 sm:px-7 sm:py-6 md:grid-cols-[minmax(0,1fr)_auto] md:items-center md:px-9 md:py-7",
                 "transition-colors duration-(--duration-fast) ease-out hover:bg-brand-50 focus-visible:-outline-offset-2",
                 // Match the panel's inner corners so the inset focus ring is not clipped.
                 i === 0 && "rounded-t-[calc(var(--radius-md)-1px)]",
@@ -72,7 +73,8 @@ export function RolesBoard({
               <span
                 aria-hidden
                 className={cn(
-                  "absolute top-5 right-4 grid size-8 place-items-center rounded-pill text-brand-700 sm:right-6",
+                  // phone pass (D-063): top-4 follows the row's py-5 so the arrow stays centred on the title's first line
+                  "absolute top-4 right-4 grid size-8 place-items-center rounded-pill text-brand-700 sm:top-5 sm:right-6",
                   "md:static md:size-9 md:border md:border-line-strong md:text-ink-900",
                   "transition-[background-color,border-color,color] duration-(--duration-fast) ease-out group-hover/role:border-brand-600 md:group-hover/role:bg-brand-600 md:group-hover/role:text-white",
                 )}

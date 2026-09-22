@@ -83,9 +83,12 @@ export function FeatureGrid({
               above it. The title stays type-h3 at every width — it is the panel's hierarchy cue,
               and the p-5 padding does the real saving. From sm up the wrapper is a plain block, so
               the icon stacks above the title with mt-5 exactly as before.
+              phone pass (D-063): items-start plus mt-0.5 pins the 20px icon to the title's first
+              line (type-h3 line box is about 25px at 390), so a title that wraps to two lines no
+              longer leaves the icon floating between them. sm:mt-0 restores today's stacked icon.
             */}
-            <div className="flex items-center gap-3 sm:block">
-              {f.icon && <Icon name={f.icon} className="size-5 shrink-0 text-brand-600 sm:size-6" />}
+            <div className="flex items-start gap-3 sm:block">
+              {f.icon && <Icon name={f.icon} className="mt-0.5 size-5 shrink-0 text-brand-600 sm:mt-0 sm:size-6" />}
               <H className="type-h3 sm:mt-5">{f.title}</H>
             </div>
             <p className="mt-2 max-w-[28rem] text-muted">

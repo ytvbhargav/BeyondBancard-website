@@ -51,7 +51,10 @@ export function SnapCarousel({
     const target = track?.children[index] as HTMLElement | undefined;
     if (!track || !target) return;
     const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    track.scrollTo({ left: target.offsetLeft - track.offsetLeft, behavior: reduce ? "auto" : "smooth" });
+    // phone pass (D-063): aim at the snap point itself, which sits the track's scroll padding before the card
+    // (20px on phones, 0 from sm up), so arrows don't depend on the browser re-snapping.
+    const pad = parseFloat(getComputedStyle(track).scrollPaddingLeft) || 0;
+    track.scrollTo({ left: target.offsetLeft - track.offsetLeft - pad, behavior: reduce ? "auto" : "smooth" });
   }, []);
 
   const hide = { sm: "sm:hidden", md: "md:hidden", lg: "lg:hidden" }[breakpoint];
@@ -64,7 +67,9 @@ export function SnapCarousel({
         data-lenis-prevent-touch
         {...(stagger ? { "data-stagger": "" } : {})}
         className={cn(
-          "-mx-5 flex snap-x snap-mandatory gap-3 overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] sm:-mx-6 sm:px-6 [&::-webkit-scrollbar]:hidden",
+          // phone pass (D-063): scroll-px-5 matches the px-5 gutter, so a snapped card rests on the 20px gutter
+          // instead of flush at x=0 (the first snap point becomes scrollLeft 0). sm:scroll-px-0 keeps today's 0.
+          "-mx-5 flex snap-x snap-mandatory scroll-px-5 gap-3 overflow-x-auto scroll-smooth px-5 pb-2 [scrollbar-width:none] sm:-mx-6 sm:scroll-px-0 sm:px-6 [&::-webkit-scrollbar]:hidden",
           trackClassName,
         )}
       >

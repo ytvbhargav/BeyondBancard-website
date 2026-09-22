@@ -32,13 +32,15 @@ export function EnvironmentSelector({ block, tone, headingId }: BlockProps<Selec
 
   return (
     <Section id={block.id} tone={tone} aria-labelledby={headingId}>
-      <div className="grid gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
+      {/* phone pass (D-063): gap-8 below sm between the chips and the panel (was gap-10); sm:gap-10 restores today's value, lg:gap-8 unchanged. */}
+      <div className="grid gap-8 sm:gap-10 lg:grid-cols-12 lg:items-end lg:gap-8">
         <Reveal className="min-w-0 lg:col-span-5">
           <h2 id={headingId} className="type-h2">
             <BlockTitle title={block.title} flag={block} />
           </h2>
           {block.lead && <p className="type-body-lg mt-5 max-w-[28rem] text-muted">{block.lead}</p>}
-          <p id={legendId} className="type-h4 mt-10 text-ink-900">
+          {/* phone pass (D-063): mt-8 below sm from the heading to the legend (was mt-10); sm:mt-10 restores today's value. */}
+          <p id={legendId} className="type-h4 mt-8 text-ink-900 sm:mt-10">
             {block.legend}
           </p>
           <div role="group" aria-labelledby={legendId} className="mt-4 flex flex-wrap gap-2">
@@ -77,7 +79,9 @@ export function EnvironmentSelector({ block, tone, headingId }: BlockProps<Selec
             <p aria-live="polite" aria-atomic="true" className="sr-only">
               <Emphasis text={current.text} />
             </p>
-            <div className="mt-8 border-t border-line pt-6">
+            {/* phone pass (D-063): mt-6 pt-5 below sm (was mt-8 pt-6); the reserved height of the longest recommendation
+                stays, so the button still never moves when the choice changes. sm:mt-8 sm:pt-6 restore today's values. */}
+            <div className="mt-6 border-t border-line pt-5 sm:mt-8 sm:pt-6">
               {/* Wraps rather than overflowing if a label outgrows a phone-width panel */}
               <Button
                 href={block.link.href}

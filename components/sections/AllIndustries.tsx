@@ -49,7 +49,13 @@ export function AllIndustries({ title, industries }: { title: string; industries
       <SectionHeader id="all-industries-title" title={title} className="md:mb-10" />
 
       <div className="flex flex-col gap-5 border-b border-line pb-8 lg:flex-row lg:items-center lg:justify-between">
-        <div role="group" aria-label="Filter by group" className="flex flex-wrap gap-2">
+        {/* phone pass (D-063): below sm the chips are one swipeable 44px row bleeding to the 20px gutter (the
+            BlogIndex pattern), py-1 keeps focus rings unclipped; the sm: overrides restore today's wrapping row. */}
+        <div
+          role="group"
+          aria-label="Filter by group"
+          className="-mx-5 -my-1 flex gap-2 overflow-x-auto px-5 py-1 *:shrink-0 sm:mx-0 sm:my-0 sm:flex-wrap sm:overflow-visible sm:px-0 sm:py-0 sm:*:shrink"
+        >
           <ChipToggle pressed={group === "all"} onClick={() => setGroup("all")} count={list.length}>
             All
           </ChipToggle>
@@ -103,12 +109,14 @@ export function AllIndustries({ title, industries }: { title: string; industries
                 animate={{ opacity: 1 }}
                 exit={{ opacity: 0 }}
                 transition={transition}
-                className="scroll-mt-32 border-b border-line py-10 last:border-b-0 lg:grid lg:grid-cols-12 lg:gap-8"
+                className="scroll-mt-32 border-b border-line py-8 last:border-b-0 last:pb-0 sm:py-10 sm:last:pb-10 lg:grid lg:grid-cols-12 lg:gap-8"
               >
+                {/* phone pass (D-063): py-8 and a 10px card gap below sm, and the last group drops its bottom
+                    padding so the section's own 56px ends it; sm:py-10, sm:last:pb-10 and sm:gap-3 restore today's values. */}
                 <m.h3 layout={!reduce ? "position" : false} className="type-h4 mb-5 lg:col-span-3 lg:mb-0 lg:pt-4">
                   {groupLabels[g.group]}
                 </m.h3>
-                <ul className="grid gap-3 sm:grid-cols-2 lg:col-span-9 lg:grid-cols-3">
+                <ul className="grid gap-2.5 sm:grid-cols-2 sm:gap-3 lg:col-span-9 lg:grid-cols-3">
                   <AnimatePresence mode="popLayout" initial={false}>
                     {g.items.map((ind) => (
                       <m.li

@@ -72,10 +72,15 @@ export function IndustryDetail({
           {/* Chips are inline boxes, not flex items, so text-wrap: balance evens the rows (four RUO
               chips wrap 2 + 2, not 3 + 1 with one left alone). The li margins and the list's
               negative margin stand in for gap-2. Without balance support they wrap as before. */}
+          {/* phone pass (D-063): below sm the chips are labels, not tap targets, so they drop to 36px
+              (as ChipBand's static chips) with 12px sides. Short pairs then share a row at 390: Gaming
+              6 rows -> 4, Travel 4 -> 3 (three rows of two), and every stacked band is 8px a chip shorter.
+              py-1.5 pads the two CRB labels that wrap inside their chip at 320. sm: restores the 44px,
+              16px-side chip with no vertical padding. */}
           <Reveal as="ul" className="-m-1 text-balance lg:col-span-8">
             {models.chips.map((c) => (
               <li key={c} className="m-1 inline-flex align-top">
-                <Chip className="bg-paper">{c}</Chip>
+                <Chip className="min-h-9 bg-paper px-3 py-1.5 sm:min-h-11 sm:px-4 sm:py-0">{c}</Chip>
               </li>
             ))}
           </Reveal>

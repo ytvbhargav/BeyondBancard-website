@@ -26,13 +26,16 @@ function keepHyphenated(title: string) {
 export function AboutAudiences({ title, items }: { title: string; items: Audience[] }) {
   return (
     <Section tone="paper" aria-labelledby="audiences-title">
-      <SectionHeader id="audiences-title" title={title} />
+      {/* phone pass (D-063): mb-8 below sm, like the values header; sm:mb-12 restores today's value, md:mb-16 unchanged. */}
+      <SectionHeader id="audiences-title" title={title} className="mb-8 sm:mb-12" />
       <Stagger as="ul" className="grid gap-x-8 lg:grid-cols-3">
         {items.map((a) => (
+          // phone pass (D-063): pb-4 below sm, so the 44px link's own slack plus 16px roughly matches the
+          // pt-6 above each title; sm:pb-10 restores today's value, md:pb-8 and lg:pb-0 unchanged.
           <StaggerItem
             as="li"
             key={a.title}
-            className="grid content-start border-t border-line-strong pt-6 pb-10 md:grid-cols-12 md:gap-x-8 md:pb-8 lg:row-span-3 lg:grid-cols-1 lg:grid-rows-subgrid lg:gap-x-0 lg:pb-0"
+            className="grid content-start border-t border-line-strong pt-6 pb-4 sm:pb-10 md:grid-cols-12 md:gap-x-8 md:pb-8 lg:row-span-3 lg:grid-cols-1 lg:grid-rows-subgrid lg:gap-x-0 lg:pb-0"
           >
             {/* Icon top-aligned to the first line (the title wraps to two lines at md and at lg widths near 1024px) */}
             <div className="flex items-start gap-3 md:col-span-5 md:row-span-2 md:self-start lg:col-span-1 lg:row-span-1">

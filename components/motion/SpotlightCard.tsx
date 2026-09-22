@@ -42,7 +42,8 @@ export function SpotlightCard({
         "transition-[transform,border-color] duration-(--duration-fast) ease-out hover:-translate-y-0.5 hover:border-brand-600",
         size === "lg" && "min-h-44 p-6 md:min-h-64 md:p-8",
         size === "md" && "min-h-40 p-6 md:min-h-52 md:p-7",
-        size === "sm" && "min-h-32 p-5",
+        // phone pass (D-063): below sm the small card sizes to its content, so a one-line teaser leaves no gap
+        size === "sm" && "p-4 sm:min-h-32 sm:p-5",
         className,
       )}
     >
@@ -56,13 +57,22 @@ export function SpotlightCard({
           aria-hidden
           className={cn(
             "grid shrink-0 place-items-center rounded-pill border border-line text-ink-900 transition-[background-color,border-color,color,transform] duration-(--duration-fast) group-hover/card:border-brand-600 group-hover/card:bg-brand-600 group-hover/card:text-white",
-            size === "sm" ? "size-8" : "size-9",
+            // phone pass (D-063): below sm the 36px arrow centres on the h3's first line and no longer sets the row height
+            size === "sm" ? "size-8" : "size-9 -my-1.5 sm:my-0",
           )}
         >
           <ArrowRight strokeWidth={1.75} className="size-4 transition-transform duration-(--duration-fast) group-hover/card:translate-x-px" />
         </span>
       </span>
-      <span className={cn("mt-auto block text-muted", size === "sm" ? "type-small pt-3" : "pt-6 md:pt-10")}>{body}</span>
+      <span
+        className={cn(
+          "mt-auto block text-muted",
+          // phone pass (D-063): tighter title-to-teaser gap on the small card below sm
+          size === "sm" ? "type-small pt-2 sm:pt-3" : "pt-6 md:pt-10",
+        )}
+      >
+        {body}
+      </span>
     </Link>
   );
 }

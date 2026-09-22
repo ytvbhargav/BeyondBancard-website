@@ -32,7 +32,8 @@ export function PartnersTeaser({
           </StaggerItem>
         ))}
       </Stagger>
-      <p className="type-small mt-12 flex flex-wrap items-center gap-x-2 text-muted md:mt-16">
+      {/* phone pass (D-063): the last item's pb-8 already spaces the login line below sm, so mt-4 there; sm+ unchanged. */}
+      <p className="type-small mt-4 flex flex-wrap items-center gap-x-2 text-muted sm:mt-12 md:mt-16">
         {loginLine}{" "}
         <a
           href={portals.partner.href}

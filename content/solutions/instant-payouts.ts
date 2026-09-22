@@ -169,7 +169,10 @@ export const instantPayouts = {
     links: [solutionLink("Working capital"), solutionLink("Reporting")],
   },
   bigPicture: {
-    title: "Grow is what payments make possible.",
+    // phone pass (D-063): the non-breaking space keeps "what payments" together, so a phone
+    // balances it as "Grow is / what payments / make possible." instead of stranding "payments".
+    // From 640px up it still breaks at "payments | make", as before.
+    title: "Grow is what\u00a0payments make possible.",
     // First mention of Beyond on the page, so the full name (the hero lead doesn't name Beyond).
     lead: "Beyond Bancard's broader payments ecosystem connects acceptance, protection, and operations around the same growth capabilities.",
   },

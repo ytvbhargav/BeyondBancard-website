@@ -29,7 +29,9 @@ export function LegalPage({ content }: { content: LegalPageContent }) {
       <section className="bg-surface pt-10 pb-16 md:pt-14 md:pb-24" aria-label={content.title}>
         <Container>
           <ArticleReader title="On this page" items={toc}>
-            <p className="mb-8 max-w-[32em] text-[1.0625rem] leading-[1.7] text-ink-900 lg:text-lg">{content.intro}</p>
+            {/* phone pass (D-063): ArticleBody zeroes its first h2's mt-14, so on phones the intro's
+                margin gives that heading the same 56px as the rest; from sm up it keeps mb-8. */}
+            <p className="mb-14 sm:mb-8 max-w-[32em] text-[1.0625rem] leading-[1.7] text-ink-900 lg:text-lg">{content.intro}</p>
             <ArticleBody blocks={blocks} path="" />
           </ArticleReader>
         </Container>

@@ -24,7 +24,9 @@ export function CalloutBand({ block, tone, headingId }: BlockProps<CalloutBlock>
     <Section id={block.id} tone={tone} space="compact" aria-labelledby={headingId}>
       <Reveal
         className={cn(
-          "flex flex-wrap items-center justify-between gap-x-10 gap-y-6 rounded-md border border-line p-7 md:p-9",
+          // phone pass (D-063): the 20px inset of the D-060 file panels (FeatureGrid, CompareColumns) and a matching
+          // 20px copy-to-button gap below sm; sm:p-7 and sm:gap-y-6 restore today's values, md:p-9 unchanged.
+          "flex flex-wrap items-center justify-between gap-x-10 gap-y-5 rounded-md border border-line p-5 sm:gap-y-6 sm:p-7 md:p-9",
           tone === "surface" ? "bg-paper" : "bg-surface",
         )}
       >

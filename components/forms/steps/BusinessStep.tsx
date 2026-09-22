@@ -104,11 +104,13 @@ export function BusinessStep() {
               {apply.options.salesChannels.map((o) => {
                 const checked = field.value.includes(o);
                 const id = `channel-${o.replace(/\W+/g, "-").toLowerCase()}`;
+                // phone pass (D-063): px-3 and an 8px checkbox gap below sm give the label 12px more room at 390,
+                // so "B2B invoicing" stays on one line like the other three; min-h-12 keeps the 48px tap target
                 return (
                   <label
                     key={o}
                     htmlFor={id}
-                    className="flex min-h-12 cursor-pointer items-center gap-3 rounded-sm border border-line-strong bg-surface px-4 text-[0.9375rem] transition-colors duration-(--duration-fast) hover:border-brand-600 has-[[data-state=checked]]:border-brand-600 has-[[data-state=checked]]:bg-brand-50"
+                    className="flex min-h-12 cursor-pointer items-center gap-2 rounded-sm border border-line-strong bg-surface px-3 text-[0.9375rem] sm:gap-3 sm:px-4 transition-colors duration-(--duration-fast) hover:border-brand-600 has-[[data-state=checked]]:border-brand-600 has-[[data-state=checked]]:bg-brand-50"
                   >
                     <Checkbox
                       id={id}

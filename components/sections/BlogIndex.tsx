@@ -59,7 +59,8 @@ export function BlogIndex({ posts }: { posts: BlogPost[] }) {
 
   return (
     <section aria-labelledby="articles-title">
-      <SectionHeader id="articles-title" title={copy.title} className="md:mb-10" />
+      {/* phone pass (D-063): mb-8 below sm, matching the chips' own 32px to the list rule; sm:mb-12 restores today's value, md:mb-10 unchanged. */}
+      <SectionHeader id="articles-title" title={copy.title} className="mb-8 sm:mb-12 md:mb-10" />
 
       {/* One swipeable row on phones (bleeds to the gutter, padded so focus rings are not clipped); wraps from md */}
       <div

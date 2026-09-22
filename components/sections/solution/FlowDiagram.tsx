@@ -47,9 +47,10 @@ export function FlowDiagram({ block, tone, headingId }: BlockProps<FlowBlock>) {
             const label = node.label.replace(/ \//g, "\u00A0/");
             return (
               <StaggerItem as="li" key={node.label} className="relative flex flex-col lg:block">
+                {/* phone pass (D-063): 48px tile floor and 12px padding below sm; sm:min-h-14 sm:py-3.5 restore today's values, lg: still wins from lg. */}
                 <div
                   className={cn(
-                    "flex min-h-14 flex-col justify-center rounded-sm border px-4 py-3.5 text-center lg:h-full lg:min-h-20",
+                    "flex min-h-12 flex-col justify-center rounded-sm border px-4 py-3 text-center sm:min-h-14 sm:py-3.5 lg:h-full lg:min-h-20",
                     dense ? "lg:px-1.5 lg:py-4 xl:px-3" : "lg:px-4 lg:py-5 xl:px-5",
                     focus
                       ? "border-ink-900 bg-ink-900 text-on-dark shadow-float forced-colors:border-2"
@@ -123,7 +124,8 @@ function Connector({ index, dense }: { index: number; dense: boolean }) {
       aria-hidden
       style={{ transitionDelay: `${delay}ms` }}
       className={cn(
-        "flex h-9 items-center justify-center text-muted",
+        // phone pass (D-063): 28px arrow strip below sm (20px arrow, 4px clear each side); sm:h-9 restores today's 36px
+        "flex h-7 items-center justify-center text-muted sm:h-9",
         "lg:absolute lg:top-1/2 lg:left-full lg:h-auto lg:-translate-y-1/2",
         dense ? "lg:w-5 xl:w-8" : "lg:w-10",
         "transition-opacity duration-(--duration-base) ease-out",

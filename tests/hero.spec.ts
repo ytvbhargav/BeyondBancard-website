@@ -587,6 +587,8 @@ test.describe("no horizontal overflow", () => {
   });
 
   test("every demo route at 360", async ({ page }) => {
+    // One page load per demo route (52 now), so the default 30s is not enough.
+    test.setTimeout(DEMO_ROUTES.length * 5_000);
     await page.setViewportSize({ width: 360, height: 800 });
     for (const route of DEMO_ROUTES) {
       await page.goto(route);
@@ -700,6 +702,7 @@ test.describe("header over the hero", () => {
   });
 
   test("is 80px tall at the top of every route", async ({ page }) => {
+    test.setTimeout(DEMO_ROUTES.length * 5_000);
     for (const route of DEMO_ROUTES) {
       await page.goto(route);
       // The site header is the banner landmark; the blog article has its own <header> inside main.

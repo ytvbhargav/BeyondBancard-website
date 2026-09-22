@@ -92,9 +92,16 @@ export default function CareersPage() {
           </Reveal>
           <Stagger as="ul" className="grid gap-x-8 sm:grid-cols-2 lg:col-span-6 lg:col-start-7 lg:grid-cols-1 xl:grid-cols-2">
             {culture.items.map((s) => (
-              <StaggerItem as="li" key={s.text} className="border-t border-line-strong pt-5 pb-8">
-                <Icon name={s.icon} className="size-6 text-brand-600" />
-                <p className="type-body-lg mt-3 max-w-[30rem] text-pretty text-ink-900">{s.text}</p>
+              // phone pass (D-063): below sm the icon sits beside the statement (FeatureGrid's ruled row,
+              // D-060), mt-0.5 centring the 24px icon on the 28px first line; sm:block, sm:mt-0 and
+              // sm:mt-3 restore today's icon-above-text stack.
+              <StaggerItem
+                as="li"
+                key={s.text}
+                className="flex items-start gap-3 border-t border-line-strong pt-5 pb-8 sm:block"
+              >
+                <Icon name={s.icon} className="mt-0.5 size-6 shrink-0 text-brand-600 sm:mt-0" />
+                <p className="type-body-lg max-w-[30rem] text-pretty text-ink-900 sm:mt-3">{s.text}</p>
               </StaggerItem>
             ))}
           </Stagger>

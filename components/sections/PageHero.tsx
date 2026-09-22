@@ -41,8 +41,14 @@ export function PageHero({
         <div className={cn("min-w-0", visual ? "lg:col-span-7" : "max-w-[52rem]")}>
           {breadcrumb && <Breadcrumb items={breadcrumb} tone={tone} className="anim-rise mb-6 md:mb-10" />}
           {!breadcrumb && <div className="h-10 md:h-16" />}
+          {/* phone pass (D-063): one type step down below sm, like ArticleHeader, so long titles
+              set in 3-4 lines and both hero buttons reach the first screen. sm:type-h1 restores it. */}
           <h1
-            className={cn("anim-rise type-h1", visual ? "max-w-[18ch]" : "max-w-[22ch]", dark ? "text-on-dark" : "text-ink-900")}
+            className={cn(
+              "anim-rise type-h2 sm:type-h1",
+              visual ? "max-w-[18ch]" : "max-w-[22ch]",
+              dark ? "text-on-dark" : "text-ink-900",
+            )}
             style={{ "--delay": "60ms" } as React.CSSProperties}
           >
             {title}

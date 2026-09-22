@@ -73,8 +73,9 @@ export function ScrollSteps({ steps }: { steps: Step[] }) {
       />
       {steps.map((s, i) => {
         const on = i <= reached;
+        // phone pass (D-063): pb-10 below sm tightens the step pitch; sm:pb-14 restores today's value, md:pb-20 unchanged.
         return (
-          <li key={s.title} data-step className="relative flex gap-6 pb-14 last:pb-0 md:pb-20">
+          <li key={s.title} data-step className="relative flex gap-6 pb-10 last:pb-0 sm:pb-14 md:pb-20">
             <span
               aria-hidden
               className={cn(

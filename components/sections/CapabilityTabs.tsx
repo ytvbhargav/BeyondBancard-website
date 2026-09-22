@@ -98,13 +98,15 @@ export function CapabilityTabs({ title, items }: { title: string; items: Capabil
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ duration: duration.base, ease: ease.out, delay: idx * stagger.base }}
                   >
+                    {/* phone pass (D-063): py-5 below sm matches the FeatureGrid rows' phone padding (D-060) and gap-4 gives the body 8px more
+                        measure; the body span is not a <p>, so text-pretty keeps a last word off its own line. sm:gap-6 sm:py-7 sm:text-wrap restore today's values. */}
                     <Link
                       href={href(c.href)}
-                      className="group/cap flex items-start justify-between gap-6 py-7 transition-colors duration-(--duration-fast)"
+                      className="group/cap flex items-start justify-between gap-4 py-5 sm:gap-6 sm:py-7 transition-colors duration-(--duration-fast)"
                     >
                       <span>
                         <span className="type-h3 block group-hover/cap:text-brand-700">{c.title}</span>
-                        <span className="mt-2 block max-w-[32rem] text-muted">
+                        <span className="mt-2 block max-w-[32rem] text-pretty text-muted sm:text-wrap">
                           <MaybeConfirm item={c}>{c.body}</MaybeConfirm>
                         </span>
                       </span>

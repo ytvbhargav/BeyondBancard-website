@@ -97,7 +97,8 @@ export function ApplyForm() {
         className="rounded-lg border border-line bg-surface"
         aria-describedby="apply-required-note"
       >
-        <div className="border-b border-line px-6 pt-6 pb-5 sm:px-8">
+        {/* phone pass (D-063): px-5 below sm matches the 20px page gutter; sm:px-8 restores today's value. */}
+        <div className="border-b border-line px-5 pt-6 pb-5 sm:px-8">
           <ol className="flex items-center gap-2 sm:gap-6" aria-label="Application steps">
             {apply.steps.map((label, i) => {
               const done = i < step;
@@ -126,7 +127,8 @@ export function ApplyForm() {
           <Progress className="mt-5" value={((step + 1) / STEPS.length) * 100} aria-label="Application progress" />
         </div>
 
-        <div className="relative overflow-hidden px-6 pt-8 pb-2 sm:px-8">
+        {/* phone pass (D-063): px-5 and pt-6 below sm (20px gutter, 8px less above the heading); sm:px-8 sm:pt-8 restore today's values. */}
+        <div className="relative overflow-hidden px-5 pt-6 pb-2 sm:px-8 sm:pt-8">
           <p aria-live="polite" className="sr-only">
             Step {step + 1} of {STEPS.length}: {apply.steps[step]}
           </p>
@@ -142,7 +144,8 @@ export function ApplyForm() {
               className="min-w-0"
             >
               <legend className="sr-only">{apply.steps[step]}</legend>
-              <div className="mb-7 flex items-baseline justify-between gap-4">
+              {/* phone pass (D-063): mb-5 below sm tightens the heading-to-first-field gap; sm:mb-7 restores today's value. */}
+              <div className="mb-5 flex items-baseline justify-between gap-4 sm:mb-7">
                 <h2 ref={headingRef} tabIndex={-1} className="type-h3 outline-none">
                   {apply.steps[step]}
                 </h2>
@@ -155,7 +158,8 @@ export function ApplyForm() {
           </AnimatePresence>
         </div>
 
-        <div className="mt-6 flex flex-col-reverse gap-4 border-t border-line px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
+        {/* phone pass (D-063): px-5 below sm matches the 20px page gutter; sm:px-8 restores today's value. */}
+        <div className="mt-6 flex flex-col-reverse gap-4 border-t border-line px-5 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
           <p id="apply-required-note" className="type-small flex items-center gap-2 text-muted">
             <Info aria-hidden strokeWidth={1.75} className="size-4 shrink-0" />
             {last ? apply.demoNotice : "Fields marked * are required."}

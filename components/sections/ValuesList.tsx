@@ -19,7 +19,9 @@ export function ValuesList({
         <StaggerItem
           as="li"
           key={v.title}
-          className="grid gap-3 border-t border-line py-8 first:border-line-strong md:grid-cols-12 md:items-baseline md:gap-8 md:py-10"
+          // phone pass (D-063): py-6 (24px) below sm so the rows read as one list, not five islands;
+          // sm:py-8 restores today's 32px from 640px, md:py-10 unchanged
+          className="grid gap-3 border-t border-line py-6 sm:py-8 first:border-line-strong md:grid-cols-12 md:items-baseline md:gap-8 md:py-10"
         >
           {/* 30px at lg: the Testimonials quote step; no type token exists between h3 (24px) and h2 (44px) yet */}
           <h3 className="type-h3 md:col-span-5 lg:text-[1.875rem]">{v.title}</h3>

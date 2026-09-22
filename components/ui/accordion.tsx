@@ -33,9 +33,10 @@ function AccordionTrigger({
           {...props}
         >
           {children}
+          {/* phone pass (D-063): -mt-0.5 below sm centres the 28px circle on the question's first line (type-h4 is ~22px tall at 17px), so it no longer sits ~5px low; multi-line questions stay top-aligned. sm:mt-0.5 restores today's value. */}
           <span
             aria-hidden
-            className="mt-0.5 grid size-7 shrink-0 place-items-center rounded-pill border border-line transition-[transform,background-color,border-color,color] duration-(--duration-base) ease-out group-hover/acc:border-brand-600 group-data-[state=open]/acc:rotate-45 group-data-[state=open]/acc:border-ink-900 group-data-[state=open]/acc:bg-ink-900 group-data-[state=open]/acc:text-on-dark"
+            className="-mt-0.5 sm:mt-0.5 grid size-7 shrink-0 place-items-center rounded-pill border border-line transition-[transform,background-color,border-color,color] duration-(--duration-base) ease-out group-hover/acc:border-brand-600 group-data-[state=open]/acc:rotate-45 group-data-[state=open]/acc:border-ink-900 group-data-[state=open]/acc:bg-ink-900 group-data-[state=open]/acc:text-on-dark"
           >
             <Plus strokeWidth={2} className="size-4" />
           </span>

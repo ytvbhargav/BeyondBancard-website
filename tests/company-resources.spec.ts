@@ -463,8 +463,9 @@ test.describe("partners /partners", () => {
     await expect(cards).toHaveCount(3);
     const expected = [
       { title: "ISOs & agents", href: "/partners/isos-agents" },
-      { title: "ISVs & platforms", href: `/coming-soon?from=${encodeURIComponent("/partners/isvs-platforms")}` },
-      { title: "Associations", href: `/coming-soon?from=${encodeURIComponent("/partners/associations")}` },
+      // Both built in D-061, so the cards link straight to them.
+      { title: "ISVs & platforms", href: "/partners/isvs-platforms" },
+      { title: "Associations", href: "/partners/associations" },
     ];
     for (const [i, { title, href }] of expected.entries()) {
       const card = cards.nth(i);

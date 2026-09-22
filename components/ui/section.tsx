@@ -42,6 +42,9 @@ export function Section({
   );
 }
 
+/** True when a caller sets its own base bottom margin (mb-0, mb-6, my-4, m-0…). */
+const setsBaseMargin = (className?: string) => !!className && /(?:^|\s)-?m[by]?-/.test(className);
+
 /**
  * Section heading: H2 + optional lead. Left-aligned by default with an optional
  * action on the right; `align="center"` is for showcase sections whose content
@@ -66,9 +69,19 @@ export function SectionHeader({
   as?: "h2" | "h3";
   align?: "left" | "center";
 }) {
+  // phone pass (D-063): 32px from the header to its content on phones; the sm: step restores
+  // today's 40px (centred) / 48px (left) at 640-767. A caller with its own base margin (mb-0 in
+  // split layouts, mb-6 on careers) keeps it at sm too, so the restore is left out for them.
+  const ownMargin = setsBaseMargin(className);
   if (align === "center") {
     return (
-      <div className={cn("mx-auto mb-10 flex max-w-[48rem] flex-col items-center text-center md:mb-14", className)}>
+      <div
+        className={cn(
+          "mx-auto mb-8 flex max-w-[48rem] flex-col items-center text-center md:mb-14",
+          !ownMargin && "sm:mb-10",
+          className,
+        )}
+      >
         <Heading id={id} className={cn(Heading === "h2" ? "type-h2" : "type-h3", tone === "dark" ? "text-on-dark" : "text-ink-900")}>
           {title}
         </Heading>
@@ -80,7 +93,13 @@ export function SectionHeader({
     );
   }
   return (
-    <div className={cn("mb-12 flex flex-col gap-6 md:mb-16 lg:flex-row lg:items-end lg:justify-between", className)}>
+    <div
+      className={cn(
+        "mb-8 flex flex-col gap-6 md:mb-16 lg:flex-row lg:items-end lg:justify-between",
+        !ownMargin && "sm:mb-12",
+        className,
+      )}
+    >
       <div className="max-w-[40rem]">
         <Heading id={id} className={cn(Heading === "h2" ? "type-h2" : "type-h3", tone === "dark" ? "text-on-dark" : "text-ink-900")}>
           {title}
