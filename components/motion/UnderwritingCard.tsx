@@ -53,7 +53,10 @@ export function UnderwritingCard({
       ref={ref}
       className={cn("relative w-full rounded-md bg-surface text-ink-900 shadow-float", className)}
     >
-      <div className="flex items-start justify-between gap-4 px-5 pt-5 pb-4 sm:px-6">
+      {/* Wraps rather than squeezing: when title and badge can't share a row (phones, lg's
+          narrow column) the badge drops under the industry line, never above the title (D-003). */}
+      {/* Phone-only density pass (D-060): tighter padding and wrap gap below sm; sm and up unchanged. */}
+      <div className="flex flex-wrap items-start justify-between gap-x-4 gap-y-2 px-4 pt-4 pb-3 sm:gap-y-3 sm:px-6 sm:pt-5 sm:pb-4">
         <div>
           <p className="type-h4">{title}</p>
           <p className="type-small mt-0.5 text-muted">{industry}</p>
@@ -63,23 +66,26 @@ export function UnderwritingCard({
         </Badge>
       </div>
 
-      <dl className="border-t border-line px-5 py-1.5 sm:px-6">
+      {/* Phone-only density pass (D-060): 40px rows on phones (44px from sm up), with the list's own
+          inset kept at 4px so the outer gap stays in step with the 16px between rows, as on HeroFile. */}
+      <dl className="border-t border-line px-4 py-1 sm:px-6 sm:py-1.5">
         {fields.map((f) => (
-          <div key={f.label} className="flex items-baseline justify-between gap-4 border-t border-line py-2.5 first:border-t-0">
+          <div key={f.label} className="flex items-baseline justify-between gap-4 border-t border-line py-2 first:border-t-0 sm:py-2.5">
             <dt className="type-small text-muted">{f.label}</dt>
             <dd className="tabular text-right text-[0.9375rem] font-medium">{f.value}</dd>
           </div>
         ))}
       </dl>
 
-      <div className="border-t border-line bg-paper px-5 pt-4 pb-3 sm:px-6">
+      {/* Phone-only density pass (D-060): tighter band padding, progress gap and check rows below sm. */}
+      <div className="border-t border-line bg-paper px-4 pt-3 pb-2 sm:px-6 sm:pt-4 sm:pb-3">
         <div className="flex items-baseline justify-between">
           <p className="type-small font-medium">Underwriting checks</p>
           <p className="type-small tabular text-muted" aria-hidden>
             {doneCount} of {checks.length}
           </p>
         </div>
-        <div aria-hidden className="mt-3 h-1 overflow-hidden rounded-pill bg-line">
+        <div aria-hidden className="mt-2 h-1 overflow-hidden rounded-pill bg-line sm:mt-3">
           <div
             className={cn(
               "h-full origin-left rounded-pill transition-[transform,background-color] duration-(--duration-base) ease-out",
@@ -88,9 +94,9 @@ export function UnderwritingCard({
             style={{ transform: `scaleX(${doneCount / checks.length})` }}
           />
         </div>
-        <ul className="mt-2">
+        <ul className="mt-1 sm:mt-2">
           {checks.map((c, i) => (
-            <li key={c} className="flex min-h-10 items-center gap-3">
+            <li key={c} className="flex min-h-9 items-center gap-2.5 sm:min-h-10 sm:gap-3">
               <CheckIcon state={states[i]} reduce={reduce} />
               <span className={cn("text-[0.9375rem]", states[i] === "pending" ? "text-muted" : "text-ink-900")}>{c}</span>
               <span className="sr-only">
@@ -101,7 +107,9 @@ export function UnderwritingCard({
         </ul>
       </div>
 
-      <div className="flex min-h-16 items-center justify-between gap-3 rounded-b-md border-t border-line px-5 py-3 sm:px-6">
+      {/* Phone-only density pass (D-060): a 48px footer band on phones as on HeroFile, the old 64px from
+          sm up; in sequence mode the Replay button's own min-h-11 still sets the row's 44px tap target. */}
+      <div className="flex min-h-12 items-center justify-between gap-3 rounded-b-md border-t border-line px-4 py-2 sm:min-h-16 sm:px-6 sm:py-3">
         <div className="relative" aria-live="polite" aria-atomic="true">
           <AnimatePresence mode="popLayout" initial={false}>
             <m.span

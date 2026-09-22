@@ -702,7 +702,8 @@ test.describe("header over the hero", () => {
   test("is 80px tall at the top of every route", async ({ page }) => {
     for (const route of DEMO_ROUTES) {
       await page.goto(route);
-      expect(await page.locator("header").evaluate((el) => el.getBoundingClientRect().height), route).toBe(80);
+      // The site header is the banner landmark; the blog article has its own <header> inside main.
+      expect(await page.getByRole("banner").evaluate((el) => el.getBoundingClientRect().height), route).toBe(80);
     }
   });
 

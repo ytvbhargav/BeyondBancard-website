@@ -1,7 +1,7 @@
 # CLAUDE.md — Beyond Bancard Redesign Demo
 
 ## What we are building
-An interactive design demo for the Beyond Bancard (payment processor) website revamp: the six PRD pages plus the Company and Resources pages (D-054).
+An interactive design demo for the Beyond Bancard (payment processor) website revamp: the six PRD pages plus the Company and Resources pages (D-054), Adult and Partner programs (D-057), and the top 6 industries and every Solutions page (D-058).
 Client uses it to approve design, navigation, content tone and motion before the full ~100-page build.
 
 **Full spec: `docs/PRD.md` — read it before any work. It is the source of truth.**
@@ -9,6 +9,8 @@ Client uses it to approve design, navigation, content tone and motion before the
 ## Pages (keep these exact routes)
 `/` · `/accept/high-risk-processing` · `/industries` · `/industries/nutra-supplements` · `/partners/isos-agents` · `/live-form`
 Added in D-054: `/about-beyond-bancard` · `/careers` · `/contact-us` · `/news` · `/news/what-is-a-high-risk-merchant-account-and-how-does-it-work` · `/our-clients` · `/faq`
+Added in D-057: `/industries/adult` · `/partners`
+Added in D-058: `/industries/gaming` · `/industries/ruo-peptides` · `/industries/travel-payment-solutions` · `/industries/crb` · the Solutions hubs `/accept` · `/protect` · `/grow` · `/operate` and every page in the Solutions menu (`SolutionPage` template, content in `content/solutions/`).
 Every other internal link → `/coming-soon?from=<path>` via `href()` in `lib/links.ts`.
 
 ## Stack

@@ -69,9 +69,12 @@ export function IndustryDetail({
             </h2>
             <p className="mt-2 type-small text-muted">{models.disclaimer}</p>
           </div>
-          <Reveal as="ul" className="flex flex-wrap gap-2 lg:col-span-8">
+          {/* Chips are inline boxes, not flex items, so text-wrap: balance evens the rows (four RUO
+              chips wrap 2 + 2, not 3 + 1 with one left alone). The li margins and the list's
+              negative margin stand in for gap-2. Without balance support they wrap as before. */}
+          <Reveal as="ul" className="-m-1 text-balance lg:col-span-8">
             {models.chips.map((c) => (
-              <li key={c}>
+              <li key={c} className="m-1 inline-flex align-top">
                 <Chip className="bg-paper">{c}</Chip>
               </li>
             ))}

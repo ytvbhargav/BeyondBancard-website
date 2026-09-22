@@ -37,7 +37,8 @@ export function PageHero({
           dark && "pb-20 md:pb-28",
         )}
       >
-        <div className={cn(visual ? "lg:col-span-7" : "max-w-[52rem]")}>
+        {/* min-w-0: a long label must not widen the single phone track (and the visual with it). */}
+        <div className={cn("min-w-0", visual ? "lg:col-span-7" : "max-w-[52rem]")}>
           {breadcrumb && <Breadcrumb items={breadcrumb} tone={tone} className="anim-rise mb-6 md:mb-10" />}
           {!breadcrumb && <div className="h-10 md:h-16" />}
           <h1
@@ -53,7 +54,17 @@ export function PageHero({
             {lead}
           </p>
           {actions && (
-            <div className="anim-rise mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center" style={{ "--delay": "240ms" } as React.CSSProperties}>
+            // Below sm, pill buttons may wrap to two balanced lines in a taller pill instead of running
+            // past the column ("Talk to an international payments expert"). One line stays 48px
+            // (py-3 + 24px line), like size md. Ghost links (rounded-none) keep their own sizing.
+            <div
+              className={cn(
+                "anim-rise mt-10 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center",
+                "[&>a.rounded-pill]:max-sm:h-auto [&>a.rounded-pill]:max-sm:min-h-12 [&>a.rounded-pill]:max-sm:py-3",
+                "[&>a.rounded-pill]:max-sm:whitespace-normal [&>a.rounded-pill]:max-sm:text-center [&>a.rounded-pill]:max-sm:text-balance",
+              )}
+              style={{ "--delay": "240ms" } as React.CSSProperties}
+            >
               {actions}
             </div>
           )}
