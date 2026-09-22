@@ -18,8 +18,8 @@ export function ProcessSteps({ id, title, lead, steps }: { id?: string; title: s
     <section id={id} className="bg-surface" aria-labelledby="process-title">
       <Container className="section-y">
         <div className="max-w-[46rem]">
-          <RevealWords as="h2" id="process-title" text={title} className="type-h2 max-w-[18ch]" />
-          {lead && <p className="type-body-lg mt-5 text-pretty text-muted">{lead}</p>}
+          <RevealWords as="h2" id="process-title" text={title} className="max-w-[18ch] type-h2" />
+          {lead && <p className="mt-5 type-body-lg text-pretty text-muted">{lead}</p>}
         </div>
 
         <Stagger
@@ -31,11 +31,7 @@ export function ProcessSteps({ id, title, lead, steps }: { id?: string; title: s
           )}
         >
           {steps.map((step, i) => (
-            <StaggerItem
-              as="li"
-              key={step.title}
-              className="relative pt-10 pb-8 pl-8 md:pb-10 lg:pt-12 lg:pl-0"
-            >
+            <StaggerItem as="li" key={step.title} className="relative pt-10 pb-8 pl-8 md:pb-10 lg:pt-12 lg:pl-0">
               {/* The rule: down the left below lg, across the top from lg */}
               <span
                 aria-hidden
@@ -51,8 +47,8 @@ export function ProcessSteps({ id, title, lead, steps }: { id?: string; title: s
                 aria-hidden
                 className="absolute top-3 left-0 size-2.5 -translate-x-1/2 rounded-pill bg-brand-600 lg:top-0 lg:left-0 lg:-translate-y-1/2"
               />
-              <p className="type-small tabular font-semibold text-brand-700">{String(i + 1).padStart(2, "0")}</p>
-              <h3 className="type-h4 mt-3 max-w-[16ch] text-balance text-ink-900">{step.title}</h3>
+              <p className="type-small font-semibold text-brand-700 tabular">{String(i + 1).padStart(2, "0")}</p>
+              <h3 className="mt-3 max-w-[16ch] type-h4 text-balance text-ink-900">{step.title}</h3>
               <p className="mt-2 max-w-[28rem] text-pretty text-muted">{step.body}</p>
             </StaggerItem>
           ))}

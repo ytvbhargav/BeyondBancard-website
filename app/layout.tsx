@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import { Archivo, IBM_Plex_Sans } from "next/font/google";
 import { AnnouncementBar } from "@/components/layout/AnnouncementBar";
 import { ANNOUNCEMENT_KEY } from "@/lib/constants";
@@ -46,10 +47,12 @@ const announcementScript = `document.documentElement.classList.add("js");try{if(
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${archivo.variable} ${plex.variable}`} suppressHydrationWarning>
-      <head>
-        <script dangerouslySetInnerHTML={{ __html: announcementScript }} />
-      </head>
       <body className="flex min-h-dvh flex-col">
+        {/* next/script, not a bare <script>: React never runs a script tag it
+            renders, and this one has to run before the first paint. */}
+        <Script id="announcement-state" strategy="beforeInteractive">
+          {announcementScript}
+        </Script>
         <a
           href="#content"
           className="fixed top-3 left-3 z-[100] -translate-y-24 rounded-pill bg-ink-900 px-5 py-3 font-semibold text-on-dark transition-transform focus-visible:translate-y-0"
