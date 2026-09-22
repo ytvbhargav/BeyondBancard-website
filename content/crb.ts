@@ -89,7 +89,7 @@ const copiedFromGaming = {
 
 export const crb = {
   meta: { title: "Cannabis-related business payments" },
-  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "Cannabis-related businesses" }],
+  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "Cannabis-Related Businesses" }],
   hero: {
     title: "Navigate complex payments with confidence.",
     // Live wording; "Beyond Bancard" on first mention (PRD §10.5).

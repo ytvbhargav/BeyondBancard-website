@@ -2,7 +2,7 @@ import Image from "next/image";
 import { Badge, type Status } from "@/components/ui/badge";
 
 const APPLICATIONS: { merchant: string; industry: string; status: Status; label: string }[] = [
-  { merchant: "Online supplement store", industry: "Nutra & supplements", status: "approved", label: "Approved" },
+  { merchant: "Online supplement store", industry: "Nutra & Supplements", status: "approved", label: "Approved" },
   { merchant: "Auto repair shop", industry: "Auto repair", status: "approved", label: "Approved" },
   { merchant: "Vape retailer", industry: "Vape & e-cig", status: "review", label: "In review" },
   { merchant: "Subscription software", industry: "SaaS", status: "pending", label: "Submitted" },

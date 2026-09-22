@@ -169,7 +169,7 @@ export default function StyleguidePage() {
         <div className="grid gap-6 lg:grid-cols-2">
           <UnderwritingCard {...home.underwriting} mode="static" completed={3} />
           <div className="grid gap-4">
-            <SpotlightCard href="/industries/nutra-supplements" title="Nutra & supplements" body="Payments engineered for fast-growing commerce." />
+            <SpotlightCard href="/industries/nutra-supplements" title="Nutra & Supplements" body="Payments engineered for fast-growing commerce." />
             <SpotlightCard href="/industries/kratom" title="Kratom" body="Processing built around complex kratom commerce." size="sm" />
           </div>
         </div>

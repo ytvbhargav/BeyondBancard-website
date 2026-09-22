@@ -157,8 +157,8 @@ export const footerColumns: { title: string; links: NavLink[] }[] = [
     links: [
       { label: "Adult", href: "/industries/adult" },
       { label: "Gaming", href: "/industries/gaming" },
-      { label: "Nutra & supplements", href: "/industries/nutra-supplements" },
-      { label: "RUO peptides", href: "/industries/ruo-peptides" },
+      { label: "Nutra & Supplements", href: "/industries/nutra-supplements" },
+      { label: "RUO Peptides", href: "/industries/ruo-peptides" },
       { label: "Travel", href: "/industries/travel-payment-solutions" },
       { label: "View all industries", href: "/industries" },
     ],

@@ -16,7 +16,7 @@ export const home = {
   underwriting: {
     label: "Example application",
     title: "New merchant application",
-    industry: "Nutra & supplements",
+    industry: "Nutra & Supplements",
     fields: [
       { label: "Sales channel", value: "Online, card-not-present" },
       { label: "Billing", value: "Recurring subscription" },
