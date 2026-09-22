@@ -66,7 +66,7 @@ export const ruoPeptidesVisual: Omit<UnderwritingCardProps, "mode" | "completed"
 
 export const ruoPeptides = {
   meta: { title: "RUO peptide payments" },
-  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "RUO peptides" }],
+  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "RUO Peptides" }],
   hero: {
     title: "Processing that understands Research Use Only.",
     // Live wording; "Beyond Bancard" on first mention (PRD §10.5).

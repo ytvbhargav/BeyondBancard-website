@@ -105,7 +105,7 @@ export function BlockSection({
             <h2
               id={headingId}
               className={cn(
-                "max-w-[20ch] text-[clamp(1.875rem,3.4vw,3.25rem)] leading-[1.08] font-semibold tracking-[-0.015em] text-balance",
+                "max-w-[20ch] text-[clamp(1.875rem,3.4vw,3.25rem)]/[1.08] font-semibold tracking-[-0.015em] text-balance",
                 dark ? "text-on-dark" : "text-ink-900",
               )}
             >

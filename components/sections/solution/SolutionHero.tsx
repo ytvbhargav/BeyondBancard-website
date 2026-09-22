@@ -60,8 +60,9 @@ export function SolutionHero({
             )}
             <h1
               className={cn(
-                "anim-rise mt-5 max-w-[18ch] leading-[1.04] font-semibold tracking-[-0.02em] text-balance text-ink-900",
-                hub ? "text-[clamp(2.5rem,5.6vw,4.5rem)]" : "text-[clamp(2.125rem,4.4vw,3.5rem)]",
+                "anim-rise mt-5 max-w-[18ch] font-semibold tracking-[-0.02em] text-balance text-ink-900",
+                // The leading rides with the size: as separate classes, tailwind-merge drops it.
+                hub ? "text-[clamp(2.5rem,5.6vw,4.5rem)]/[1.05]" : "text-[clamp(2.125rem,4.4vw,3.5rem)]/[1.08]",
               )}
               style={{ "--delay": "80ms" } as React.CSSProperties}
             >

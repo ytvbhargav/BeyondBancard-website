@@ -85,26 +85,39 @@ export function IndustryHero({
             <div className="lg:col-span-6 lg:col-start-7">
               {/* Three frames on one grid: the lead photograph tall on the left,
                   the other two stacked beside it. Two frames drop to a pair, one fills the width. */}
-              <div className="grid grid-cols-6 gap-3 sm:gap-4">
+              {/* The mosaic's own ratio sets the height, and the frames divide it: with the lead
+                  spanning both rows there is nothing else to size them from. */}
+              <div
+                className={cn(
+                  "grid grid-cols-6 grid-rows-2 gap-3 sm:gap-4",
+                  lead2 ? "aspect-4/5 sm:aspect-3/2 lg:aspect-4/5" : "aspect-3/2",
+                )}
+              >
                 <Frame
                   image={lead1}
                   priority
-                  distance={36}
-                  className={cn(
-                    lead2 ? "col-span-4 row-span-2 aspect-4/5" : "col-span-6 aspect-3/2",
-                  )}
+                  distance={24}
+                  tint="none"
+                  className={cn("row-span-2", lead2 ? "col-span-4" : "col-span-6")}
                   sizes="(min-width: 1024px) 30vw, 60vw"
                 />
                 {lead2 && (
                   <Frame
                     image={lead2}
-                    distance={64}
-                    className={cn("col-span-2 aspect-3/4", !lead3 && "row-span-2 aspect-4/5")}
+                    distance={40}
+                    tint="brand"
+                    className={cn("col-span-2 min-h-0", !lead3 && "row-span-2")}
                     sizes="(min-width: 1024px) 15vw, 30vw"
                   />
                 )}
                 {lead3 && (
-                  <Frame image={lead3} distance={20} className="col-span-2 aspect-square" sizes="(min-width: 1024px) 15vw, 30vw" />
+                  <Frame
+                    image={lead3}
+                    distance={12}
+                    tint="sky"
+                    className="col-span-2 min-h-0"
+                    sizes="(min-width: 1024px) 15vw, 30vw"
+                  />
                 )}
               </div>
             </div>
@@ -134,23 +147,58 @@ export function IndustryHero({
   );
 }
 
-/** One frame of the mosaic. `distance` is how far it drifts against the scroll. */
+/**
+ * One frame of the mosaic: the photograph sits on a brand-coloured panel and
+ * blends into it, so photographs from different sources read as one set rather
+ * than as stock dropped into the page. One corner is cut, which is what makes
+ * the frames read as part of the design.
+ *
+ * `distance` is how far the frame drifts against the scroll.
+ */
 function Frame({
   image,
   className,
   sizes,
   distance,
+  tint = "brand",
   priority = false,
 }: {
   image: { src: string; alt: string };
   className?: string;
   sizes: string;
   distance: number;
+  /** The panel behind the photograph. The lead frame keeps its own colour. */
+  tint?: "brand" | "sky" | "none";
   priority?: boolean;
 }) {
   return (
-    <Parallax distance={distance} className={cn("overflow-hidden rounded-md border border-ink-800 shadow-float", className)}>
-      <Image src={image.src} alt={image.alt} fill priority={priority} sizes={sizes} className="object-cover" />
+    <Parallax
+      distance={distance}
+      className={cn(
+        "relative h-full overflow-hidden rounded-md bg-ink-900 shadow-float",
+        // The cut corner, echoed on every frame
+        "[clip-path:polygon(0_0,calc(100%-1.75rem)_0,100%_1.75rem,100%_100%,0_100%)]",
+        className,
+      )}
+    >
+      <Image
+        src={image.src}
+        alt={image.alt}
+        fill
+        priority={priority}
+        sizes={sizes}
+        className={cn("object-cover", tint !== "none" && "grayscale")}
+      />
+      {/* A duotone: the photograph keeps its light and shade and takes the brand hue,
+          so photographs from different sources read as one set. */}
+      {tint !== "none" && (
+        <span
+          aria-hidden
+          className={cn("absolute inset-0 mix-blend-color", tint === "brand" ? "bg-brand-600" : "bg-sky-400")}
+        />
+      )}
+      {/* A wash from the foot, so the frames sit on the dark field rather than cut out of it */}
+      <span aria-hidden className="absolute inset-0 bg-linear-to-t from-ink-950/45 to-transparent" />
     </Parallax>
   );
 }

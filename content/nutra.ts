@@ -3,7 +3,7 @@ import { featuredIndustries } from "@/content/industries";
 
 export const nutra = {
   meta: { title: "Nutra & supplement payments" },
-  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "Nutra & supplements" }],
+  breadcrumb: [{ label: "Industries", href: "/industries" }, { label: "Nutra & Supplements" }],
   hero: {
     title: "Nutra and supplement payments that keep up with your growth.",
     lead: "Fast-growing nutraceutical and supplement brands need payment infrastructure that understands ecommerce, recurring revenue, product review and changing volume.",
