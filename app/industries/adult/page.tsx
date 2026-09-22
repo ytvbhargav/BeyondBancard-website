@@ -6,5 +6,12 @@ import { adultFaqs } from "@/content/faqs";
 export const metadata = industryDetailMetadata(adult);
 
 export default function AdultPage() {
-  return <IndustryDetail content={adult} faqs={adultFaqs} images={industryImages["adult"]} />;
+  return (
+    <IndustryDetail
+      content={adult}
+      faqs={adultFaqs}
+      images={industryImages["adult"]}
+      cutout={{ src: "/industries/adult-cut.png", alt: "A couple laughing together" }}
+    />
+  );
 }

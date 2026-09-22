@@ -31,10 +31,12 @@ export function IndustryDetail({
   content,
   faqs,
   images,
+  cutout,
 }: {
   content: IndustryDetailContent;
   faqs: Faq[];
   images?: { src: string; alt: string }[];
+  cutout?: { src: string; alt: string };
 }) {
   const { hero, realities, models, whyBeyond, capabilities, checklist, process, faq } = content;
   // The page's own name, for the hero eyebrow: the last breadcrumb is the current page.
@@ -49,6 +51,7 @@ export function IndustryDetail({
         expertCta={hero.expertCta}
         breadcrumb={content.breadcrumb}
         images={images}
+        cutout={cutout}
         models={models}
       />
 

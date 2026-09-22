@@ -2,18 +2,18 @@ import Image from "next/image";
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
-import { Parallax } from "@/components/motion/Parallax";
 import { cta } from "@/content/site";
 import { cn } from "@/lib/utils";
 
 /**
- * Industry opening: the headline holds the left of the page grid and a mosaic of
- * the industry's own photographs holds the right. The frames drift at different
- * rates as the page moves, which is what reads as depth; below lg they settle
- * into a simple row, and with reduced motion they do not move at all.
+ * Industry opening. The photograph is the section rather than an object inside
+ * it: it fills the frame edge to edge, and the type is set over its quiet side.
+ * Two scrims carry it — one from the left, so the headline always has contrast
+ * whatever the photograph does, and one from the foot, so the section resolves
+ * into the models rail instead of stopping at a hard edge.
  *
- * The type animates in CSS so the headline paints before hydration (it is the
- * LCP element), and the lead photograph is marked priority for the same reason.
+ * Everything animates in CSS, so the headline paints before hydration (it is the
+ * LCP element) and the section needs no JavaScript to be right.
  */
 export function IndustryHero({
   eyebrow,
@@ -22,6 +22,7 @@ export function IndustryHero({
   expertCta,
   breadcrumb,
   images = [],
+  cutout,
   models,
 }: {
   eyebrow: string;
@@ -29,35 +30,36 @@ export function IndustryHero({
   lead: string;
   expertCta?: string;
   breadcrumb: { label: string; href?: string }[];
-  /** Up to three photographs: the first leads the mosaic. */
+  /** The hero photograph; only the first is shown. */
   images?: { src: string; alt: string }[];
+  /** The subject cut out of that photograph, which breaks the panel's edge. */
+  cutout?: { src: string; alt: string };
   /** Business models this industry covers, with the eligibility line. */
   models?: { title: string; chips: string[]; disclaimer: string };
 }) {
-  const [lead1, lead2, lead3] = images;
+  const [photo] = images;
 
   return (
     <section className="tone-dark relative isolate overflow-hidden bg-ink-950">
       <div aria-hidden className="page-hero-dark absolute inset-0 -z-20 opacity-80" />
-      {/* A faint grid for depth, faded out well before it reaches the copy */}
       <div
         aria-hidden
         className="absolute inset-0 -z-10 opacity-[0.05] [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [background-size:72px_72px] [mask-image:radial-gradient(80%_60%_at_70%_0%,black,transparent)]"
       />
 
-      <Container className="pt-6 pb-16 md:pb-20 lg:pb-24">
+      <Container className="pt-6 pb-14 md:pb-16">
         <Breadcrumb items={breadcrumb} tone="dark" className="anim-rise" />
 
-        <div className={cn("grid items-center gap-12 pt-12 md:pt-16 lg:gap-10", lead1 && "lg:grid-cols-12")}>
-          <div className={cn("min-w-0", lead1 ? "lg:col-span-6" : "max-w-[46rem]")}>
+        <div className={cn("grid items-end gap-10 pt-10 md:pt-14", cutout && "lg:grid-cols-12 lg:gap-8")}>
+          <div className={cn("min-w-0", cutout ? "lg:col-span-6 lg:pb-10" : "max-w-[46rem]")}>
             <p
-              className="anim-rise type-small font-semibold tracking-[0.16em] text-brand-300 uppercase"
+              className="anim-rise type-small font-semibold tracking-[0.18em] text-brand-300 uppercase"
               style={{ "--delay": "0ms" } as React.CSSProperties}
             >
               {eyebrow}
             </p>
             <h1
-              className="anim-rise type-h1 mt-5 max-w-[16ch] text-balance text-on-dark"
+              className="anim-rise type-h1 mt-5 max-w-[15ch] text-balance text-on-dark"
               style={{ "--delay": "80ms" } as React.CSSProperties}
             >
               {title}
@@ -81,53 +83,37 @@ export function IndustryHero({
             </div>
           </div>
 
-          {lead1 && (
+          {cutout && (
             <div className="lg:col-span-6 lg:col-start-7">
-              {/* Three frames on one grid: the lead photograph tall on the left,
-                  the other two stacked beside it. Two frames drop to a pair, one fills the width. */}
-              {/* The mosaic's own ratio sets the height, and the frames divide it: with the lead
-                  spanning both rows there is nothing else to size them from. */}
-              <div
-                className={cn(
-                  "grid grid-cols-6 grid-rows-2 gap-3 sm:gap-4",
-                  lead2 ? "aspect-4/5 sm:aspect-3/2 lg:aspect-4/5" : "aspect-3/2",
-                )}
-              >
-                <Frame
-                  image={lead1}
-                  priority
-                  distance={24}
-                  tint="none"
-                  className={cn("row-span-2", lead2 ? "col-span-4" : "col-span-6")}
-                  sizes="(min-width: 1024px) 30vw, 60vw"
+              {/* The panel holds the colour; the subject stands in front of it and
+                  breaks its top edge, so the picture belongs to the section rather
+                  than sitting in a box of its own. */}
+              <div className="relative aspect-4/5 sm:aspect-3/2 lg:aspect-4/5">
+                <div
+                  aria-hidden
+                  className="absolute inset-x-0 bottom-0 top-[18%] rounded-lg bg-linear-to-b from-brand-600 to-brand-800 shadow-float"
                 />
-                {lead2 && (
-                  <Frame
-                    image={lead2}
-                    distance={40}
-                    tint="brand"
-                    className={cn("col-span-2 min-h-0", !lead3 && "row-span-2")}
-                    sizes="(min-width: 1024px) 15vw, 30vw"
-                  />
-                )}
-                {lead3 && (
-                  <Frame
-                    image={lead3}
-                    distance={12}
-                    tint="sky"
-                    className="col-span-2 min-h-0"
-                    sizes="(min-width: 1024px) 15vw, 30vw"
-                  />
-                )}
+                <div
+                  aria-hidden
+                  className="absolute inset-x-6 bottom-0 top-[26%] rounded-lg bg-[radial-gradient(60%_60%_at_50%_100%,rgba(255,255,255,0.18),transparent)]"
+                />
+                <Image
+                  src={cutout.src}
+                  alt={cutout.alt}
+                  fill
+                  priority
+                  sizes="(min-width: 1024px) 46vw, 100vw"
+                  className="object-contain object-bottom"
+                />
               </div>
             </div>
           )}
         </div>
       </Container>
 
-      {/* The models this industry covers: one quiet rail closing the section */}
+      {/* The models this industry covers: the rail the picture resolves into */}
       {models && models.chips.length > 0 && (
-        <div className="border-t border-ink-800 bg-ink-950/80">
+        <div className={cn("relative border-t border-ink-800", photo ? "bg-ink-950/80 backdrop-blur-sm" : "bg-ink-950/80")}>
           <Container className="flex flex-col gap-4 py-6 lg:flex-row lg:items-baseline lg:gap-10">
             <p className="type-small shrink-0 font-semibold tracking-[0.14em] text-brand-300 uppercase">
               {models.title}
@@ -144,61 +130,5 @@ export function IndustryHero({
         </div>
       )}
     </section>
-  );
-}
-
-/**
- * One frame of the mosaic: the photograph sits on a brand-coloured panel and
- * blends into it, so photographs from different sources read as one set rather
- * than as stock dropped into the page. One corner is cut, which is what makes
- * the frames read as part of the design.
- *
- * `distance` is how far the frame drifts against the scroll.
- */
-function Frame({
-  image,
-  className,
-  sizes,
-  distance,
-  tint = "brand",
-  priority = false,
-}: {
-  image: { src: string; alt: string };
-  className?: string;
-  sizes: string;
-  distance: number;
-  /** The panel behind the photograph. The lead frame keeps its own colour. */
-  tint?: "brand" | "sky" | "none";
-  priority?: boolean;
-}) {
-  return (
-    <Parallax
-      distance={distance}
-      className={cn(
-        "relative h-full overflow-hidden rounded-md bg-ink-900 shadow-float",
-        // The cut corner, echoed on every frame
-        "[clip-path:polygon(0_0,calc(100%-1.75rem)_0,100%_1.75rem,100%_100%,0_100%)]",
-        className,
-      )}
-    >
-      <Image
-        src={image.src}
-        alt={image.alt}
-        fill
-        priority={priority}
-        sizes={sizes}
-        className={cn("object-cover", tint !== "none" && "grayscale")}
-      />
-      {/* A duotone: the photograph keeps its light and shade and takes the brand hue,
-          so photographs from different sources read as one set. */}
-      {tint !== "none" && (
-        <span
-          aria-hidden
-          className={cn("absolute inset-0 mix-blend-color", tint === "brand" ? "bg-brand-600" : "bg-sky-400")}
-        />
-      )}
-      {/* A wash from the foot, so the frames sit on the dark field rather than cut out of it */}
-      <span aria-hidden className="absolute inset-0 bg-linear-to-t from-ink-950/45 to-transparent" />
-    </Parallax>
   );
 }
