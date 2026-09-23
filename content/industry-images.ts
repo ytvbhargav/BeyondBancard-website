@@ -12,10 +12,14 @@ export const industryImages: Record<string, IndustryImage[]> = {
     { src: "/industries/nutra-supplements-2.webp", alt: "A clear bottle filled with capsules" },
     { src: "/industries/nutra-supplements-3.webp", alt: "Capsules spilled from a brown bottle" },
   ],
+  // The businesses, not the subject matter: people filming and the rooms they
+  // film in, which is what adult ecommerce, subscription and digital content
+  // actually look like. It follows the live site's own hero, where a couple
+  // are shooting themselves on a phone against a blue studio wall.
   adult: [
-    { src: "/industries/adult-couple-1.webp", alt: "A couple laughing together against a blue background" },
-    { src: "/industries/adult-couple-2.webp", alt: "A couple standing back to back against a blue wall" },
-    { src: "/industries/adult-couple-3.webp", alt: "A couple kissing against a blue wall" },
+    { src: "/industries/adult-creator-1.webp", alt: "A creator holding a camera against a blue studio wall" },
+    { src: "/industries/adult-creator-2.webp", alt: "A studio lit in blue and purple, with a phone on a tripod" },
+    { src: "/industries/adult-creator-3.webp", alt: "A camera on a tripod filming a subject" },
   ],
   gaming: [
     { src: "/industries/gaming-1.webp", alt: "A wireless game controller lit in cyan and magenta" },

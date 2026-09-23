@@ -131,7 +131,8 @@ export const partnersMenu: NavLink[] = [
 ];
 
 export const resourcesMenu: NavLink[] = [
-  { label: "Blog", href: "/news" },
+  // Blog is off the navigation for now; /news and its articles still build and
+  // are still reachable by URL, they are simply not linked from the chrome.
   { label: "Client stories", href: "/our-clients" },
   { label: "FAQ", href: "/faq" },
 ];
@@ -147,10 +148,12 @@ export const companyMenu: NavLink[] = [
 export const footerColumns: { title: string; links: NavLink[] }[] = [
   {
     title: "Solutions",
-    links: solutionsMenu.map((c): NavLink => ({ label: c.pillar, href: c.href })).concat([
-      { label: "High-risk processing", href: "/accept/high-risk-processing" },
-      { label: "Payment gateways", href: "/operate/payment-gateways" },
-    ]),
+    links: solutionsMenu
+      .map((c): NavLink => ({ label: c.pillar, href: c.href }))
+      .concat([
+        { label: "High-risk processing", href: "/accept/high-risk-processing" },
+        { label: "Payment gateways", href: "/operate/payment-gateways" },
+      ]),
   },
   {
     title: "Industries",
@@ -191,4 +194,9 @@ export const disclosures = {
 export const ctaBandDefault = {
   title: "Build a better payments program.",
   body: "Simpler processing, better economics, or support for a complex business model. Tell us what you need and we'll build around it.",
+};
+
+/** The business-models section, whose heading is the same on every industry page. */
+export const businessModels = {
+  heading: "Built around how your business actually operates.",
 };

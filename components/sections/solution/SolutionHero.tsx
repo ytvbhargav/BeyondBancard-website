@@ -1,21 +1,25 @@
 import { Breadcrumb } from "@/components/ui/breadcrumb";
 import { Container } from "@/components/ui/container";
-import { Parallax } from "@/components/motion/Parallax";
+import { ColorField } from "@/components/motion/ColorField";
 import { cn } from "@/lib/utils";
 import type { Pillar } from "@/types/content";
 
 /**
- * Solution opening. A sibling to the industry hero rather than a copy of it: the
- * field is light and the headline holds a narrow column on the left, with the
- * illustration on a raised panel that breaks the bottom edge of the section, so
- * the page starts on an object rather than on a band of colour.
+ * Solution opening: the industry hero inverted. The same lake of colour and the
+ * same ruled grid, but the page is white and the grid is drawn in blue, where
+ * the industries are blue and ruled in white. The headline holds a narrow
+ * column on the left and the illustration sits on a raised panel beside it.
+ *
+ * The type starts directly under the breadcrumb and the panel is centred
+ * against it, the same way the industry hero is set: aligning the two to the
+ * section's foot instead left a hole above the eyebrow.
  *
  * A hub (a pillar's top page) sets the headline a step larger than a detail page
  * and names the pillar in the eyebrow, so the four hubs read as the chapter
  * openings of the section they lead.
  *
- * The headline and lead animate in CSS so they paint before hydration (LCP);
- * only the illustration's drift is scripted, and that is dropped below lg.
+ * The headline and lead animate in CSS so they paint before hydration (LCP),
+ * and nothing in the section is scripted at all.
  */
 export function SolutionHero({
   pillar,
@@ -38,18 +42,27 @@ export function SolutionHero({
   const eyebrow = pillar ?? breadcrumb.at(0)?.label ?? "";
 
   return (
-    <section className="relative isolate overflow-hidden border-b border-line bg-paper">
-      {/* A wash from the top-left corner: enough to lift the type off the page, never enough to tint it */}
+    <section className="relative isolate -mt-(--header-h) overflow-hidden border-b border-line bg-paper">
+      {/* The same field as the industry heroes, at its light strength */}
+      <ColorField tone="light" className="-top-[30%] right-[-12%] bottom-[-34%] left-[-10%] -z-10" />
+      {/* Holds the type's contrast wherever the colour happens to be */}
       <div
         aria-hidden
-        className="absolute inset-0 -z-10 bg-[radial-gradient(60%_70%_at_0%_0%,color-mix(in_srgb,var(--color-brand-600)_10%,transparent),transparent_70%)]"
+        className="absolute inset-0 -z-10 bg-linear-to-r from-paper from-15% via-paper/80 via-50% to-paper/0 to-85%"
+      />
+      {/* The grid, ruled in blue on white: the industries' grid inverted */}
+      <div
+        aria-hidden
+        className="absolute inset-0 -z-10 [background-image:linear-gradient(to_right,var(--color-brand-600)_1px,transparent_1px),linear-gradient(to_bottom,var(--color-brand-600)_1px,transparent_1px)] [mask-image:radial-gradient(80%_60%_at_70%_0%,black,transparent)] [background-size:72px_72px] opacity-[0.07]"
       />
 
-      <Container className="pt-6 pb-0">
+      <Container className="pt-[calc(var(--header-h)+0.75rem)] pb-0">
         <Breadcrumb items={breadcrumb} className="anim-rise" />
 
-        <div className={cn("grid items-end gap-12 pt-14 md:pt-20 lg:gap-8", visual && "lg:grid-cols-12")}>
-          <div className={cn("min-w-0", visual ? "lg:col-span-6 lg:pb-24" : "max-w-[46rem] pb-20 md:pb-28")}>
+        {/* The type starts under the breadcrumb rather than being pushed down
+            to meet the panel, and the panel lines up with it. */}
+        <div className={cn("grid items-start gap-10 pt-4 md:pt-6 lg:gap-8", visual && "lg:grid-cols-12")}>
+          <div className={cn("min-w-0 pb-14 md:pb-20", visual ? "lg:col-span-6" : "max-w-[46rem]")}>
             {eyebrow && (
               <p
                 className="anim-rise type-small font-semibold tracking-[0.18em] text-brand-700 uppercase"
@@ -69,7 +82,7 @@ export function SolutionHero({
               {title}
             </h1>
             <p
-              className="anim-rise type-body-lg mt-6 max-w-[34rem] text-muted"
+              className="anim-rise mt-6 max-w-[34rem] type-body-lg text-muted"
               style={{ "--delay": "170ms" } as React.CSSProperties}
             >
               {lead}
@@ -82,11 +95,15 @@ export function SolutionHero({
             </div>
           </div>
 
-          {/* The illustration sits on a panel that overlaps the section's bottom edge */}
+          {/* The panel sits level with the type it belongs to, and sits on the
+              page rather than hovering over it: a hairline and a short, tight
+              shadow instead of the long one, and no drift inside the frame —
+              an illustration sliding against its own border is what made it
+              read as floating. */}
           {visual && (
-            <div className="lg:col-span-5 lg:col-start-8 lg:-mb-20">
-              <div className="relative rounded-md border border-line bg-surface p-4 shadow-float sm:p-6">
-                <Parallax distance={40}>{visual}</Parallax>
+            <div className="lg:col-span-5 lg:col-start-8 lg:self-center">
+              <div className="relative rounded-md border border-line bg-surface p-4 shadow-[0_10px_28px_-18px_rgb(7_16_42/0.3)] sm:p-6">
+                {visual}
               </div>
             </div>
           )}
@@ -95,9 +112,6 @@ export function SolutionHero({
         {/* Without an illustration the section closes on its own padding */}
         {!visual && <div className="h-0" />}
       </Container>
-
-      {/* Room for the overlapping panel, so the next chapter never runs under it */}
-      {visual && <div aria-hidden className="h-16 lg:h-24" />}
     </section>
   );
 }

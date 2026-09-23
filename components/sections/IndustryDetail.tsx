@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { IndustryHero } from "@/components/sections/industry/IndustryHero";
+import { BusinessModels } from "@/components/sections/industry/BusinessModels";
 import { RealityAnswer } from "@/components/sections/industry/RealityAnswer";
 import { CapabilityExplorer } from "@/components/sections/industry/CapabilityExplorer";
 import { ProcessSteps } from "@/components/sections/industry/ProcessSteps";
@@ -44,8 +45,8 @@ export function IndustryDetail({
 
   return (
     <>
-      {/* The hero is sticky so the realities can rise over it. Both live in
-          one box, which is what bounds the stickiness: the hero is released
+      {/* The hero is sticky so the realities can rise over it. Both live
+          in one box, which is what bounds the stickiness: the hero is released
           the moment that panel has passed, rather than staying pinned behind
           the rest of the page. */}
       <div className="relative">
@@ -56,11 +57,12 @@ export function IndustryDetail({
           expertCta={hero.expertCta}
           breadcrumb={content.breadcrumb}
           images={images}
-          models={models}
         />
 
         <RealityAnswer title={realities.title} problems={realities.items} answers={whyBeyond.features} />
       </div>
+
+      <BusinessModels title={models.title} chips={models.chips} disclaimer={models.disclaimer} />
 
       <CapabilityExplorer title={capabilities.title} items={capabilities.items} />
 

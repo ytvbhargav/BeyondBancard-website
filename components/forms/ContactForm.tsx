@@ -4,7 +4,7 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { m } from "motion/react";
 import { Controller, useForm, useWatch, type UseFormRegisterReturn } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Info, LoaderCircle, Lock, Tag } from "lucide-react";
+import { LoaderCircle, Lock, Tag } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Confirm } from "@/components/ui/confirm";
 import { Input } from "@/components/ui/input";
@@ -102,7 +102,10 @@ export function ContactForm() {
       const label = contactTopics.find((t) => t.id === next)?.label ?? "";
       setAnnouncement("");
       window.clearTimeout(announceTimer.current);
-      announceTimer.current = window.setTimeout(() => setAnnouncement(`${copy.topicNote(label)}.`), TOPIC_ANNOUNCE_DELAY);
+      announceTimer.current = window.setTimeout(
+        () => setAnnouncement(`${copy.topicNote(label)}.`),
+        TOPIC_ANNOUNCE_DELAY,
+      );
     }
 
     // Bring the card's top (heading and topic note) under the sticky header. Both paths
@@ -263,12 +266,8 @@ export function ContactForm() {
                 copy.submit
               )}
             </Button>
-            {/* Where visitors hand over their details: what happens to them, and that nothing leaves the page. */}
+            {/* Where visitors hand over their details: what happens to them. */}
             <div className="grid gap-1.5 type-small text-muted">
-              <p className="flex items-start gap-2">
-                <Info aria-hidden strokeWidth={1.75} className="mt-0.5 size-4 shrink-0" />
-                {copy.demoNotice}
-              </p>
               <p className="flex items-start gap-2">
                 <Lock aria-hidden strokeWidth={1.75} className="mt-0.5 size-4 shrink-0" />
                 <span>
@@ -389,12 +388,7 @@ function ContactSuccess({ firstName, onAgain }: { firstName: string; onAgain: ()
       </svg>
 
       {/* The thank-you line describes the focused heading, so it is read with it. */}
-      <h2
-        ref={heading}
-        tabIndex={-1}
-        aria-describedby="contact-success-body"
-        className="mt-8 type-h2 outline-none"
-      >
+      <h2 ref={heading} tabIndex={-1} aria-describedby="contact-success-body" className="mt-8 type-h2 outline-none">
         {copy.success.title}
       </h2>
       <p id="contact-success-body" className="mt-4 max-w-[36rem] type-body-lg text-muted">
@@ -405,10 +399,6 @@ function ContactSuccess({ firstName, onAgain }: { firstName: string; onAgain: ()
         <Button variant="secondary" onClick={onAgain} className="w-full sm:w-auto">
           {copy.success.again}
         </Button>
-        <p className="flex items-center gap-2 type-small text-muted">
-          <Info aria-hidden strokeWidth={1.75} className="size-4 shrink-0" />
-          {copy.demoNotice}
-        </p>
       </div>
     </m.div>
   );

@@ -60,6 +60,8 @@
   --shadow-press: 0 1px 0 0 rgb(7 16 42 / 0.06);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  /* Overshoots slightly, so a thing that moves under it lands rather than stops */
+  --ease-land: cubic-bezier(0.34, 1.56, 0.64, 1);
   --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
 
   --breakpoint-sm: 40rem;
@@ -865,6 +867,20 @@ html[data-sticky-cta] {
   mask-repeat: no-repeat;
 }
 
+/* The same field on a white page: the lights drop to a wash, and the strands
+   are drawn in blue rather than white, since white strands on paper are
+   nothing at all. */
+.aurora-on-light .aurora-light {
+  background-image:
+    radial-gradient(44% 50% at 28% 58%, rgb(47 91 255 / 0.18) 0%, rgb(47 91 255 / 0) 72%),
+    radial-gradient(54% 58% at 66% 28%, rgb(115 144 255 / 0.16) 0%, rgb(115 144 255 / 0) 74%),
+    radial-gradient(36% 40% at 54% 90%, rgb(94 196 255 / 0.14) 0%, rgb(94 196 255 / 0) 76%),
+    radial-gradient(48% 54% at 12% 18%, rgb(26 52 166 / 0.12) 0%, rgb(26 52 166 / 0) 74%);
+}
+.aurora-on-light .aurora-strands {
+  background-image: repeating-linear-gradient(101deg, rgb(47 91 255 / 0.05) 0 1px, transparent 1px 4px);
+}
+
 /* What floats over the field: each photograph drifts slowly inside its own
    frame, out of step with the others, so the set is never quite still. The
    photograph is held slightly larger than its frame, which is the room it
@@ -888,6 +904,138 @@ html[data-sticky-cta] {
   to {
     transform: scale(1.08) translate3d(0, -1.5%, 0);
   }
+}
+
+/* ---------- Business-model cards ----------
+   The models an industry covers, as a board of cards rather than a row of
+   tags. Each card is dealt in: it starts low, small and tipped back on its
+   bottom edge, and lands square a beat after the one before it. The ease
+   overshoots slightly, so a card arrives rather than stops.
+
+   The board carries the perspective; every card animates on transform and
+   opacity alone, so a board of a dozen costs one composite and no repaint.
+   Reduced motion is covered by the shared stagger rule: the cards are simply
+   there. */
+.model-board {
+  perspective: 1200px;
+}
+.model-card {
+  transform-origin: 50% 100%;
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-slow) var(--ease-land),
+    border-color var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+}
+.js [data-stagger]:not([data-shown]) > .model-card {
+  opacity: 0;
+  transform: translateY(22px) scale(0.96) rotateX(14deg);
+}
+.js [data-stagger] > .model-card {
+  transition-delay: calc(min(var(--i, 0), 12) * 70ms);
+}
+/* The wash that lights the card from its own corner, only once pointed at */
+.model-card-wash {
+  background: radial-gradient(80% 90% at 100% 0%, var(--color-brand-100), transparent 70%);
+  opacity: 0;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+.model-card-rule {
+  transition: width var(--duration-base) var(--ease-out);
+}
+.model-card:hover {
+  border-color: var(--color-brand-300);
+  box-shadow: 0 18px 36px -20px rgb(47 91 255 / 0.5);
+  transform: translateY(-4px);
+}
+.model-card:hover .model-card-wash {
+  opacity: 1;
+}
+.model-card:hover .model-card-rule {
+  width: 2.5rem;
+}
+
+/* ---------- Chapter entrances (solution pages) ----------
+   Four ways a chapter's body arrives, cycled down the page so a long sequence
+   of sections does not read as one. Each is a transform (and, for the wipe, a
+   clip) on a single wrapper, so a chapter costs one composited layer while it
+   lands and nothing once it has. The shared reveal rules handle the timing,
+   the replay and reduced motion. */
+.js [data-reveal]:not([data-shown]).chapter-rise {
+  transform: translateY(26px);
+}
+.js [data-reveal]:not([data-shown]).chapter-slide {
+  transform: translateX(-32px);
+}
+.js .chapter-wipe {
+  transition:
+    opacity var(--duration-slow) var(--ease-out),
+    transform var(--duration-slow) var(--ease-out),
+    clip-path var(--duration-slow) var(--ease-out);
+  clip-path: inset(0 0 0 0);
+}
+.js [data-reveal]:not([data-shown]).chapter-wipe {
+  transform: translateY(12px);
+  clip-path: inset(100% 0 0 0);
+}
+.js .chapter-settle {
+  transition:
+    opacity var(--duration-base) var(--ease-out),
+    transform var(--duration-slow) var(--ease-land);
+}
+.js [data-reveal]:not([data-shown]).chapter-settle {
+  transform: translateY(20px) scale(0.975);
+}
+
+/* ---------- Industry motifs (homepage) ----------
+   A mark for each complex industry, drawn rather than photographed: rings,
+   hatching, a dot field, bars, a grid and an arc, all in the brand blues on
+   ink. Gradients only — no images to load and nothing to lay out — and each
+   one drifts a little when its tile is pointed at. */
+.motif {
+  background-color: var(--color-ink-950);
+  transition: background-size var(--duration-slow) var(--ease-out);
+}
+.motif-1 {
+  background-image: repeating-radial-gradient(
+    circle at 78% 22%,
+    rgb(77 114 255 / 0.85) 0 1.5px,
+    transparent 1.5px 22px
+  );
+  background-size: 100% 100%;
+}
+.motif-2 {
+  background-image: repeating-linear-gradient(58deg, rgb(115 144 255 / 0.6) 0 1.5px, transparent 1.5px 16px);
+  background-size: 100% 100%;
+}
+.motif-3 {
+  background-image: radial-gradient(rgb(94 196 255 / 0.8) 1.8px, transparent 1.9px);
+  background-size: 22px 22px;
+}
+.motif-4 {
+  background-image: repeating-linear-gradient(90deg, rgb(77 114 255 / 0.7) 0 2px, transparent 2px 18px);
+  background-size: 100% 100%;
+}
+.motif-5 {
+  background-image:
+    linear-gradient(to right, rgb(163 184 255 / 0.45) 1px, transparent 1px),
+    linear-gradient(to bottom, rgb(163 184 255 / 0.45) 1px, transparent 1px);
+  background-size: 26px 26px;
+}
+.motif-6 {
+  background-image: repeating-radial-gradient(
+    circle at 12% 88%,
+    rgb(115 144 255 / 0.75) 0 1.5px,
+    transparent 1.5px 26px
+  );
+  background-size: 100% 100%;
+}
+/* The mark opens up under the pointer: the same drawing at a wider pitch. */
+.group:hover .motif-3 {
+  background-size: 26px 26px;
+}
+.group:hover .motif-5 {
+  background-size: 31px 31px;
 }
 
 /* Route fade (M11) */

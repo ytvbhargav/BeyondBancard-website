@@ -15,7 +15,8 @@ export function SuccessPanel({ firstName }: { firstName: string }) {
     ref.current?.focus();
   }, []);
 
-  const draw = (delay: number, d = 0.5) => (reduce ? { duration: 0 } : { delay, duration: d, ease: [0.65, 0, 0.35, 1] as const });
+  const draw = (delay: number, d = 0.5) =>
+    reduce ? { duration: 0 } : { delay, duration: d, ease: [0.65, 0, 0.35, 1] as const };
 
   return (
     <m.div
@@ -52,7 +53,7 @@ export function SuccessPanel({ firstName }: { firstName: string }) {
         />
       </svg>
 
-      <h2 ref={ref} tabIndex={-1} className="type-h2 mt-8 max-w-[22ch] outline-none">
+      <h2 ref={ref} tabIndex={-1} className="mt-8 max-w-[22ch] type-h2 outline-none">
         {apply.success.title(firstName)}
       </h2>
 
@@ -71,7 +72,7 @@ export function SuccessPanel({ firstName }: { firstName: string }) {
                 <span className="sr-only">Step {i + 1}: </span>
                 {s.title}
               </p>
-              <p className="type-small mt-1 text-muted">{s.body}</p>
+              <p className="mt-1 type-small text-muted">{s.body}</p>
             </li>
           ))}
         </ol>
@@ -81,7 +82,6 @@ export function SuccessPanel({ firstName }: { firstName: string }) {
         <Button href="/" variant="secondary">
           Back to home
         </Button>
-        <p className="type-small text-muted">{apply.demoNotice}</p>
       </div>
     </m.div>
   );

@@ -1,4 +1,4 @@
-import { industries, industryPath } from "@/content/industries";
+import { hasIndustryPage, industries, industryPath } from "@/content/industries";
 import { solutionsMenu } from "@/content/site";
 import { testimonials, testimonialsNote } from "@/content/testimonials";
 import type { NavLink, Testimonial } from "@/types/content";
@@ -16,11 +16,15 @@ export type ClientStory = Testimonial & {
 
 type StoryContext = { industry: string; related?: NavLink };
 
-/** Looks the slug up in content/industries.ts, so a renamed or removed industry fails the build instead of linking nowhere. */
-function industryLink(slug: string): NavLink {
+/**
+ * Looks the slug up in content/industries.ts, so a renamed or removed industry
+ * fails the build instead of linking nowhere. The industry is named either way;
+ * it is only linked when it has a page of its own.
+ */
+function industryLink(slug: string): { label: string; href?: string } {
   const industry = industries.find((i) => i.slug === slug);
   if (!industry) throw new Error(`client-stories: unknown industry slug "${slug}"`);
-  return { label: industry.name, href: industryPath(industry.slug) };
+  return hasIndustryPage(slug) ? { label: industry.name, href: industryPath(industry.slug) } : { label: industry.name };
 }
 
 /** Looks the page up in the Solutions menu, so its label and path stay single-source. */

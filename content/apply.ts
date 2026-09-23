@@ -35,7 +35,6 @@ export const apply = {
       { title: "Underwriting", body: "Experienced reviewers assess your full business profile." },
     ],
   },
-  demoNotice: "Demo only — no data is sent.",
   sidebar: {
     whyTitle: "Why merchants choose Beyond",
     why: ["Experienced underwriting", "Multiple processing paths", "People who stay involved"],

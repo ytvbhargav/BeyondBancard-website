@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
  * scroll, and the photograph leans the other way, which is what gives the
  * section its depth.
  *
- * The section holds still at the top of the page while the one after it rises
+ * The section holds still at the top of the page while the business models rise
  * over it, which is the whole of that effect: `position: sticky` here and a
  * lifted edge there, with nothing scripted and nothing to go wrong.
  *
@@ -32,7 +32,6 @@ export function IndustryHero({
   expertCta,
   breadcrumb,
   images = [],
-  models,
 }: {
   eyebrow: string;
   title: string;
@@ -41,8 +40,6 @@ export function IndustryHero({
   breadcrumb: { label: string; href?: string }[];
   /** Up to three photographs, which float over the field; the first leads. */
   images?: { src: string; alt: string }[];
-  /** Business models this industry covers, with the eligibility line. */
-  models?: { title: string; chips: string[]; disclaimer: string };
 }) {
   const [lead1, lead2, lead3] = images;
   return (
@@ -65,10 +62,13 @@ export function IndustryHero({
         className="absolute inset-0 -z-10 [background-image:linear-gradient(to_right,white_1px,transparent_1px),linear-gradient(to_bottom,white_1px,transparent_1px)] [mask-image:radial-gradient(80%_60%_at_70%_0%,black,transparent)] [background-size:72px_72px] opacity-[0.05]"
       />
 
-      <Container className="pt-[calc(var(--header-h)+1.5rem)] pb-16 md:pb-24">
+      <Container className="pt-[calc(var(--header-h)+0.75rem)] pb-14 md:pb-20">
         <Breadcrumb items={breadcrumb} tone="dark" className="anim-rise" />
 
-        <div className={cn("grid items-center gap-12 pt-12 md:pt-16", lead1 && "lg:grid-cols-12 lg:gap-10 lg:pt-20")}>
+        {/* The type starts under the breadcrumb rather than being centred against
+            the photographs, which is what was opening a gap above the eyebrow;
+            the mosaic centres itself against the type instead. */}
+        <div className={cn("grid items-start gap-10 pt-4 md:pt-5", lead1 && "lg:grid-cols-12 lg:gap-10 lg:pt-6")}>
           <div className={cn("min-w-0", lead1 ? "lg:col-span-6" : "max-w-[46rem]")}>
             <p
               className="anim-rise type-small font-semibold tracking-[0.18em] text-brand-300 uppercase"
@@ -110,7 +110,7 @@ export function IndustryHero({
                the other two stacked beside it. They lean with the pointer as a
                set and drift against the scroll at their own rates, so they read
                as floating in the field rather than pinned to it. */
-            <div className="lg:col-span-6 lg:col-start-7">
+            <div className="lg:col-span-6 lg:col-start-7 lg:self-center">
               <div className="aurora-float grid grid-cols-6 gap-3 sm:gap-4">
                 <Frame
                   image={lead1}
@@ -140,25 +140,6 @@ export function IndustryHero({
           )}
         </div>
       </Container>
-
-      {/* The models this industry covers: the rail the colour resolves into */}
-      {models && models.chips.length > 0 && (
-        <div className="relative border-t border-ink-800 bg-ink-950">
-          <Container className="flex flex-col gap-4 py-6 lg:flex-row lg:items-baseline lg:gap-10">
-            <p className="shrink-0 type-small font-semibold tracking-[0.14em] text-brand-300 uppercase">
-              {models.title}
-            </p>
-            <ul className="-m-1 flex flex-wrap lg:flex-1">
-              {models.chips.map((chip) => (
-                <li key={chip} className="m-1 rounded-pill border border-ink-800 px-3 py-1.5 type-small text-on-dark">
-                  {chip}
-                </li>
-              ))}
-            </ul>
-            <p className="shrink-0 type-small text-on-dark-muted">{models.disclaimer}</p>
-          </Container>
-        </div>
-      )}
     </section>
   );
 }

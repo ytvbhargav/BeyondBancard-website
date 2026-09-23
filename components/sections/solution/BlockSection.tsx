@@ -24,7 +24,7 @@ export function ChapterMark({ index, className }: { index?: number; className?: 
   if (typeof index !== "number") return null;
   return (
     <div className={cn("mb-5 flex items-center gap-4", className)}>
-      <span className="type-small tabular font-semibold text-brand-700">{String(index + 1).padStart(2, "0")}</span>
+      <span className="type-small font-semibold text-brand-700 tabular">{String(index + 1).padStart(2, "0")}</span>
       <span aria-hidden className="h-px w-12 bg-line-strong" />
     </div>
   );
@@ -36,12 +36,23 @@ export function BlockTitle({ title }: { title: string; flag?: Flag }) {
 }
 
 /**
+ * The four ways a chapter's body arrives, cycled by the chapter's position.
+ * A long page of identical fade-ups reads as one long section; giving each
+ * chapter its own entrance is what makes them read as separate ones.
+ */
+const ENTRANCES = ["chapter-rise", "chapter-slide", "chapter-wipe", "chapter-settle"] as const;
+
+/**
  * A chapter of a solution page.
  *
  * The page reads as a numbered sequence rather than a stack of identical bands:
  * the number and its rule hold a narrow left column, and the title and lead take
  * the wide one. Below lg the two columns become one and the number sits above
  * the title, where a phone has no room for a margin column.
+ *
+ * The header is the same in every chapter, so the sequence stays legible; the
+ * body is what changes, arriving one of four ways depending on where the
+ * chapter falls in the page.
  */
 export function BlockSection({
   block,
@@ -67,20 +78,14 @@ export function BlockSection({
   const number = typeof index === "number" ? String(index + 1).padStart(2, "0") : undefined;
 
   return (
-    <Section
-      id={block.id}
-      tone={tone}
-      space={space}
-      aria-labelledby={headingId}
-      className={className}
-    >
+    <Section id={block.id} tone={tone} space={space} aria-labelledby={headingId} className={className}>
       <>
         <div className={cn("grid gap-6 lg:grid-cols-12 lg:gap-8", headerClassName)}>
           {/* The chapter mark: number, rule and optional label */}
           <div className="lg:col-span-3 xl:col-span-2">
             <div className="flex items-center gap-4 lg:flex-col lg:items-start lg:gap-3">
               {number && (
-                <span className={cn("type-small tabular font-semibold", dark ? "text-brand-300" : "text-brand-700")}>
+                <span className={cn("type-small font-semibold tabular", dark ? "text-brand-300" : "text-brand-700")}>
                   {number}
                 </span>
               )}
@@ -113,7 +118,10 @@ export function BlockSection({
             </h2>
             {block.lead && (
               <p
-                className={cn("type-body-lg mt-5 max-w-[38rem] text-pretty", dark ? "text-on-dark-muted" : "text-muted")}
+                className={cn(
+                  "mt-5 max-w-[38rem] type-body-lg text-pretty",
+                  dark ? "text-on-dark-muted" : "text-muted",
+                )}
               >
                 {block.lead}
               </p>
@@ -122,7 +130,9 @@ export function BlockSection({
           </div>
         </div>
 
-        <div className="mt-10 md:mt-14 lg:mt-16">{children}</div>
+        <div data-reveal="" className={cn("mt-10 md:mt-14 lg:mt-16", ENTRANCES[(index ?? 0) % ENTRANCES.length])}>
+          {children}
+        </div>
       </>
     </Section>
   );

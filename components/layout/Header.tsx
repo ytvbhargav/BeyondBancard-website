@@ -14,10 +14,14 @@ import { cn } from "@/lib/utils";
 const DARK_ROUTES = ["/", "/partners", "/partners/isos-agents"];
 
 /** Routes whose hero is pulled up under the header, so it starts transparent
- *  (D-007). The industries pages are every page under /industries. */
+ *  (D-007). Every industry and solution page runs its hero under the header:
+ *  without that the header sits on the body's own colour, which leaves a band
+ *  of it above the hero. */
 const OVERLAY_ROUTES = ["/"];
+const OVERLAY_SECTIONS = ["/industries", "/accept", "/protect", "/operate", "/grow"];
 
-const isOverlay = (path: string) => OVERLAY_ROUTES.includes(path) || path.startsWith("/industries");
+const isOverlay = (path: string) =>
+  OVERLAY_ROUTES.includes(path) || OVERLAY_SECTIONS.some((section) => path.startsWith(section));
 const isDark = (path: string) => DARK_ROUTES.includes(path) || path.startsWith("/industries");
 
 /**
@@ -105,13 +109,13 @@ export function Header() {
               {cta.phone.label}
             </a>
             <LoginMenu tone={tone} />
-            <Button href={cta.apply.href} size="sm" variant={overlay ? "inverse" : "primary"} className="ml-2">
+            <Button href={cta.apply.href} size="sm" variant={overlay && dark ? "inverse" : "primary"} className="ml-2">
               {cta.apply.label}
             </Button>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            <Button href={cta.apply.href} size="sm" variant={overlay ? "inverse" : "primary"} className="px-4">
+            <Button href={cta.apply.href} size="sm" variant={overlay && dark ? "inverse" : "primary"} className="px-4">
               {cta.apply.label}
             </Button>
             <MobileMenu tone={tone} />

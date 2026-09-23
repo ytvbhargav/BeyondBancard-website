@@ -149,7 +149,6 @@ export const contactPage = {
     },
     submit: "Send message",
     submitting: "Sending…",
-    demoNotice: "Demo only — no data is sent.",
     privacy: {
       before: "Your information is handled under our ",
       link: "Privacy Policy",

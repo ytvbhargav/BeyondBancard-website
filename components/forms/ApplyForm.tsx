@@ -115,7 +115,9 @@ export function ApplyForm() {
                   >
                     {done ? <Check strokeWidth={3} className="size-3.5" /> : i + 1}
                   </span>
-                  <span className={cn("type-small", current ? "font-semibold text-ink-900" : "hidden text-muted sm:inline")}>
+                  <span
+                    className={cn("type-small", current ? "font-semibold text-ink-900" : "hidden text-muted sm:inline")}
+                  >
                     {label}
                     <span className="sr-only">{done ? ", complete" : current ? ", current step" : ""}</span>
                   </span>
@@ -146,7 +148,7 @@ export function ApplyForm() {
                 <h2 ref={headingRef} tabIndex={-1} className="type-h3 outline-none">
                   {apply.steps[step]}
                 </h2>
-                <p className="type-small tabular text-muted">
+                <p className="type-small text-muted tabular">
                   Step {step + 1} of {STEPS.length}
                 </p>
               </div>
@@ -156,9 +158,9 @@ export function ApplyForm() {
         </div>
 
         <div className="mt-6 flex flex-col-reverse gap-4 border-t border-line px-6 py-5 sm:flex-row sm:items-center sm:justify-between sm:px-8">
-          <p id="apply-required-note" className="type-small flex items-center gap-2 text-muted">
+          <p id="apply-required-note" className="flex items-center gap-2 type-small text-muted">
             <Info aria-hidden strokeWidth={1.75} className="size-4 shrink-0" />
-            {last ? apply.demoNotice : "Fields marked * are required."}
+            Fields marked * are required.
           </p>
           <div className="flex gap-3">
             {step > 0 && (
@@ -167,7 +169,11 @@ export function ApplyForm() {
               </Button>
             )}
             {last ? (
-              <Button type="submit" aria-disabled={!stepValid || undefined} className={cn("flex-1 sm:flex-none", !stepValid && "opacity-60")}>
+              <Button
+                type="submit"
+                aria-disabled={!stepValid || undefined}
+                className={cn("flex-1 sm:flex-none", !stepValid && "opacity-60")}
+              >
                 {status === "submitting" ? (
                   <span className="inline-flex items-center gap-2">
                     <LoaderCircle aria-hidden strokeWidth={2} className="size-4 animate-spin" />
@@ -178,7 +184,12 @@ export function ApplyForm() {
                 )}
               </Button>
             ) : (
-              <Button type="submit" arrow aria-disabled={!stepValid || undefined} className={cn("flex-1 sm:flex-none", !stepValid && "opacity-60")}>
+              <Button
+                type="submit"
+                arrow
+                aria-disabled={!stepValid || undefined}
+                className={cn("flex-1 sm:flex-none", !stepValid && "opacity-60")}
+              >
                 Next
               </Button>
             )}
