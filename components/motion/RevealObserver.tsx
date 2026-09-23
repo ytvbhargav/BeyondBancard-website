@@ -23,12 +23,33 @@ export function RevealObserver() {
   useEffect(() => {
     const io = new IntersectionObserver(
       (entries) => {
-        for (const entry of entries) {
+        // One callback can carry several entries for the same element when the
+        // page is scrolled quickly, oldest first. Only the last one describes
+        // where the element actually is; acting on all of them in order can
+        // leave a visible element marked hidden, with no threshold left to
+        // cross to put it right — a section that stays blank.
+        const latest = new Map<Element, IntersectionObserverEntry>();
+        for (const entry of entries) latest.set(entry.target, entry);
+
+        for (const entry of latest.values()) {
           if (entry.isIntersecting && entry.intersectionRatio >= 0.15) {
             entry.target.setAttribute("data-shown", "");
-          } else if (!entry.isIntersecting && entry.boundingClientRect.top > 0) {
+            continue;
+          }
+          if (entry.isIntersecting) continue;
+          // The rect is read now rather than taken from the entry, which
+          // describes the moment the observer fired and may already be stale.
+          const box = entry.target.getBoundingClientRect();
+          if (box.top >= window.innerHeight) {
             // Gone off the bottom: arm it again for the next time down.
             entry.target.removeAttribute("data-shown");
+          } else if (box.bottom <= 0) {
+            // Gone off the top, which means it has been scrolled past. A fast
+            // scroll can carry an element from below the fold to above it
+            // between two samples, so it never reports the ratio that would
+            // have shown it; without this it stays hidden for good, and the
+            // section reads as blank when it is scrolled back to.
+            entry.target.setAttribute("data-shown", "");
           }
         }
       },

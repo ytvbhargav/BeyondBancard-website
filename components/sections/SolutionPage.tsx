@@ -45,6 +45,8 @@ function Block({ block, index, tone }: { block: SolutionBlock; index: number; to
       return (
         <ProcessSteps
           id={block.id ?? `section-${index + 1}`}
+          headingId={headingId}
+          index={index}
           title={block.title}
           lead={block.lead}
           steps={block.steps}
@@ -75,7 +77,7 @@ function Block({ block, index, tone }: { block: SolutionBlock; index: number; to
     case "callout":
       return <CalloutBand block={block} {...props} />;
     case "capabilities":
-      return <CapabilityExplorer title={block.title} items={block.items} />;
+      return <CapabilityExplorer title={block.title} items={block.items} headingId={headingId} index={index} />;
   }
 }
 

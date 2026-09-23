@@ -32,11 +32,14 @@ export function IndustryDetail({
   content,
   faqs,
   images,
+  marks,
 }: {
   content: IndustryDetailContent;
   faqs: Faq[];
-  /** The hero photograph that floats over the colour field. */
+  /** The hero photographs that float over the colour field. */
   images?: { src: string; alt: string }[];
+  /** Drawn marks in their place, for an industry no photograph names. */
+  marks?: React.ReactNode[];
   /** The subject cut out of it, where the industry has one. */
 }) {
   const { hero, realities, models, whyBeyond, capabilities, checklist, process, faq } = content;
@@ -57,6 +60,7 @@ export function IndustryDetail({
           expertCta={hero.expertCta}
           breadcrumb={content.breadcrumb}
           images={images}
+          marks={marks}
         />
 
         <RealityAnswer title={realities.title} problems={realities.items} answers={whyBeyond.features} />

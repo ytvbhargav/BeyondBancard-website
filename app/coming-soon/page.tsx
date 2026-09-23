@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function ComingSoonPage() {
   return (
-    <section className="section-y bg-paper">
+    <section className="section-y -mt-(--header-h) bg-paper pt-[calc(var(--header-h)+4rem)]">
       <Container className="flex flex-col items-center text-center">
         <p aria-hidden className="grid size-14 place-items-center rounded-md border border-line bg-surface font-display text-[1.5rem] font-extrabold text-brand-600 [font-stretch:112%]">
           B

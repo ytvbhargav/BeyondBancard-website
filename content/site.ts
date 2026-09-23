@@ -131,7 +131,7 @@ export const partnersMenu: NavLink[] = [
 ];
 
 export const resourcesMenu: NavLink[] = [
-  // The blog has been removed: no listing, no articles, nothing to link to.
+  { label: "News", href: "/news" },
   { label: "Client stories", href: "/our-clients" },
   { label: "FAQ", href: "/faq" },
 ];

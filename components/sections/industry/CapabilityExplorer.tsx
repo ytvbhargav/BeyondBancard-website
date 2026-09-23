@@ -4,6 +4,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Container } from "@/components/ui/container";
+import { ChapterMark } from "@/components/sections/solution/BlockSection";
 import { RevealWords } from "@/components/motion/RevealWords";
 import { Assemble } from "@/components/motion/Assemble";
 import { href } from "@/lib/links";
@@ -21,17 +22,32 @@ const ORDER: Pillar[] = ["Accept", "Protect", "Grow", "Operate"];
  * is the default, so without JS the whole board reads. Filtering re-keys the
  * grid so the cards animate back in.
  */
-export function CapabilityExplorer({ title, items }: { title: string; items: Capability[] }) {
+export function CapabilityExplorer({
+  title,
+  items,
+  headingId = "capabilities-title",
+  index,
+}: {
+  title: string;
+  items: Capability[];
+  /** The id the page's progress rail looks for; it must be the heading's own. */
+  headingId?: string;
+  /** Set on a solution page, where this section is one numbered chapter of several. */
+  index?: number;
+}) {
   const pillars = ORDER.filter((p) => items.some((i) => i.pillar === p));
   const [filter, setFilter] = useState<Pillar | "All">("All");
   const shown = filter === "All" ? items : items.filter((i) => i.pillar === filter);
 
   return (
-    <section className="relative isolate overflow-hidden bg-ink-900 tone-dark" aria-labelledby="capabilities-title">
+    <section className="relative isolate overflow-hidden bg-ink-900 tone-dark" aria-labelledby={headingId}>
       <div aria-hidden className="page-hero-dark absolute inset-0 -z-10 opacity-60" />
       <Container className="section-y">
         <div className="flex flex-col gap-8 lg:flex-row lg:items-end lg:justify-between">
-          <RevealWords as="h2" id="capabilities-title" text={title} className="max-w-[20ch] type-h2 text-on-dark" />
+          <div>
+            <ChapterMark index={index} tone="dark" />
+            <RevealWords as="h2" id={headingId} text={title} className="max-w-[20ch] type-h2 text-on-dark" />
+          </div>
           {/* Pillar filter: a row of pills that scrolls on phones */}
           <div className="-mx-5 flex gap-2 overflow-x-auto px-5 pb-1 sm:mx-0 sm:flex-wrap sm:px-0 lg:justify-end">
             {(["All", ...pillars] as const).map((p) => (

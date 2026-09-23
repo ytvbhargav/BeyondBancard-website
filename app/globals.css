@@ -957,26 +957,22 @@ html[data-sticky-cta] {
 
 /* ---------- Chapter entrances (solution pages) ----------
    Four ways a chapter's body arrives, cycled down the page so a long sequence
-   of sections does not read as one. Each is a transform (and, for the wipe, a
-   clip) on a single wrapper, so a chapter costs one composited layer while it
-   lands and nothing once it has. The shared reveal rules handle the timing,
-   the replay and reduced motion. */
+   of sections does not read as one. Each is a transform on a single wrapper,
+   so a chapter costs one composited layer while it lands and nothing once it
+   has.
+
+   Every one of them only ever offsets its content: an entrance that hides it
+   outright — a clip, say — turns any missed trigger into a section that reads
+   as blank, which is exactly what happened here. The shared reveal rules
+   handle the timing, the replay and reduced motion. */
 .js [data-reveal]:not([data-shown]).chapter-rise {
   transform: translateY(26px);
 }
 .js [data-reveal]:not([data-shown]).chapter-slide {
   transform: translateX(-32px);
 }
-.js .chapter-wipe {
-  transition:
-    opacity var(--duration-slow) var(--ease-out),
-    transform var(--duration-slow) var(--ease-out),
-    clip-path var(--duration-slow) var(--ease-out);
-  clip-path: inset(0 0 0 0);
-}
-.js [data-reveal]:not([data-shown]).chapter-wipe {
-  transform: translateY(12px);
-  clip-path: inset(100% 0 0 0);
+.js [data-reveal]:not([data-shown]).chapter-lift {
+  transform: translateY(34px) scale(0.99);
 }
 .js .chapter-settle {
   transition:

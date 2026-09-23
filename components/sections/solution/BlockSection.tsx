@@ -20,12 +20,23 @@ export type BlockProps<B> = {
  * The chapter number and its rule, for blocks that lay out their own header
  * rather than using BlockSection's.
  */
-export function ChapterMark({ index, className }: { index?: number; className?: string }) {
+export function ChapterMark({
+  index,
+  tone = "light",
+  className,
+}: {
+  index?: number;
+  tone?: "light" | "dark";
+  className?: string;
+}) {
   if (typeof index !== "number") return null;
+  const dark = tone === "dark";
   return (
     <div className={cn("mb-5 flex items-center gap-4", className)}>
-      <span className="type-small font-semibold text-brand-700 tabular">{String(index + 1).padStart(2, "0")}</span>
-      <span aria-hidden className="h-px w-12 bg-line-strong" />
+      <span className={cn("type-small font-semibold tabular", dark ? "text-brand-300" : "text-brand-700")}>
+        {String(index + 1).padStart(2, "0")}
+      </span>
+      <span aria-hidden className={cn("h-px w-12", dark ? "bg-ink-700" : "bg-line-strong")} />
     </div>
   );
 }
@@ -40,7 +51,7 @@ export function BlockTitle({ title }: { title: string; flag?: Flag }) {
  * A long page of identical fade-ups reads as one long section; giving each
  * chapter its own entrance is what makes them read as separate ones.
  */
-const ENTRANCES = ["chapter-rise", "chapter-slide", "chapter-wipe", "chapter-settle"] as const;
+const ENTRANCES = ["chapter-rise", "chapter-slide", "chapter-lift", "chapter-settle"] as const;
 
 /**
  * A chapter of a solution page.

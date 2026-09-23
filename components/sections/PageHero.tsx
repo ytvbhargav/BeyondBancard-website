@@ -5,6 +5,10 @@ import { cn } from "@/lib/utils";
 /**
  * Interior page hero. Light (paper) by default; `dark` for partner pages.
  * Entrance is CSS so the H1 paints before hydration.
+ *
+ * Like every other hero on the site it runs under the header, so the header
+ * floats on the hero rather than on a band of the body's own colour. That band
+ * is what made the header look like a different component on these pages.
  */
 export function PageHero({
   title,
@@ -25,14 +29,14 @@ export function PageHero({
   return (
     <section
       className={cn(
-        "relative isolate overflow-hidden",
+        "relative isolate -mt-(--header-h) overflow-hidden",
         dark ? "tone-dark bg-ink-900" : "border-b border-line bg-paper",
       )}
     >
       {dark && <div aria-hidden className="page-hero-dark absolute inset-0 -z-10" />}
       <Container
         className={cn(
-          "grid items-center gap-12 pt-6 pb-16 md:pb-24 lg:gap-8",
+          "grid items-center gap-12 pt-[calc(var(--header-h)+1rem)] pb-16 md:pb-24 lg:gap-8",
           visual ? "lg:grid-cols-12" : "",
           dark && "pb-20 md:pb-28",
         )}

@@ -32,6 +32,7 @@ export function IndustryHero({
   expertCta,
   breadcrumb,
   images = [],
+  marks,
 }: {
   eyebrow: string;
   title: string;
@@ -40,8 +41,14 @@ export function IndustryHero({
   breadcrumb: { label: string; href?: string }[];
   /** Up to three photographs, which float over the field; the first leads. */
   images?: { src: string; alt: string }[];
+  /** Drawn marks in place of photographs, for an industry no photograph names. */
+  marks?: React.ReactNode[];
 }) {
+  // A frame carries a mark where the industry has them, and a photograph
+  // otherwise; the mosaic is the same either way.
+  const frames: React.ReactNode[] = marks ?? [];
   const [lead1, lead2, lead3] = images;
+  const hasFrames = frames.length > 0 || Boolean(lead1);
   return (
     <section className="sticky top-0 isolate z-0 -mt-(--header-h) overflow-hidden bg-ink-950 tone-dark">
       <div aria-hidden className="page-hero-dark absolute inset-0 -z-20 opacity-80" />
@@ -68,8 +75,8 @@ export function IndustryHero({
         {/* The type starts under the breadcrumb rather than being centred against
             the photographs, which is what was opening a gap above the eyebrow;
             the mosaic centres itself against the type instead. */}
-        <div className={cn("grid items-start gap-10 pt-4 md:pt-5", lead1 && "lg:grid-cols-12 lg:gap-10 lg:pt-6")}>
-          <div className={cn("min-w-0", lead1 ? "lg:col-span-6" : "max-w-[46rem]")}>
+        <div className={cn("grid items-start gap-10 pt-4 md:pt-5", hasFrames && "lg:grid-cols-12 lg:gap-10 lg:pt-6")}>
+          <div className={cn("min-w-0", hasFrames ? "lg:col-span-6" : "max-w-[46rem]")}>
             <p
               className="anim-rise type-small font-semibold tracking-[0.18em] text-brand-300 uppercase"
               style={{ "--delay": "0ms" } as React.CSSProperties}
@@ -105,31 +112,34 @@ export function IndustryHero({
             </div>
           </div>
 
-          {lead1 && (
-            /* Three frames on one grid: the lead photograph tall on the left,
-               the other two stacked beside it. They lean with the pointer as a
-               set and drift against the scroll at their own rates, so they read
-               as floating in the field rather than pinned to it. */
+          {hasFrames && (
+            /* Three frames on one grid: the lead tall on the left, the other
+               two stacked beside it. They lean with the pointer as a set and
+               drift against the scroll at their own rates, so they read as
+               floating in the field rather than pinned to it. */
             <div className="lg:col-span-6 lg:col-start-7 lg:self-center">
               <div className="aurora-float grid grid-cols-6 gap-3 sm:gap-4">
                 <Frame
                   image={lead1}
+                  mark={frames[0]}
                   priority
                   distance={36}
-                  className={cn(lead2 ? "col-span-4 row-span-2 aspect-4/5" : "col-span-6 aspect-3/2")}
+                  className={cn(lead2 || frames[1] ? "col-span-4 row-span-2 aspect-4/5" : "col-span-6 aspect-3/2")}
                   sizes="(min-width: 1024px) 30vw, 60vw"
                 />
-                {lead2 && (
+                {(lead2 || frames[1]) && (
                   <Frame
                     image={lead2}
+                    mark={frames[1]}
                     distance={64}
-                    className={cn("col-span-2 aspect-3/4", !lead3 && "row-span-2 aspect-4/5")}
+                    className={cn("col-span-2 aspect-3/4", !lead3 && !frames[2] && "row-span-2 aspect-4/5")}
                     sizes="(min-width: 1024px) 15vw, 30vw"
                   />
                 )}
-                {lead3 && (
+                {(lead3 || frames[2]) && (
                   <Frame
                     image={lead3}
+                    mark={frames[2]}
                     distance={20}
                     className="col-span-2 aspect-square"
                     sizes="(min-width: 1024px) 15vw, 30vw"
@@ -144,15 +154,18 @@ export function IndustryHero({
   );
 }
 
-/** One frame of the mosaic. `distance` is how far it drifts against the scroll. */
+/** One frame of the mosaic: a drawn mark, or a photograph. `distance` is how
+ *  far it drifts against the scroll. */
 function Frame({
   image,
+  mark,
   className,
   sizes,
   distance,
   priority = false,
 }: {
-  image: { src: string; alt: string };
+  image?: { src: string; alt: string };
+  mark?: React.ReactNode;
   className?: string;
   sizes: string;
   distance: number;
@@ -163,7 +176,10 @@ function Frame({
       distance={distance}
       className={cn("overflow-hidden rounded-md shadow-float ring-1 ring-white/15", className)}
     >
-      <Image src={image.src} alt={image.alt} fill priority={priority} sizes={sizes} className="object-cover" />
+      {mark ??
+        (image && (
+          <Image src={image.src} alt={image.alt} fill priority={priority} sizes={sizes} className="object-cover" />
+        ))}
     </Parallax>
   );
 }

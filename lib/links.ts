@@ -9,6 +9,7 @@ export const DEMO_ROUTES = [
   "/about-beyond-bancard",
   "/careers",
   "/contact-us",
+  "/news",
   "/our-clients",
   "/faq",
   // First page of the Industries and Partners menus (D-057).

@@ -1,4 +1,5 @@
 import { Container } from "@/components/ui/container";
+import { ChapterMark } from "@/components/sections/solution/BlockSection";
 import { RevealWords } from "@/components/motion/RevealWords";
 import { Stagger, StaggerItem } from "@/components/motion/Stagger";
 import { cn } from "@/lib/utils";
@@ -13,12 +14,29 @@ import type { Step } from "@/types/content";
  * through the page's reveal observer, so the section needs no scripted motion
  * and reads the same without JavaScript.
  */
-export function ProcessSteps({ id, title, lead, steps }: { id?: string; title: string; lead?: string; steps: Step[] }) {
+export function ProcessSteps({
+  id,
+  title,
+  lead,
+  steps,
+  headingId = "process-title",
+  index,
+}: {
+  id?: string;
+  title: string;
+  lead?: string;
+  steps: Step[];
+  /** The id the page's progress rail looks for; it must be the heading's own. */
+  headingId?: string;
+  /** Set on a solution page, where this section is one numbered chapter of several. */
+  index?: number;
+}) {
   return (
-    <section id={id} className="bg-surface" aria-labelledby="process-title">
+    <section id={id} className="bg-surface" aria-labelledby={headingId}>
       <Container className="section-y">
         <div className="max-w-[46rem]">
-          <RevealWords as="h2" id="process-title" text={title} className="max-w-[18ch] type-h2" />
+          <ChapterMark index={index} />
+          <RevealWords as="h2" id={headingId} text={title} className="max-w-[18ch] type-h2" />
           {lead && <p className="mt-5 type-body-lg text-pretty text-muted">{lead}</p>}
         </div>
 

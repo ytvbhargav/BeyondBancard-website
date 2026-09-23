@@ -13,15 +13,13 @@ import { cn } from "@/lib/utils";
 /** Routes whose hero is dark, so the header starts on ink. */
 const DARK_ROUTES = ["/", "/partners", "/partners/isos-agents"];
 
-/** Routes whose hero is pulled up under the header, so it starts transparent
- *  (D-007). Every industry and solution page runs its hero under the header:
- *  without that the header sits on the body's own colour, which leaves a band
- *  of it above the hero. */
-const OVERLAY_ROUTES = ["/"];
-const OVERLAY_SECTIONS = ["/industries", "/accept", "/protect", "/operate", "/grow"];
-
-const isOverlay = (path: string) =>
-  OVERLAY_ROUTES.includes(path) || OVERLAY_SECTIONS.some((section) => path.startsWith(section));
+/**
+ * Every page runs its first section under the header (D-007), so the header is
+ * always transparent at the top of a page and always picks up its glass pill
+ * on scroll. It used to be true of the homepage alone, which is why the header
+ * looked like a different component everywhere else: it was sitting on a band
+ * of the body's own colour above the hero.
+ */
 const isDark = (path: string) => DARK_ROUTES.includes(path) || path.startsWith("/industries");
 
 /**
@@ -31,13 +29,13 @@ const isDark = (path: string) => DARK_ROUTES.includes(path) || path.startsWith("
  *
  * The pill is inset inside that height rather than added to it, so the space
  * the header occupies is unchanged and the heroes that pull up under it
- * (`--header-h`) still line up. Its backgrounds are two layers crossfading on
- * opacity: the resting colour, and the glass it wears once scrolled.
+ * (`--header-h`) still line up. It carries no colour of its own at the top of
+ * a page — it is over the hero on every route — and fades its glass in once
+ * the page is scrolled.
  */
 export function Header() {
   const pathname = usePathname();
   const tone: "light" | "dark" = isDark(pathname) ? "dark" : "light";
-  const overlay = isOverlay(pathname);
   const [scrolled, setScrolled] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -55,7 +53,7 @@ export function Header() {
 
   return (
     <header
-      data-overlay={overlay || undefined}
+      data-overlay
       data-scrolled={scrolled}
       className={cn("sticky top-0 z-50", dark && "tone-dark")}
     >
@@ -69,16 +67,6 @@ export function Header() {
           ref={containerRef}
           className="relative flex h-[calc(100%-0.75rem)] w-full items-center gap-3 rounded-pill px-4 sm:px-5 md:px-6"
         >
-          <div
-            aria-hidden
-            data-header-base
-            className={cn(
-              "pointer-events-none absolute inset-0 -z-10 rounded-pill transition-opacity duration-(--duration-fast) ease-out",
-              dark ? "bg-ink-900 ring-1 ring-ink-800" : "bg-surface ring-1 ring-line",
-              "shadow-float",
-              overlay || scrolled ? "opacity-0" : "opacity-100",
-            )}
-          />
           <div
             aria-hidden
             data-header-bg
@@ -109,13 +97,13 @@ export function Header() {
               {cta.phone.label}
             </a>
             <LoginMenu tone={tone} />
-            <Button href={cta.apply.href} size="sm" variant={overlay && dark ? "inverse" : "primary"} className="ml-2">
+            <Button href={cta.apply.href} size="sm" variant={dark ? "inverse" : "primary"} className="ml-2">
               {cta.apply.label}
             </Button>
           </div>
 
           <div className="flex items-center gap-2 lg:hidden">
-            <Button href={cta.apply.href} size="sm" variant={overlay && dark ? "inverse" : "primary"} className="px-4">
+            <Button href={cta.apply.href} size="sm" variant={dark ? "inverse" : "primary"} className="px-4">
               {cta.apply.label}
             </Button>
             <MobileMenu tone={tone} />

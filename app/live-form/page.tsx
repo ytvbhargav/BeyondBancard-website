@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 
 export default function ApplyPage() {
   return (
-    <section className="bg-paper pt-10 pb-24 md:pt-16 md:pb-32">
+    <section className="-mt-(--header-h) bg-paper pt-[calc(var(--header-h)+2.5rem)] pb-24 md:pt-[calc(var(--header-h)+4rem)] md:pb-32">
       <Container className="grid gap-12 lg:grid-cols-12 lg:gap-8">
         <div className="lg:col-span-7">
           <h1 className="anim-rise type-h1 max-w-[16ch]">{apply.title}</h1>
