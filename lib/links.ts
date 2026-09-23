@@ -9,8 +9,6 @@ export const DEMO_ROUTES = [
   "/about-beyond-bancard",
   "/careers",
   "/contact-us",
-  "/news",
-  "/news/what-is-a-high-risk-merchant-account-and-how-does-it-work",
   "/our-clients",
   "/faq",
   // First page of the Industries and Partners menus (D-057).

@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Confirm } from "@/components/ui/confirm";
-import type { ArticleBlock, ArticleText } from "@/content/blog";
+import type { ArticleBlock, ArticleText } from "@/types/content";
 import { cta } from "@/content/site";
 import { href, isExternal } from "@/lib/links";
 import { cn } from "@/lib/utils";

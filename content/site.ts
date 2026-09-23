@@ -131,8 +131,7 @@ export const partnersMenu: NavLink[] = [
 ];
 
 export const resourcesMenu: NavLink[] = [
-  // Blog is off the navigation for now; /news and its articles still build and
-  // are still reachable by URL, they are simply not linked from the chrome.
+  // The blog has been removed: no listing, no articles, nothing to link to.
   { label: "Client stories", href: "/our-clients" },
   { label: "FAQ", href: "/faq" },
 ];

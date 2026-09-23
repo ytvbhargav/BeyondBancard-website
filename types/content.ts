@@ -281,3 +281,22 @@ export type SolutionPageContent = {
   bigPicture?: { title: string; lead: string };
   faq: { title: string; items: Faq[] };
 };
+
+/* ------------------------------ Article bodies ----------------------------- */
+
+/**
+ * A run of article text, optionally linked. Internal hrefs are site paths and
+ * resolve through href(); external ones are full URLs or tel: links.
+ */
+export type ArticleText = string | { text: string; href: string };
+
+/**
+ * A long-form body as structured blocks (it maps to a rich-text CMS field
+ * later). The legal pages are written in these; the blog that introduced them
+ * has been removed.
+ */
+export type ArticleBlock = Flag & (
+  | { type: "p"; text: ArticleText[] }
+  | { type: "h2" | "h3"; id: string; text: string }
+  | { type: "ul" | "ol"; items: ArticleText[][] }
+);

@@ -1,4 +1,4 @@
-import type { ArticleBlock } from "@/content/blog";
+import type { ArticleBlock } from "@/types/content";
 
 /**
  * Terms and Privacy (D-062). Copy is the live beyondbancard.com page for each route,
