@@ -270,6 +270,13 @@ const moreIndustrySlugs = [
   "telehealth-virtual-care",
 ];
 
+/**
+ * The specialized and regulated categories: the high-risk industries Beyond
+ * serves beyond the featured six. Named under the high-risk page's cards,
+ * where "more industries" means more complex ones, not everyday retail.
+ */
+export const specializedIndustries = industries.filter((i) => i.group === "specialized");
+
 export const moreIndustries = moreIndustrySlugs
   .map((slug) => industries.find((i) => i.slug === slug))
   .filter((i) => i !== undefined);

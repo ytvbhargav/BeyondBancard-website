@@ -72,6 +72,7 @@ export const highRisk = {
   featured: {
     title: "Featured complex industries.",
     lead: "Categories where Beyond has particular depth.",
+    chipsLabel: "Also supported:",
   },
   lifecycle: {
     title: "Built for the life of the account.",
