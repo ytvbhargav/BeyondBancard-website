@@ -29,13 +29,15 @@ export const buttonVariants = cva(
         "ghost-dark": "h-auto min-h-11 rounded-none px-0 text-on-dark hover:translate-y-0 active:scale-100",
       },
       size: {
+        /** The hero's own step: the first thing asked of a reader, set to be seen. */
+        lg: "h-14 px-8 text-[1.0625rem]",
         md: "h-12 px-6 text-base",
         sm: "h-11 px-5 text-[0.9375rem]",
         icon: "size-11 p-0",
       },
     },
     compoundVariants: [
-      { variant: ["ghost", "ghost-dark"], size: ["md", "sm"], className: "px-0" },
+      { variant: ["ghost", "ghost-dark"], size: ["lg", "md", "sm"], className: "px-0" },
     ],
     defaultVariants: { variant: "primary", size: "md" },
   },

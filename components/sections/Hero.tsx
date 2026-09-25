@@ -165,10 +165,24 @@ export function Hero({ title, lead, facts, industries, card }: HeroProps) {
           className="anim-rise flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-center lg:gap-4"
           style={{ "--delay": "300ms" } as React.CSSProperties}
         >
-          <Button href={cta.apply.href} variant="inverse" arrow className="lg:min-w-48">
+          {/* The hero's pair carries a step more weight than a button
+              elsewhere on the page, and the white one a drop shadow, so it
+              sits on the navy rather than in it. */}
+          <Button
+            href={cta.apply.href}
+            variant="inverse"
+            size="lg"
+            arrow
+            className="shadow-[0_0.875rem_2.25rem_-0.75rem_rgb(2_6_23/0.75)] lg:min-w-52"
+          >
             {cta.apply.label}
           </Button>
-          <Button href={cta.expert.href} variant="secondary-dark" className="bg-ink-950/40 backdrop-blur-sm lg:min-w-48">
+          <Button
+            href={cta.expert.href}
+            variant="secondary-dark"
+            size="lg"
+            className="border-on-dark bg-ink-950/50 backdrop-blur-sm lg:min-w-52"
+          >
             {cta.expert.label}
           </Button>
         </div>
