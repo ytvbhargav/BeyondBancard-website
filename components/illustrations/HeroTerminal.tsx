@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Check, CircleDashed, LoaderCircle, Nfc } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { CheckState } from "@/lib/useUnderwritingSequence";
@@ -53,7 +54,14 @@ const RIM = [
 const VIEW_TOP = -3;
 const VIEW_W = R + 0.6;
 
-const SCREEN_BOX = "absolute top-[1.1em] left-[1em] h-[34em] w-[15.6em] rounded-[5em_5em_1.6em_1.6em]";
+/*
+ * The display sits in a bezel rather than running to the top of the plate: a
+ * screen curved to the shell's own corners is what made this read as a phone.
+ * Above it there is room for the speaker and the scanner window, below it a
+ * chin for the brand and the card slot, which is the shape of a countertop
+ * Android terminal.
+ */
+const SCREEN_BOX = "absolute top-[3.6em] left-[1.15em] h-[30.6em] w-[15.3em] rounded-[1.3em]";
 
 /**
  * The hero's handheld card terminal (S2), drawn with inline SVG and HTML, no
@@ -107,13 +115,22 @@ export function HeroTerminal({ title, industry, figure, checks, states, approved
           strokeLinecap="round"
           style={{ stroke: "color-mix(in srgb, var(--color-brand-300) 18%, transparent)" }}
         />
+        {/* Magstripe slot down the right edge */}
+        <rect
+          x={PW + GRIP - 0.55}
+          y="24"
+          width="0.5"
+          height="19"
+          rx="0.25"
+          style={{ fill: "var(--color-ink-950)" }}
+        />
         {/* Side keys */}
         <rect x={PW + GRIP - 0.2} y="17" width="0.6" height="3.4" rx="0.3" style={{ fill: "var(--color-ink-700)" }} />
         <rect x={PW + GRIP - 0.2} y="21.6" width="0.6" height="2.2" rx="0.3" style={{ fill: "var(--color-ink-700)" }} />
       </svg>
 
       {/* Front plate */}
-      <div className="hero-terminal-fade absolute inset-0 rounded-[6em_6em_2.6em_2.6em] bg-ink-950 shadow-[inset_0.16em_0_0_rgb(255_255_255/0.08),inset_-0.08em_0_0_rgb(255_255_255/0.05)] inset-ring inset-ring-white/10" />
+      <div className="hero-terminal-fade absolute inset-0 rounded-[3.2em_3.2em_2.2em_2.2em] bg-ink-950 shadow-[inset_0.16em_0_0_rgb(255_255_255/0.08),inset_-0.08em_0_0_rgb(255_255_255/0.05)] inset-ring inset-ring-white/10" />
 
       {/* Screen */}
       <div
@@ -197,7 +214,32 @@ export function HeroTerminal({ title, industry, figure, checks, states, approved
       {/* Lights up as the device turns in */}
       <div className={cn(SCREEN_BOX, "hero-terminal-shade bg-ink-950")} />
 
-      <Nfc strokeWidth={2} className="absolute top-[37em] left-[7.6em] size-[2.4em] text-brand-300/40" />
+      {/* The bezel above the display carries the brand, the earpiece slot and
+          the scanner window. The brand sits here rather than on the chin
+          because the chin is below the fold on a short screen, and this device
+          is meant to be unmistakably Beyond's. */}
+      <div aria-hidden className="absolute top-[1.45em] left-[1.5em] flex w-[14.6em] items-center gap-[0.9em]">
+        <Image
+          src="/brand/beyond-bancard-logo-white.png"
+          alt=""
+          width={312}
+          height={42}
+          className="h-[1.45em] w-auto shrink-0"
+        />
+        <span className="h-[0.34em] flex-1 rounded-pill bg-ink-950/80 inset-ring inset-ring-white/10" />
+        <span className="relative size-[0.95em] shrink-0 rounded-pill bg-ink-950 ring-[0.08em] ring-white/12">
+          <span className="absolute top-[0.16em] left-[0.2em] size-[0.3em] rounded-pill bg-brand-300/45" />
+        </span>
+      </div>
+
+      {/* The chin: where a cardholder taps */}
+      <Nfc strokeWidth={2.25} className="absolute top-[35em] left-[7.4em] size-[2em] text-brand-300/70" />
+
+      {/* Chip card slot, cut into the front below the chin */}
+      <div
+        aria-hidden
+        className="absolute top-[38.4em] left-[2.4em] h-[0.72em] w-[12.8em] rounded-[0.36em] bg-black/70 shadow-[0_0.12em_0_rgb(255_255_255/0.08)]"
+      />
     </div>
   );
 }

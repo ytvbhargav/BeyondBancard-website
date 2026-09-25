@@ -1,5 +1,19 @@
 import type { Industry, IndustryGroup, Step } from "@/types/content";
 
+/**
+ * The live site's own line for each group (beyondbancard.com/industries/),
+ * kept with the group labels (D-069). Nothing renders these yet: the grouped
+ * "more industries" listing they belong to was taken off the hub page, so they
+ * are here for whoever puts that section back.
+ */
+export const groupDescriptions: Record<Exclude<IndustryGroup, "featured">, string> = {
+  specialized: "Regulated products and category-aware underwriting.",
+  retail: "Everyday commerce — checkout, POS, and reporting built for how these businesses run.",
+  professional: "Invoicing, ACH, and mobile acceptance built around project- and service-based billing.",
+  healthcare: "Patient- and client-friendly payment collection alongside recurring care.",
+  digital: "Recurring revenue, platform, and partner-adjacent business models.",
+};
+
 export const groupLabels: Record<Exclude<IndustryGroup, "featured">, string> = {
   specialized: "Specialized & regulated",
   retail: "Retail & hospitality",
@@ -15,6 +29,8 @@ export const industries: Industry[] = [
     name: "Adult",
     group: "featured",
     teaser: "Payments infrastructure built for the realities of adult commerce.",
+    description:
+      "Solutions for adult ecommerce, content, entertainment, dating, subscriptions, and other qualifying business models — backed by industry-aware underwriting, risk tools, and ongoing support.",
     inDemo: true,
   },
   {
@@ -22,6 +38,8 @@ export const industries: Industry[] = [
     name: "Gaming",
     group: "featured",
     teaser: "Built for high-velocity, digital-first payment environments.",
+    description:
+      "Flexible payment infrastructure for qualifying gaming businesses managing online transactions, fraud exposure, transaction velocity, and complex acceptance requirements.",
     inDemo: true,
   },
   {
@@ -29,6 +47,8 @@ export const industries: Industry[] = [
     name: "Nutra & Supplements",
     group: "featured",
     teaser: "Payments engineered for fast-growing commerce.",
+    description:
+      "Processing for qualifying nutraceutical, supplement, wellness, ecommerce, and subscription businesses with an underwriting approach that understands the products and business model.",
     inDemo: true,
   },
   {
@@ -36,6 +56,8 @@ export const industries: Industry[] = [
     name: "RUO Peptides",
     group: "featured",
     teaser: "Processing that understands Research Use Only.",
+    description:
+      "Payment solutions for qualifying RUO peptide businesses, structured around the product set, ecommerce experience, transaction profile, and realities of the category.",
     inDemo: true,
   },
   {
@@ -43,6 +65,8 @@ export const industries: Industry[] = [
     name: "Travel",
     group: "featured",
     teaser: "Payments built for what happens before takeoff.",
+    description:
+      "Infrastructure for travel businesses managing higher tickets, card-not-present transactions, advance purchases, future delivery, and complex transaction flows.",
     inDemo: true,
   },
   {
@@ -50,6 +74,8 @@ export const industries: Industry[] = [
     name: "Cannabis-Related Businesses",
     group: "featured",
     teaser: "Navigate complex payments with confidence.",
+    description:
+      "Payment solutions for qualifying cannabis-related and ancillary businesses supported by industry-aware underwriting, flexible payment options, risk capabilities, and hands-on guidance.",
     inDemo: true,
   },
 
@@ -222,30 +248,79 @@ export const featuredIndustries = industries.filter((i) => i.group === "featured
  */
 export const hasIndustryPage = (slug: string) => featuredIndustries.some((i) => i.slug === slug);
 
+/**
+ * The named tail of the list: the everyday and specialised categories that are
+ * not in the featured six. One list, read by the homepage's industries section
+ * and by the Industries menu, so the two can never drift apart. Slugs, so a
+ * renamed industry follows and a mistyped one drops out rather than printing
+ * something wrong.
+ */
+const moreIndustrySlugs = [
+  "ecommerce",
+  "retail",
+  "restaurant-hospitality",
+  "medical-healthcare",
+  "saas",
+  "construction-contracting",
+  "real-estate",
+  "auto-repair",
+  "cbd-hemp",
+  "vape-ecig",
+  "insurance",
+  "telehealth-virtual-care",
+];
+
+export const moreIndustries = moreIndustrySlugs
+  .map((slug) => industries.find((i) => i.slug === slug))
+  .filter((i) => i !== undefined);
+
 export const industriesBySlug = (slugs: string[]) =>
   slugs.map((s) => industries.find((i) => i.slug === s)).filter((i): i is Industry => Boolean(i));
 
 /* ------------------------------ Industries hub ----------------------------- */
 
 export const industriesHub = {
+  /*
+   * The live beyondbancard.com/industries/ copy, restored (D-069). The
+   * redesign had paraphrased the hero and written its own four-step block;
+   * the client asked for the original messaging. "Beyond" reads "Beyond
+   * Bancard" at the first mention, and headings take sentence case and a full
+   * stop, as elsewhere on the site.
+   */
   hero: {
     title: "Payments built around the way you do business.",
-    lead: "Every industry has its own payment realities. Beyond Bancard combines flexible infrastructure, experienced underwriting, risk tools and hands-on support to fit your business, not force it into a generic model.",
+    lead: "Every industry has its own payment realities. Beyond Bancard combines flexible infrastructure, experienced underwriting, risk capabilities, and hands-on support to build payment solutions around your business — not force your business into a generic model.",
   },
   featured: {
     title: "Complex commerce is where experience matters most.",
+    lead: "Some businesses require more than a rate and a terminal. They require an understanding of the products being sold, how transactions happen, where risk exists, and how the payment environment should be structured for long-term stability.",
   },
   approach: {
-    title: "How we fit payments to your business.",
+    title: "Complexity requires more than approval.",
+    lead: "Getting a merchant account is only the beginning. Beyond helps structure the payment environment around your business — from underwriting and acceptance through risk, reporting, funding, and ongoing account health.",
     steps: [
-      { title: "Understand", body: "We start with the business model: what you sell, who buys it and how." },
-      { title: "Structure", body: "Align processing, payment methods and gateway technology with how you operate." },
-      { title: "Launch", body: "Support the journey from application to your first transactions." },
-      { title: "Optimize", body: "Stay involved with reporting, chargebacks and risk as your business changes." },
+      {
+        title: "Understand — we know the category.",
+        body: "We start with the business model, products, transaction flow, customer experience, and processing profile — not simply an industry label.",
+      },
+      {
+        title: "Structure — we know how to structure it.",
+        body: "Align processing, payment methods, gateway technology, risk controls, and transaction flows around the business.",
+      },
+      {
+        title: "Launch — we know how to get it live.",
+        body: "Support the journey from application and underwriting through integration, activation, and first transaction.",
+      },
+      {
+        title: "Optimize — we know how to keep it healthy.",
+        body: "Stay involved with reporting, chargebacks, risk, account health, payment operations, and opportunities to optimize over time.",
+      },
     ] satisfies Step[],
   },
+  /** For the grouped listing, which the hub page does not currently show. */
   all: {
     title: "More industries. Same payments expertise.",
+    lead: "Beyond supports businesses across specialized and regulated categories, everyday retail and hospitality, professional and field services, healthcare, and digital business models.",
   },
   notListed: {
     title: "Don't see your industry?",

@@ -11,13 +11,12 @@ import { Logo } from "@/components/layout/Logo";
 import {
   companyMenu,
   cta,
-  everydayGroups,
   partnersMenu,
   portals,
   resourcesMenu,
   solutionsMenu,
 } from "@/content/site";
-import { featuredIndustries, industryPath } from "@/content/industries";
+import { featuredIndustries, hasIndustryPage, industryPath, moreIndustries } from "@/content/industries";
 import { href } from "@/lib/links";
 import { lenisRef } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
@@ -113,13 +112,20 @@ export function MobileMenu({ tone }: { tone: "light" | "dark" }) {
                     </li>
                   ))}
                 </ul>
-                <SubHeading>Everyday businesses</SubHeading>
-                <ul>
-                  {everydayGroups.map((g) => (
-                    <li key={g.href}>
-                      <SheetLink link={g} />
-                    </li>
-                  ))}
+                <SubHeading>More industries</SubHeading>
+                {/* Named, not linked, until these have pages of their own */}
+                <ul className="grid gap-y-2 py-1">
+                  {moreIndustries.map((ind) =>
+                    hasIndustryPage(ind.slug) ? (
+                      <li key={ind.slug}>
+                        <SheetLink link={{ label: ind.name, href: industryPath(ind.slug) }} />
+                      </li>
+                    ) : (
+                      <li key={ind.slug} className="text-ink-800">
+                        {ind.name}
+                      </li>
+                    ),
+                  )}
                 </ul>
                 <SheetLink link={{ label: "View all industries", href: "/industries" }} className="mt-2 font-semibold text-brand-700" />
               </AccordionContent>

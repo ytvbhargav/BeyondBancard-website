@@ -74,7 +74,7 @@ export const solutionsMenu: SolutionColumn[] = [
   {
     pillar: "Protect",
     href: "/protect",
-    descriptor: "Keep the revenue you earn",
+    descriptor: "Protect every transaction",
     links: [
       { label: "Chargeback protection", href: "/protect/chargeback-protection" },
       { label: "Network tokenization", href: "/protect/network-tokenization" },
@@ -85,7 +85,7 @@ export const solutionsMenu: SolutionColumn[] = [
   {
     pillar: "Grow",
     href: "/grow",
-    descriptor: "Put payments to work",
+    descriptor: "Turn payments into opportunities for growth",
     links: [
       { label: "Working capital", href: "/grow/working-capital" },
       { label: "Instant payouts", href: "/grow/instant-payouts" },
@@ -96,7 +96,7 @@ export const solutionsMenu: SolutionColumn[] = [
   {
     pillar: "Operate",
     href: "/operate",
-    descriptor: "Tools to run payments",
+    descriptor: "Everything you need to keep business moving",
     links: [
       { label: "Reporting", href: "/operate/dashboard-reporting" },
       { label: "Invoicing", href: "/operate/invoicing" },

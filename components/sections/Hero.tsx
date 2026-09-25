@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { useInView } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
+import { IndustryRotator } from "@/components/sections/IndustryRotator";
 import { MaybeConfirm } from "@/components/ui/confirm";
 import { HeroBar } from "@/components/sections/HeroBar";
 import { HeroGradient } from "@/components/sections/HeroGradient";
@@ -20,6 +21,8 @@ type HeroProps = {
   title: string;
   lead: string;
   facts: Confirmable<string>[];
+  /** The industries the line above the CTAs cycles through. */
+  industries: string[];
   card: { title: string; industry: string; fields: HeroField[]; checks: string[] };
 };
 
@@ -47,11 +50,12 @@ function Word({ dir, delay, children }: { dir: WordDir; delay: number; children:
  * calibrated to a five-word title; any other title renders a plain, centred
  * headline with the terminal below it.
  */
-export function Hero({ title, lead, facts, card }: HeroProps) {
+export function Hero({ title, lead, facts, industries, card }: HeroProps) {
   const stageRef = useRef<HTMLDivElement>(null);
   const reduce = useReducedMotionSafe();
   const inView = useInView(stageRef, { once: true, amount: 0.25 });
-  const seq = useUnderwritingSequence(card.checks.length, { enabled: inView, reduce });
+  // The example runs itself, over and over: there is no control for it (D-067).
+  const seq = useUnderwritingSequence(card.checks.length, { enabled: inView, reduce, loop: true });
   const [fontPending, setFontPending] = useState(true);
 
   const words = title.split(" ");
@@ -147,6 +151,15 @@ export function Hero({ title, lead, facts, card }: HeroProps) {
       </div>
 
       <Container data-hero-foot className="relative z-10 flex flex-col items-center pt-3 pb-14 text-center lg:pt-12 lg:pb-24">
+        {/* The headline's promise, finished out loud. It sits in the foot's
+            own space above the CTAs, where there is room to set it large
+            without crowding the headline or the device. */}
+        <IndustryRotator
+          industries={industries}
+          className="anim-rise mb-7 font-display text-[clamp(1.6rem,3.6vw,2.75rem)]/[1.1] font-extrabold [font-stretch:78%] lg:mb-9"
+          style={{ "--delay": "240ms" } as React.CSSProperties}
+        />
+
         <div
           data-hero-cta
           className="anim-rise flex w-full flex-col gap-3 sm:w-auto sm:flex-row sm:justify-center lg:gap-4"

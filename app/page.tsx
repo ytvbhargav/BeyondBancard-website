@@ -11,16 +11,28 @@ import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { home } from "@/content/home";
 import { homeFaqs } from "@/content/faqs";
-import { featuredIndustries } from "@/content/industries";
+import { featuredIndustries, moreIndustries } from "@/content/industries";
 import { testimonials, testimonialsNote } from "@/content/testimonials";
 
 export default function HomePage() {
   return (
     <>
-      <Hero title={home.hero.title} lead={home.hero.lead} facts={home.hero.facts} card={home.underwriting} />
-      <TrustStrip label={home.trust.label} badges={home.trust.badges} stat={home.trust.stat} />
+      <Hero
+        title={home.hero.title}
+        lead={home.hero.lead}
+        facts={home.hero.facts}
+        industries={home.hero.industries}
+        card={home.underwriting}
+      />
+      <TrustStrip items={home.trust.items} />
       <PillarsSection title={home.pillars.title} lead={home.pillars.lead} items={home.pillars.items} />
-      <ComplexCommerce title={home.industries.title} lead={home.industries.lead} industries={featuredIndustries} />
+      <ComplexCommerce
+        title={home.industries.title}
+        lead={home.industries.lead}
+        industries={featuredIndustries}
+        chips={moreIndustries}
+        chipsLabel={home.industries.chipsLabel}
+      />
       <ProcessTimeline
         id="how-it-works"
         tone="ink"

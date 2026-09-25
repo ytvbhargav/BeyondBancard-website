@@ -1,42 +1,47 @@
-import { Landmark } from "lucide-react";
+import { Check } from "lucide-react";
 import { Container } from "@/components/ui/container";
 import { MaybeConfirm } from "@/components/ui/confirm";
 import { Marquee } from "@/components/motion/Marquee";
 import type { Confirmable } from "@/types/content";
 
-/** Sponsor banks and gateways (PRD §9.1.2, S3). */
-export function TrustStrip({
-  label,
-  badges,
-  stat,
-}: {
-  label: string;
-  badges: Confirmable<string>[];
-  stat?: Confirmable<string>;
-}) {
+/**
+ * Credibility band (S3, D-066). The strip between the hero and Solutions keeps
+ * its scrolling line; what scrolls has changed. It used to carry sponsor banks
+ * and gateways, which matter operationally but not to a merchant choosing a
+ * processor, and the required ISO/MSP disclosure now appears only in the
+ * footer. In their place: a few merchant-facing reasons to trust Beyond.
+ *
+ * It is a transition as much as a section. The hero and Solutions are both
+ * ink-950, so the band lifts a little blue at its top edge and closes back to
+ * ink-950 at its foot, carrying the hero's light out rather than cutting it
+ * off. Narrow on purpose: one line high, no cards, no heading, no metrics.
+ */
+export function TrustStrip({ items }: { items: Confirmable<string>[] }) {
   return (
-    <section aria-label="Sponsor banks and technology partners" className="border-b border-line bg-surface">
-      <Container className="grid items-center gap-6 py-8 lg:grid-cols-12 lg:gap-8">
-        <div className="flex items-start gap-3 lg:col-span-4">
-          <Landmark aria-hidden strokeWidth={1.75} className="mt-0.5 size-5 shrink-0 text-brand-600" />
-          <div>
-            <p className="type-small font-medium text-ink-900">{label}</p>
-            {stat && (
-              <p className="type-small tabular mt-1 text-muted">
-                <MaybeConfirm item={stat}>{stat.value}</MaybeConfirm>
-              </p>
-            )}
-          </div>
-        </div>
+    <section aria-label="Why merchants choose Beyond Bancard" className="relative isolate bg-ink-950 tone-dark">
+      {/* Brightest under the hero and gone by the foot. Both stops carry the
+          ink-950 hue: a gradient run to `transparent` interpolates through grey
+          in oklab and would wash the navy out. */}
+      <div
+        aria-hidden
+        className="pointer-events-none absolute inset-0 -z-10 bg-[radial-gradient(75%_180%_at_50%_-60%,var(--color-brand-900)_0%,var(--color-ink-950)_70%)]"
+      />
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-x-0 top-0 h-px bg-linear-to-r from-brand-400/0 via-brand-400/35 to-brand-400/0"
+      />
+
+      <Container className="py-3.5">
         <Marquee
-          className="lg:col-span-8"
-          label="Sponsor banks and gateways"
-          items={badges.map((b) => (
-            <MaybeConfirm key={b.value} item={b}>
-              <span className="font-display text-[1.0625rem] font-semibold whitespace-nowrap text-ink-800 [font-stretch:108%]">
-                {b.value}
+          tone="dark"
+          label="Why merchants choose Beyond Bancard"
+          items={items.map((item) => (
+            <span key={item.value} className="flex items-center gap-2.5 whitespace-nowrap">
+              <Check aria-hidden strokeWidth={2.25} className="size-4 shrink-0 text-brand-300" />
+              <span className="type-small font-medium text-on-dark">
+                <MaybeConfirm item={item}>{item.value}</MaybeConfirm>
               </span>
-            </MaybeConfirm>
+            </span>
           ))}
         />
       </Container>

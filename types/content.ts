@@ -17,7 +17,10 @@ export type IndustryGroup =
 export type Industry = {
   slug: string;
   name: string;
+  /** The live site's one-line headline for the industry. */
   teaser: string;
+  /** The live site's fuller description, where it publishes one (the featured six). */
+  description?: string;
   group: IndustryGroup;
   inDemo?: boolean;
 };

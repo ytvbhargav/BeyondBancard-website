@@ -1,9 +1,9 @@
 import { Button } from "@/components/ui/button";
-import { ChipLink } from "@/components/ui/chip";
+import { Chip, ChipLink } from "@/components/ui/chip";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { SpotlightCard } from "@/components/motion/SpotlightCard";
 import { SnapCarousel } from "@/components/motion/SnapCarousel";
-import { industryPath } from "@/content/industries";
+import { hasIndustryPage, industryPath } from "@/content/industries";
 import type { Industry } from "@/types/content";
 
 /** Featured complex industries (PRD §9.1.4, §9.2.4, §9.3.2). */
@@ -51,10 +51,17 @@ export function IndustryGrid({
         <div className="mt-10 flex flex-col gap-6 border-t border-line pt-8 lg:flex-row lg:items-center lg:justify-between">
           <div className="flex flex-wrap items-center gap-2">
             {chipsLabel && <p className="type-small mr-2 w-full font-medium text-muted sm:w-auto">{chipsLabel}</p>}
+            {/* A chip only links where there is somewhere to land: the rest are
+                industries Beyond names but has no page for yet, and a link
+                there would drop the reader on the redesign placeholder. */}
             <ul className="contents">
               {chips.map((c) => (
                 <li key={c.slug}>
-                  <ChipLink href={industryPath(c.slug)}>{c.name}</ChipLink>
+                  {hasIndustryPage(c.slug) ? (
+                    <ChipLink href={industryPath(c.slug)}>{c.name}</ChipLink>
+                  ) : (
+                    <Chip>{c.name}</Chip>
+                  )}
                 </li>
               ))}
             </ul>

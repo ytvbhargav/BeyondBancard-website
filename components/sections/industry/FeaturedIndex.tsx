@@ -9,6 +9,8 @@ export type FeaturedEntry = {
   slug: string;
   name: string;
   teaser: string;
+  /** The live site's fuller line for the industry, where it publishes one. */
+  description?: string;
   href: string;
   image?: { src: string; alt: string };
 };
@@ -23,7 +25,15 @@ export type FeaturedEntry = {
  * the motion is the page's reveal observer, and the photograph sits in the row
  * it belongs to at every width.
  */
-export function FeaturedIndex({ title, entries }: { title: string; entries: FeaturedEntry[] }) {
+export function FeaturedIndex({
+  title,
+  lead,
+  entries,
+}: {
+  title: string;
+  lead?: string;
+  entries: FeaturedEntry[];
+}) {
   return (
     <section aria-labelledby="featured-industries-title" className="bg-ink-950 tone-dark">
       <Container className="section-y">
@@ -33,6 +43,7 @@ export function FeaturedIndex({ title, entries }: { title: string; entries: Feat
           text={title}
           className="max-w-[16ch] type-h2 text-on-dark"
         />
+        {lead && <p className="mt-5 max-w-[62ch] type-body-lg text-pretty text-on-dark-muted">{lead}</p>}
 
         <ol className="mt-12 border-t border-ink-800 md:mt-16">
           {entries.map((entry, i) => (
@@ -58,9 +69,14 @@ export function FeaturedIndex({ title, entries }: { title: string; entries: Feat
                   <span className="block type-h3 text-on-dark transition-colors duration-(--duration-base) group-hover:text-brand-300">
                     {entry.name}
                   </span>
-                  <span className="mt-1.5 block max-w-[44ch] type-small text-pretty text-on-dark-muted">
+                  <span className="mt-1.5 block max-w-[44ch] type-small text-pretty text-on-dark">
                     {entry.teaser}
                   </span>
+                  {entry.description && (
+                    <span className="mt-2 hidden max-w-[62ch] type-small text-pretty text-on-dark-muted md:block">
+                      {entry.description}
+                    </span>
+                  )}
                 </span>
 
                 <ArrowUpRight

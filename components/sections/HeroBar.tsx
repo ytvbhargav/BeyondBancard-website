@@ -1,4 +1,4 @@
-import { Check, Phone, RotateCcw } from "lucide-react";
+import { Check, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cta } from "@/content/site";
 import { cn } from "@/lib/utils";
@@ -21,7 +21,10 @@ function Divider({ className }: { className?: string }) {
  * page scrolls (the foot CTAs come into view), and portrait desktop-layout
  * viewports, which show the foot CTAs at load, drop them (globals.css).
  * Mobile: a content-sized pill overlapping the terminal window with the
- * status and Replay.
+ * status.
+ *
+ * Nothing here is a control of the underwriting example: it runs and re-runs
+ * on its own, so there is no Replay to press (D-067).
  *
  * Screen readers get one reading of the status: the visible labels and cells
  * are hidden from them, and the sr-only progress line plus the page's only
@@ -128,19 +131,6 @@ export function HeroBar({ seq, count, statusText }: HeroBarProps) {
           </a>
         </span>
 
-        {/* Replay does nothing with reduced motion (the example is shown approved), so it is not offered there */}
-        <Divider className="motion-reduce:hidden!" />
-
-        {/* Never disabled, so focus stays put; pressing it mid-run restarts the sequence. */}
-        <button
-          type="button"
-          onClick={seq.replay}
-          aria-label="Replay the underwriting example"
-          title="Replay"
-          className="ml-auto grid size-11 shrink-0 place-items-center rounded-pill text-brand-200 transition-colors duration-(--duration-fast) hover:bg-white/10 motion-reduce:hidden lg:ml-0"
-        >
-          <RotateCcw aria-hidden strokeWidth={2} className="size-4" />
-        </button>
       </div>
     </div>
   );

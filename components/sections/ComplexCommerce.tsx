@@ -1,9 +1,10 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Chip, ChipLink } from "@/components/ui/chip";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { SnapCarousel } from "@/components/motion/SnapCarousel";
-import { industryPath } from "@/content/industries";
+import { hasIndustryPage, industryPath } from "@/content/industries";
 import { cn } from "@/lib/utils";
 import type { Industry } from "@/types/content";
 
@@ -25,10 +26,15 @@ export function ComplexCommerce({
   title,
   lead,
   industries,
+  chips,
+  chipsLabel,
 }: {
   title: string;
   lead?: string;
   industries: Industry[];
+  /** Named under the rail, so the breadth is read rather than inferred. */
+  chips?: Industry[];
+  chipsLabel?: string;
 }) {
   return (
     <Section tone="surface" aria-labelledby="complex-commerce-title">
@@ -70,7 +76,10 @@ export function ComplexCommerce({
               </span>
 
               {/* The caption, under the panel rather than on it */}
-              <span className="mt-5 block max-w-[34ch] text-pretty text-muted">{industry.teaser}</span>
+              <span className="mt-5 block max-w-[34ch] font-medium text-pretty text-ink-900">{industry.teaser}</span>
+              {industry.description && (
+                <span className="type-small mt-2 block max-w-[38ch] text-pretty text-muted">{industry.description}</span>
+              )}
               <span className="type-small mt-4 inline-flex items-center gap-1.5 font-semibold text-brand-700">
                 Explore {industry.name}
                 <ArrowRight
@@ -83,6 +92,26 @@ export function ComplexCommerce({
           ))}
         </SnapCarousel>
       </div>
+
+      {/* The tail of the section: the rest of the list, named. A chip only
+          links where there is a page to land on; the others are industries
+          Beyond serves but has nothing to show yet, so they stay as type. */}
+      {chips && chips.length > 0 && (
+        <div className="mt-12 flex flex-wrap items-center gap-2 border-t border-line pt-8 md:mt-16">
+          {chipsLabel && <p className="type-small mr-2 w-full font-medium text-muted sm:w-auto">{chipsLabel}</p>}
+          <ul className="contents">
+            {chips.map((c) => (
+              <li key={c.slug}>
+                {hasIndustryPage(c.slug) ? (
+                  <ChipLink href={industryPath(c.slug)}>{c.name}</ChipLink>
+                ) : (
+                  <Chip>{c.name}</Chip>
+                )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
     </Section>
   );
 }

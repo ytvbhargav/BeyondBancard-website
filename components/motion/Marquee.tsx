@@ -13,10 +13,13 @@ export function Marquee({
   items,
   label,
   className,
+  tone = "light",
 }: {
   items: React.ReactNode[];
   label: string;
   className?: string;
+  /** Dark surfaces need the pause control inverted, or it reads as a hole. */
+  tone?: "light" | "dark";
 }) {
   const [paused, setPaused] = useState(false);
 
@@ -49,7 +52,12 @@ export function Marquee({
         type="button"
         onClick={() => setPaused((p) => !p)}
         aria-pressed={paused}
-        className="marquee-toggle grid size-11 shrink-0 place-items-center rounded-pill text-muted transition-colors hover:bg-paper hover:text-ink-900"
+        className={cn(
+          "marquee-toggle grid size-11 shrink-0 place-items-center rounded-pill transition-colors",
+          tone === "dark"
+            ? "text-on-dark-muted hover:bg-white/10 hover:text-on-dark"
+            : "text-muted hover:bg-paper hover:text-ink-900",
+        )}
       >
         {paused ? <Play aria-hidden strokeWidth={1.75} className="size-4" /> : <Pause aria-hidden strokeWidth={1.75} className="size-4" />}
         <span className="sr-only">{paused ? "Play scrolling list" : "Pause scrolling list"}</span>

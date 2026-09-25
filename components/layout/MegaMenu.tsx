@@ -15,13 +15,12 @@ import {
 import {
   companyMenu,
   cta,
-  everydayGroups,
   partnersMenu,
   portals,
   resourcesMenu,
   solutionsMenu,
 } from "@/content/site";
-import { featuredIndustries, industryPath } from "@/content/industries";
+import { featuredIndustries, hasIndustryPage, industryPath, moreIndustries } from "@/content/industries";
 import { href } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types/content";
@@ -132,13 +131,22 @@ function IndustriesPanel() {
         </ul>
       </div>
       <div className="flex flex-col border-l border-line bg-paper p-8">
-        <p className="type-small mb-3 font-medium text-muted">Everyday businesses</p>
-        <ul>
-          {everydayGroups.map((g) => (
-            <li key={g.href}>
-              <MenuLink link={g} index={i++} />
-            </li>
-          ))}
+        <p className="type-small mb-3 font-medium text-muted">More industries</p>
+        {/* Named, not linked: none of these has a page yet, and a link would
+            land on the redesign placeholder. The moment one becomes a featured
+            industry it gains a page and this list links it by itself. */}
+        <ul className="grid gap-y-1.5">
+          {moreIndustries.map((ind) =>
+            hasIndustryPage(ind.slug) ? (
+              <li key={ind.slug}>
+                <MenuLink link={{ label: ind.name, href: industryPath(ind.slug) }} index={i++} />
+              </li>
+            ) : (
+              <li key={ind.slug} className="text-[0.9375rem] text-ink-800">
+                {ind.name}
+              </li>
+            ),
+          )}
         </ul>
         <NavigationMenuLink asChild>
           <Link

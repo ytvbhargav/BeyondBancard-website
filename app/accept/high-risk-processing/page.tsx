@@ -13,8 +13,9 @@ import { FaqSection } from "@/components/sections/FaqSection";
 import { CtaBand } from "@/components/sections/CtaBand";
 import { highRisk, lifecycleSteps, riskFactors } from "@/content/high-risk";
 import { highRiskFaqs } from "@/content/faqs";
-import { featuredIndustries } from "@/content/industries";
+import { featuredIndustries, industries } from "@/content/industries";
 import { cta } from "@/content/site";
+import { home } from "@/content/home";
 
 export const metadata: Metadata = {
   title: "High-risk merchant accounts",
@@ -67,6 +68,8 @@ export default function HighRiskPage() {
         title={highRisk.featured.title}
         lead={highRisk.featured.lead}
         industries={featuredIndustries}
+        chips={industries.filter((i) => i.group === "retail").slice(0, 6)}
+        chipsLabel={home.industries.chipsLabel}
         tone="surface"
       />
 

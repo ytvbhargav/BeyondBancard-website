@@ -19,6 +19,7 @@ export default function IndustriesPage() {
     slug: industry.slug,
     name: industry.name,
     teaser: industry.teaser,
+    description: industry.description,
     href: industryPath(industry.slug),
     // The lead photograph of that industry's own hero, so the two pages show
     // the reader the same picture of the same business.
@@ -33,9 +34,14 @@ export default function IndustriesPage() {
         names={featured.map(({ name, href }) => ({ name, href }))}
       />
 
-      <FeaturedIndex title={industriesHub.featured.title} entries={featured} />
+      <FeaturedIndex title={industriesHub.featured.title} lead={industriesHub.featured.lead} entries={featured} />
 
-      <ProcessSteps id="approach" title={industriesHub.approach.title} steps={industriesHub.approach.steps} />
+      <ProcessSteps
+        id="approach"
+        title={industriesHub.approach.title}
+        lead={industriesHub.approach.lead}
+        steps={industriesHub.approach.steps}
+      />
 
       <section aria-labelledby="not-listed-title" className="bg-paper py-12 md:py-16">
         <Container className="flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
