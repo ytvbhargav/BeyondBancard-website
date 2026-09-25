@@ -36,3 +36,39 @@ export const industryImages: Record<string, IndustryImage[]> = {
     { src: "/industries/crb-3.webp", alt: "A cultivation room of green plants" },
   ],
 };
+
+/**
+ * The homepage rail's photograph for each industry (public/home/industries).
+ * Supplied by the client; each one shows the moment of payment in that
+ * industry rather than the industry in the abstract. An industry with no
+ * photograph here keeps its drawn panel, so the rail never shows a stand-in.
+ */
+export const homeIndustryImages: Record<string, IndustryImage> = {
+  adult: {
+    src: "/home/industries/adult.webp",
+    alt: "A laptop on a desk showing an age verification screen with an 18+ shield and an “I am 18+” button",
+  },
+  gaming: {
+    src: "/home/industries/gaming.webp",
+    alt: "A games controller in front of a monitor reading Payment Approved, Enjoy the game",
+  },
+  "nutra-supplements": {
+    src: "/home/industries/nutra-supplements.webp",
+    alt: "A supplement bottle and capsules beside a phone showing a completed order",
+  },
+  "travel-payment-solutions": {
+    src: "/home/industries/travel-payment-solutions.webp",
+    alt: "A passport and sunglasses beside a laptop showing a Book Your Trip screen, an aircraft climbing outside the window",
+  },
+  // No photograph was supplied for this one; the research bench from the
+  // industry's own page carries the same idea, so the rail is not left with
+  // one drawn panel among five photographs.
+  "ruo-peptides": {
+    src: "/industries/ruo-peptides-1.webp",
+    alt: "A researcher using a pipette with test tubes",
+  },
+  crb: {
+    src: "/home/industries/crb.webp",
+    alt: "A labelled cannabis jar beside a countertop card terminal reading Payment Approved",
+  },
+};

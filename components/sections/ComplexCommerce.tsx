@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,6 +6,7 @@ import { Chip, ChipLink } from "@/components/ui/chip";
 import { Section, SectionHeader } from "@/components/ui/section";
 import { SnapCarousel } from "@/components/motion/SnapCarousel";
 import { hasIndustryPage, industryPath } from "@/content/industries";
+import { homeIndustryImages } from "@/content/industry-images";
 import { cn } from "@/lib/utils";
 import type { Industry } from "@/types/content";
 
@@ -57,39 +59,61 @@ export function ComplexCommerce({
           trackClassName="gap-4 md:gap-5"
           itemClassName="w-[78%] sm:w-[46%] lg:w-[31%] xl:w-[23.5%]"
         >
-          {industries.map((industry, i) => (
-            <Link key={industry.slug} href={industryPath(industry.slug)} className="group block">
-              {/* The art panel: the mark, and the name set on it */}
-              <span
-                className={cn("motif relative block aspect-4/5 overflow-hidden rounded-lg", `motif-${(i % 6) + 1}`)}
-              >
-                <span
-                  aria-hidden
-                  className="absolute inset-0 bg-linear-to-t from-ink-950 from-10% via-ink-950/30 via-60% to-ink-950/0 transition-opacity duration-(--duration-base) group-hover:opacity-80"
-                />
-                <span className="absolute inset-x-0 bottom-0 flex items-baseline gap-2.5 p-5">
-                  <span className="type-small font-semibold text-brand-300 tabular">
-                    {String(i + 1).padStart(2, "0")}
+          {industries.map((industry, i) => {
+            const photo = homeIndustryImages[industry.slug];
+            return (
+              // Not one big link any more: the blurb's "Show more" is a button,
+              // and a button inside an anchor is neither valid nor operable.
+              // The panel and the way in are the links; the text between them
+              // is text.
+              <div key={industry.slug} className="group">
+                <Link href={industryPath(industry.slug)} className="block">
+                  <span
+                    className={cn(
+                      "relative block aspect-4/5 overflow-hidden rounded-lg",
+                      // A drawn panel only where there is no photograph
+                      !photo && "motif",
+                      !photo && `motif-${(i % 6) + 1}`,
+                    )}
+                  >
+                    {photo && (
+                      <Image
+                        src={photo.src}
+                        alt={photo.alt}
+                        fill
+                        sizes="(min-width: 1280px) 23vw, (min-width: 1024px) 31vw, (min-width: 640px) 46vw, 78vw"
+                        className="object-cover transition-transform duration-(--duration-slow) ease-(--ease-out) group-hover:scale-[1.03]"
+                      />
+                    )}
+                    <span
+                      aria-hidden
+                      className="absolute inset-0 bg-linear-to-t from-ink-950 from-10% via-ink-950/30 via-60% to-ink-950/0 transition-opacity duration-(--duration-base) group-hover:opacity-80"
+                    />
+                    <span className="absolute inset-x-0 bottom-0 flex items-baseline gap-2.5 p-5">
+                      <span className="type-small font-semibold text-brand-300 tabular">
+                        {String(i + 1).padStart(2, "0")}
+                      </span>
+                      <span className="type-h4 text-balance text-on-dark">{industry.name}</span>
+                    </span>
                   </span>
-                  <span className="type-h4 text-balance text-on-dark">{industry.name}</span>
-                </span>
-              </span>
+                </Link>
 
-              {/* The caption, under the panel rather than on it */}
-              <span className="mt-5 block max-w-[34ch] font-medium text-pretty text-ink-900">{industry.teaser}</span>
-              {industry.description && (
-                <span className="type-small mt-2 block max-w-[38ch] text-pretty text-muted">{industry.description}</span>
-              )}
-              <span className="type-small mt-4 inline-flex items-center gap-1.5 font-semibold text-brand-700">
-                Explore {industry.name}
-                <ArrowRight
-                  aria-hidden
-                  strokeWidth={2}
-                  className="size-4 transition-transform duration-(--duration-base) ease-(--ease-out) group-hover:translate-x-1"
-                />
-              </span>
-            </Link>
-          ))}
+                {/* The caption, under the panel rather than on it */}
+                <p className="mt-5 max-w-[34ch] font-medium text-pretty text-ink-900">{industry.teaser}</p>
+                <Link
+                  href={industryPath(industry.slug)}
+                  className="type-small mt-4 inline-flex items-center gap-1.5 font-semibold text-brand-700"
+                >
+                  Explore {industry.name}
+                  <ArrowRight
+                    aria-hidden
+                    strokeWidth={2}
+                    className="size-4 transition-transform duration-(--duration-base) ease-(--ease-out) group-hover:translate-x-1"
+                  />
+                </Link>
+              </div>
+            );
+          })}
         </SnapCarousel>
       </div>
 
