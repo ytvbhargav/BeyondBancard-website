@@ -16,7 +16,7 @@ import {
   resourcesMenu,
   solutionsMenu,
 } from "@/content/site";
-import { featuredIndustries, hasIndustryPage, industryPath, moreIndustries } from "@/content/industries";
+import { featuredIndustries, hasIndustryPage, industryPath, menuIndustries } from "@/content/industries";
 import { href } from "@/lib/links";
 import { lenisRef } from "@/lib/lenis";
 import { cn } from "@/lib/utils";
@@ -115,7 +115,7 @@ export function MobileMenu({ tone }: { tone: "light" | "dark" }) {
                 <SubHeading>More industries</SubHeading>
                 {/* Named, not linked, until these have pages of their own */}
                 <ul className="grid gap-y-2 py-1">
-                  {moreIndustries.map((ind) =>
+                  {menuIndustries.map((ind) =>
                     hasIndustryPage(ind.slug) ? (
                       <li key={ind.slug}>
                         <SheetLink link={{ label: ind.name, href: industryPath(ind.slug) }} />

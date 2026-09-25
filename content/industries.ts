@@ -275,6 +275,18 @@ const moreIndustrySlugs = [
  * serves beyond the featured six. Named under the high-risk page's cards,
  * where "more industries" means more complex ones, not everyday retail.
  */
+/**
+ * The Industries menu's second column, as the live site lists it: the two
+ * regulated categories nearest the featured six, then the everyday ones. Its
+ * own list, not the homepage's — the menu is a short way in, and the homepage
+ * tail is there to show breadth.
+ */
+const menuIndustrySlugs = ["cbd-hemp", "vape-ecig", "ecommerce", "retail", "restaurant-hospitality", "auto-repair"];
+
+export const menuIndustries = menuIndustrySlugs
+  .map((slug) => industries.find((i) => i.slug === slug))
+  .filter((i) => i !== undefined);
+
 export const specializedIndustries = industries.filter((i) => i.group === "specialized");
 
 export const moreIndustries = moreIndustrySlugs

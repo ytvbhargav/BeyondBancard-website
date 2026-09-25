@@ -20,7 +20,7 @@ import {
   resourcesMenu,
   solutionsMenu,
 } from "@/content/site";
-import { featuredIndustries, hasIndustryPage, industryPath, moreIndustries } from "@/content/industries";
+import { featuredIndustries, hasIndustryPage, industryPath, menuIndustries } from "@/content/industries";
 import { href } from "@/lib/links";
 import { cn } from "@/lib/utils";
 import type { NavLink } from "@/types/content";
@@ -136,7 +136,7 @@ function IndustriesPanel() {
             land on the redesign placeholder. The moment one becomes a featured
             industry it gains a page and this list links it by itself. */}
         <ul className="grid gap-y-1.5">
-          {moreIndustries.map((ind) =>
+          {menuIndustries.map((ind) =>
             hasIndustryPage(ind.slug) ? (
               <li key={ind.slug}>
                 <MenuLink link={{ label: ind.name, href: industryPath(ind.slug) }} index={i++} />
