@@ -4,7 +4,7 @@ import { lifecycleSteps, riskFactors } from "@/content/high-risk";
 
 export const home = {
   hero: {
-    title: "The processor that says yes.",
+    title: "The processor that says yes to",
     /**
      * The live site's own supporting copy, near-verbatim (D-064). The earlier
      * line led on merchants "other processors turn away", which positions

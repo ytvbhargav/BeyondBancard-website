@@ -333,6 +333,58 @@ html[data-announcement="dismissing"] {
   animation-delay: var(--delay, 0ms);
 }
 
+/* The photographed terminal. Everything inside the layer is laid out in the
+   photograph's own pixels — 1543x846, with the screen panel transformed onto
+   the glass — and the layer is then scaled to whatever width the hero gives
+   it, so the screen stays welded to the device at every size. */
+/* The device's place in the hero: centred under the plain headline, and wide
+   enough to be the subject rather than a footnote to it. It runs under the
+   glass bar, which is why the foot of it is faded rather than cut. */
+.hero-photo-window {
+  position: relative;
+  z-index: 20;
+  width: min(100%, 44rem);
+  margin: 1.25rem auto 0;
+  mask-image: linear-gradient(to top, transparent 0.5rem, var(--color-ink-950) 4rem);
+}
+@media (width >= 64rem) {
+  .hero-photo-window {
+    width: min(100%, 52rem);
+    margin-top: 2rem;
+  }
+}
+
+/* From 64rem the photograph takes the place the drawn terminal held: the hole
+   the headline opens in line 2, turned so the device stands almost upright
+   with the same lean the old plate had. The image is wider than the stage
+   because most of it is transparent around the hand. */
+@media (width >= 64rem) {
+  .hero-stage:not(.hero-stage--plain) .hero-photo-window {
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    width: auto;
+    margin: 0;
+    mask-image: none;
+    pointer-events: none;
+  }
+  .hero-photo-pos {
+    position: absolute;
+    top: 74%;
+    left: 53%;
+    width: 5.2em;
+    transform: translate(-50%, -50%) rotate(-30deg);
+  }
+}
+
+.hero-photo {
+  /* The same entrance the drawn device had: it rises and turns in as the
+     headline settles. */
+  animation: hero-device-in var(--duration-hero-device) var(--ease-out-cubic) 150ms both;
+  transform-origin: 50% 70%;
+  position: relative;
+  width: 100%;
+}
 /* Terminal placement. Below 64rem it sits in its own masked window under the
    headline; from 64rem the window covers the h1 box and the terminal is
    placed in hero units (u = F / 12.8) from its top-left corner. */
@@ -415,6 +467,12 @@ html[data-announcement="dismissing"] {
   .hero-line-end {
     text-align: right;
     text-align-last: right;
+  }
+  /* The headline is set at 0.8 leading, which leaves the "y" of "says" sitting
+     on the line below it. The last line takes a little air so the descender
+     and the word under it stop touching. */
+  .hero-stage:not(.hero-stage--plain) .hero-line:last-child {
+    margin-top: 0.12em;
   }
   .hero-word[data-dir="left"] {
     animation-name: hero-word-left;
@@ -1103,6 +1161,7 @@ html[data-announcement="dismissed"] [data-announcement-bar] {
   .hero-glow,
   .hero-glow-core,
   .hero-word,
+  .hero-photo,
   .hero-terminal-anim,
   .hero-terminal-shade,
   .hero-bar,

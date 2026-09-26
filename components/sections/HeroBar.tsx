@@ -1,5 +1,6 @@
-import { Check, Phone } from "lucide-react";
+import { Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { IndustryRotator } from "@/components/sections/IndustryRotator";
 import { cta } from "@/content/site";
 import { cn } from "@/lib/utils";
 import type { useUnderwritingSequence } from "@/lib/useUnderwritingSequence";
@@ -8,6 +9,8 @@ type HeroBarProps = {
   seq: ReturnType<typeof useUnderwritingSequence>;
   count: number;
   statusText: string;
+  /** The industries the bar cycles through, in place of the example's status. */
+  industries: string[];
 };
 
 function Divider({ className }: { className?: string }) {
@@ -30,7 +33,7 @@ function Divider({ className }: { className?: string }) {
  * are hidden from them, and the sr-only progress line plus the page's only
  * live region carry the same information.
  */
-export function HeroBar({ seq, count, statusText }: HeroBarProps) {
+export function HeroBar({ seq, count, statusText, industries }: HeroBarProps) {
   const progress = count > 0 ? seq.done / count : 0;
   const steps = Array.from({ length: Math.max(0, count - 1) }, (_, i) => (i + 1) / count);
 
@@ -84,34 +87,14 @@ export function HeroBar({ seq, count, statusText }: HeroBarProps) {
 
         <Divider />
 
-        {/* Below 360px the short label keeps the disclosure whole instead of truncating it */}
-        <span aria-hidden className="type-small min-w-0 truncate text-on-dark-muted lg:font-semibold lg:text-on-dark">
-          <span className="min-[22.5rem]:hidden">Example</span>
-          <span className="max-[22.5rem]:hidden">Example application</span>
-        </span>
-
-        <span aria-hidden className="relative grid h-8 min-w-26 shrink-0 text-[0.8125rem] font-semibold whitespace-nowrap lg:h-9 lg:min-w-44">
-          <span
-            data-status-cell="progress"
-            className={cn(
-              "col-start-1 row-start-1 flex items-center justify-center rounded-pill bg-warning-100 px-3.5 text-warning-700 transition-opacity duration-(--duration-fast)",
-              seq.approved && "opacity-0",
-            )}
-          >
-            <span className="lg:hidden">In review</span>
-            <span className="hidden lg:inline">Underwriting in progress</span>
-          </span>
-          <span
-            data-status-cell="approved"
-            className={cn(
-              "col-start-1 row-start-1 flex items-center justify-center gap-1.5 rounded-pill bg-success-100 px-3.5 text-success-700 transition-opacity duration-(--duration-fast)",
-              !seq.approved && "opacity-0",
-            )}
-          >
-            <Check aria-hidden strokeWidth={3} className="size-3.5" />
-            Approved
-          </span>
-        </span>
+        {/* The industries the processor says yes to, turning where the example's
+            label and status pill used to sit. The status itself is not lost:
+            the progress counter to the left carries it, and the live region
+            below still announces it. */}
+        <IndustryRotator
+          industries={industries}
+          className="min-w-0 font-display text-[1.125rem] font-extrabold [font-stretch:80%] text-on-dark lg:text-[1.375rem]"
+        />
 
         <span className="sr-only" aria-live="polite" aria-atomic="true">
           Example application status: {statusText}
