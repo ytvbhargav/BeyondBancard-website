@@ -333,6 +333,69 @@ html[data-announcement="dismissing"] {
   animation-delay: var(--delay, 0ms);
 }
 
+/* The industries the headline says yes to. Set from the display face but a
+   good deal smaller than the headline, so it reads as the answer to it rather
+   than a fourth line of it. Below 64rem it sits centred under the headline;
+   from 64rem it stands beside "to" (below). */
+.hero-rotator {
+  position: relative;
+  z-index: 30;
+  margin-top: 0.3em;
+  font-family: var(--font-display);
+  font-size: max(1.5rem, 0.36em);
+  font-weight: 800;
+  font-stretch: 80%;
+  line-height: 1;
+}
+
+/* Every industry shares one grid cell; centre each in it, or a short name sits
+   at the left of a box as wide as the longest one */
+.hero-rotator .grid {
+  justify-items: center;
+}
+/* A steel-blue sheen in Beyond Blue (#4791CF) and the guideline's own tints
+   of it (80%, 50%, 30%, 10%), so it reads as light moving across the letters
+   rather than a fill. The band is twice the word's width and starts and ends
+   on the same tint, so sliding it one band along loops without a seam. */
+.hero-rotator .grid > span {
+  color: #a3c7e5;
+  background-image: linear-gradient(
+    100deg,
+    #4791cf 0%,
+    #6ba6d9 14%,
+    #c7def0 28%,
+    #edf5fa 34%,
+    #a3c7e5 44%,
+    #6ba6d9 58%,
+    #4791cf 72%,
+    #a3c7e5 88%,
+    #4791cf 100%
+  );
+  background-size: 200% 100%;
+  animation: hero-rotator-flow 5s linear infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  /* A shade under the letters (text-shadow would show through the clipped fill) */
+  filter: drop-shadow(0 0.04em 0.25em rgb(2 6 23 / 0.45));
+}
+@keyframes hero-rotator-flow {
+  to {
+    background-position: 200% 0;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-rotator .grid > span {
+    animation: none;
+  }
+}
+@media (forced-colors: active) {
+  .hero-rotator .grid > span {
+    -webkit-text-fill-color: currentColor;
+    background-image: none;
+  }
+}
+
 /* The photographed terminal. Everything inside the layer is laid out in the
    photograph's own pixels — 1543x846, with the screen panel transformed onto
    the glass — and the layer is then scaled to whatever width the hero gives
@@ -346,6 +409,20 @@ html[data-announcement="dismissing"] {
   width: min(100%, 44rem);
   margin: 1.25rem auto 0;
   mask-image: linear-gradient(to top, transparent 0.5rem, var(--color-ink-950) 4rem);
+}
+/* Below 64rem the photograph stands as it was taken. The device and hand fill
+   only the left 70% of it (x 0-1084 of 1543) under a transparent band 12% deep,
+   so it is drawn a quarter wider, shifted until the device itself is centred,
+   and raised past the empty band. */
+@media (width < 64rem) {
+  .hero-photo-window {
+    overflow-x: clip;
+  }
+  .hero-photo-pos {
+    width: 125%;
+    margin-left: 6%;
+    margin-top: -8%;
+  }
 }
 @media (width >= 64rem) {
   .hero-photo-window {
@@ -371,7 +448,7 @@ html[data-announcement="dismissing"] {
   .hero-photo-pos {
     position: absolute;
     top: 74%;
-    left: 53%;
+    left: 49%;
     width: 5.2em;
     transform: translate(-50%, -50%) rotate(-30deg);
   }
@@ -473,6 +550,33 @@ html[data-announcement="dismissing"] {
      and the word under it stop touching. */
   .hero-stage:not(.hero-stage--plain) .hero-line:last-child {
     margin-top: 0.12em;
+  }
+  /* "to" leaves the right edge and stands against the terminal, which
+     frees the rest of the line for the industries beside it. */
+  .hero-stage:not(.hero-stage--plain) .hero-line-last {
+    position: relative;
+    text-align: left;
+    text-align-last: left;
+  }
+  .hero-to {
+    position: absolute;
+    left: var(--hero-to-x);
+  }
+  .hero-stage:not(.hero-stage--plain) {
+    /* In headline units, so the rotator (set smaller) can place itself from it */
+    --hero-to-x: calc(var(--hero-f) * 3.3);
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-rotator {
+    position: absolute;
+    left: calc(var(--hero-to-x) + var(--hero-f) * 0.84);
+    bottom: calc(var(--hero-f) * 0.03);
+    margin: 0;
+    /* Sized so the longest industry still ends inside a 1440 viewport */
+    font-size: 0.27em;
+    white-space: nowrap;
+  }
+  .hero-stage:not(.hero-stage--plain) .hero-rotator .grid {
+    justify-items: start;
   }
   .hero-word[data-dir="left"] {
     animation-name: hero-word-left;

@@ -9,8 +9,8 @@ type HeroBarProps = {
   seq: ReturnType<typeof useUnderwritingSequence>;
   count: number;
   statusText: string;
-  /** The industries the bar cycles through, in place of the example's status. */
-  industries: string[];
+  /** The industries the bar cycles through, when the headline is not showing them beside "to". */
+  industries?: string[];
 };
 
 function Divider({ className }: { className?: string }) {
@@ -40,7 +40,11 @@ export function HeroBar({ seq, count, statusText, industries }: HeroBarProps) {
   return (
     <div
       data-hero-bar
-      className="hero-bar relative z-20 -mt-14 px-5 sm:px-6 md:px-8 lg:sticky lg:bottom-0 lg:mt-0 lg:flex lg:min-h-20 lg:w-full lg:shrink-0 lg:items-start lg:justify-center lg:px-0 lg:pb-4"
+      className={cn(
+        "hero-bar relative z-20 -mt-14 px-5 sm:px-6 md:px-8 lg:sticky lg:bottom-0 lg:mt-0 lg:flex lg:min-h-20 lg:w-full lg:shrink-0 lg:items-start lg:justify-center lg:px-0 lg:pb-4",
+        // Below 64rem the pill held only the industries; without them it has nothing to say
+        !industries && "max-lg:hidden",
+      )}
     >
       <div className="hero-bar-pill mx-auto flex h-14 w-fit max-w-md items-center justify-start gap-2 rounded-pill border border-white/12 bg-ink-950/60 pr-1.5 pl-4 backdrop-blur-md lg:mt-1.5 lg:h-auto lg:min-h-[3.625rem] lg:w-max lg:max-w-[calc(100%-3rem)] lg:justify-between lg:gap-3 lg:bg-ink-950/70 lg:py-1.5 lg:pl-6 lg:whitespace-nowrap lg:shadow-float">
         <span aria-hidden className="type-small hidden min-w-0 truncate font-medium text-brand-200 lg:inline">
@@ -85,16 +89,18 @@ export function HeroBar({ seq, count, statusText, industries }: HeroBarProps) {
           Underwriting checks: {seq.done} of {count} complete.
         </span>
 
-        <Divider />
-
-        {/* The industries the processor says yes to, turning where the example's
-            label and status pill used to sit. The status itself is not lost:
-            the progress counter to the left carries it, and the live region
-            below still announces it. */}
-        <IndustryRotator
-          industries={industries}
-          className="min-w-0 font-display text-[1.125rem] font-extrabold [font-stretch:80%] text-on-dark lg:text-[1.375rem]"
-        />
+        {/* With a plain headline the industries turn here instead of beside
+            "to". The status itself is not lost either way: the progress
+            counter carries it, and the live region below announces it. */}
+        {industries && (
+          <>
+            <Divider />
+            <IndustryRotator
+              industries={industries}
+              className="min-w-0 font-display text-[1.125rem] font-extrabold [font-stretch:80%] text-on-dark lg:text-[1.375rem]"
+            />
+          </>
+        )}
 
         <span className="sr-only" aria-live="polite" aria-atomic="true">
           Example application status: {statusText}

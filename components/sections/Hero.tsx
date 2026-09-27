@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Container } from "@/components/ui/container";
 import { MaybeConfirm } from "@/components/ui/confirm";
 import { HeroBar } from "@/components/sections/HeroBar";
+import { IndustryRotator } from "@/components/sections/IndustryRotator";
 import { HeroGradient } from "@/components/sections/HeroGradient";
 import { HeroDevicePhoto } from "@/components/illustrations/HeroDevicePhoto";
 import { cta } from "@/content/site";
@@ -110,19 +111,28 @@ export function Hero({ title, lead, facts, industries, card }: HeroProps) {
                       {words[3]}
                     </Word>
                   </span>{" "}
-                  <span className="hero-line">
+                  {/* "to" stands against the terminal rather than the right
+                      edge, so the industries can turn beside it (globals.css) */}
+                  <span className="hero-line hero-line-last">
                     <Word dir="right" delay={220}>
                       {words[4]}
                     </Word>{" "}
-                    <Word dir="left" delay={220}>
-                      {words[5]}
-                    </Word>
+                    <span className="hero-to">
+                      <Word dir="left" delay={220}>
+                        {words[5]}
+                      </Word>
+                    </span>
                   </span>
                 </>
               ) : (
                 title
               )}
             </h1>
+
+            {/* What it says yes to, beside "to": outside the h1, so the heading
+                stays one sentence, and set smaller than it, so it reads as the
+                answer rather than a fourth line of the headline. */}
+            {split && <IndustryRotator industries={industries} className="hero-rotator anim-rise" />}
 
             <div aria-hidden className="hero-photo-window">
               <div className="hero-photo-pos">
@@ -134,7 +144,7 @@ export function Hero({ title, lead, facts, industries, card }: HeroProps) {
           <span aria-hidden className="hidden lg:block lg:min-h-6 lg:flex-[1_1_0]" />
         </Container>
 
-        <HeroBar seq={seq} count={card.checks.length} statusText={statusText} industries={industries} />
+        <HeroBar seq={seq} count={card.checks.length} statusText={statusText} industries={split ? undefined : industries} />
       </div>
 
       <Container data-hero-foot className="relative z-10 flex flex-col items-center pt-3 pb-14 text-center lg:pt-12 lg:pb-24">
